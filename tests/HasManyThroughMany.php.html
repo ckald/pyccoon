@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>../tests/HasManyThroughMany.php</title>
+  <link rel="stylesheet" href="../pyccoon.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'>
+      <h1 id="breadcrumbs">/ <a href="HasManyThroughMany.php.html/../../index.html">.</a> / <a href="HasManyThroughMany.php.html/../index.html">tests</a> / <a href="HasManyThroughMany.php.html">HasManyThroughMany.php</a> </h1>
+      <ul id="children"></ul>
+    </div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="cp">&lt;?php</span> <span class="k">namespace</span> <span class="nx">Lib</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Illuminate\Database\Eloquent\Builder</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Illuminate\Database\Eloquent\Collection</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Illuminate\Database\Eloquent\Model</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Illuminate\Database\Eloquent\Relations\Relation</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">Illuminate\Database\Query\Expression</span><span class="p">;</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">HasManyThroughMany</span> <span class="k">extends</span> <span class="nx">Relation</span>
+<span class="p">{</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>The distance parent model instance.</p>
+<p><span class="pydoc pydoc-var"><span>var</span> <code>\Illuminate\Database\Eloquent\Model</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">protected</span> <span class="nv">$farParent</span><span class="p">;</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>The near key on the relationship.</p>
+<p><span class="pydoc pydoc-var"><span>var</span> <code>string</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">protected</span> <span class="nv">$firstKey</span><span class="p">;</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>The far key on the relationship.</p>
+<p><span class="pydoc pydoc-var"><span>var</span> <code>string</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">protected</span> <span class="nv">$secondKey</span><span class="p">;</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p><span class="pydoc pydoc-var"><span>var</span></span></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">protected</span> <span class="nv">$pivotKey</span><span class="p">;</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Create a new has many relationship instance.</p>
+<p><span class="pydoc pydoc-param"><span>param</span> <code>\Illuminate\Database\Eloquent\Builder</code></span> $query
+<span class="pydoc pydoc-param"><span>param</span> <code>\Illuminate\Database\Eloquent\Model</code></span> $farParent
+<span class="pydoc pydoc-param"><span>param</span> <code>\Illuminate\Database\Eloquent\Model</code></span> $parent
+<span class="pydoc pydoc-param"><span>param</span> <code>string</code></span> $firstKey
+<span class="pydoc pydoc-param"><span>param</span> <code>string</code></span> $secondKey
+<span class="pydoc pydoc-param"><span>param</span> <code>string</code></span> $pivotKey</p>
+<p><span class="pydoc pydoc-return"><span>return</span> <code>\Lib\HasManyThroughMany</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">Builder</span> <span class="nv">$query</span><span class="p">,</span> <span class="nx">Model</span> <span class="nv">$farParent</span><span class="p">,</span> <span class="nx">Model</span> <span class="nv">$parent</span><span class="p">,</span> <span class="nv">$firstKey</span><span class="p">,</span> <span class="nv">$secondKey</span><span class="p">,</span> <span class="nv">$pivotKey</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">firstKey</span> <span class="o">=</span> <span class="nv">$firstKey</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">secondKey</span> <span class="o">=</span> <span class="nv">$secondKey</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">farParent</span> <span class="o">=</span> <span class="nv">$farParent</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pivotKey</span> <span class="o">=</span> <span class="nv">$pivotKey</span><span class="p">;</span>
+
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">(</span><span class="nv">$query</span><span class="p">,</span> <span class="nv">$parent</span><span class="p">);</span>
+    <span class="p">}</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Set the base constraints on the relation query.</p>
+<p><span class="pydoc pydoc-return"><span>return</span> <code>void</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">public</span> <span class="k">function</span> <span class="nf">addConstraints</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nv">$parentTable</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">parent</span><span class="o">-&gt;</span><span class="na">getTable</span><span class="p">();</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">setJoin</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="k">static</span><span class="o">::</span><span class="nv">$constraints</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="nv">$parentTable</span> <span class="o">.</span> <span class="s1">&#39;.&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">firstKey</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">farParent</span><span class="o">-&gt;</span><span class="na">getKey</span><span class="p">());</span>
+        <span class="p">}</span>
+    <span class="p">}</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Add the constraints for a relationship count query.</p>
+<p><span class="pydoc pydoc-param"><span>param</span> <code>\Illuminate\Database\Eloquent\Builder</code></span> $query
+<span class="pydoc pydoc-param"><span>param</span> <code>\Illuminate\Database\Eloquent\Builder</code></span> $parent</p>
+<p><span class="pydoc pydoc-return"><span>return</span> <code>\Illuminate\Database\Eloquent\Builder</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getRelationCountQuery</span><span class="p">(</span><span class="nx">Builder</span> <span class="nv">$query</span><span class="p">,</span> <span class="nx">Builder</span> <span class="nv">$parent</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$parentTable</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">parent</span><span class="o">-&gt;</span><span class="na">getTable</span><span class="p">();</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">setJoin</span><span class="p">(</span><span class="nv">$query</span><span class="p">);</span>
+
+        <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="k">new</span> <span class="nx">Expression</span><span class="p">(</span><span class="s1">&#39;count(*)&#39;</span><span class="p">));</span>
+
+        <span class="nv">$key</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">wrap</span><span class="p">(</span><span class="nv">$parentTable</span> <span class="o">.</span> <span class="s1">&#39;.&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">firstKey</span><span class="p">);</span>
+
+        <span class="k">return</span> <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getHasCompareKey</span><span class="p">(),</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Expression</span><span class="p">(</span><span class="nv">$key</span><span class="p">));</span>
+    <span class="p">}</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>Set the join clause on the query.</p>
+<p><span class="pydoc pydoc-param"><span>param</span> <code>\Illuminate\Database\Eloquent\Builder|null</code></span> $query</p>
+<p><span class="pydoc pydoc-return"><span>return</span> <code>void</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">protected</span> <span class="k">function</span> <span class="nf">setJoin</span><span class="p">(</span><span class="nx">Builder</span> <span class="nv">$query</span> <span class="o">=</span> <span class="k">null</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$query</span> <span class="o">?</span> <span class="o">:</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">;</span>
+
+        <span class="nv">$foreignKey</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">related</span><span class="o">-&gt;</span><span class="na">getTable</span><span class="p">()</span> <span class="o">.</span> <span class="s1">&#39;.&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">secondKey</span><span class="p">;</span>
+
+        <span class="nv">$query</span><span class="o">-&gt;</span><span class="na">join</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">parent</span><span class="o">-&gt;</span><span class="na">getTable</span><span class="p">(),</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getQualifiedParentKeyName</span><span class="p">(),</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="nv">$foreignKey</span><span class="p">);</span>
+    <span class="p">}</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Set the constraints for an eager load of the relation.</p>
+<p><span class="pydoc pydoc-param"><span>param</span> <code>array</code></span> $models</p>
+<p><span class="pydoc pydoc-return"><span>return</span> <code>void</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">public</span> <span class="k">function</span> <span class="nf">addEagerConstraints</span><span class="p">(</span><span class="k">array</span> <span class="nv">$models</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$table</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">parent</span><span class="o">-&gt;</span><span class="na">getTable</span><span class="p">();</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query</span><span class="o">-&gt;</span><span class="na">whereIn</span><span class="p">(</span><span class="nv">$table</span> <span class="o">.</span> <span class="s1">&#39;.&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">firstKey</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getKeys</span><span class="p">(</span><span class="nv">$models</span><span class="p">));</span>
+    <span class="p">}</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Initialize the relation on a set of models.</p>
+<p><span class="pydoc pydoc-param"><span>param</span> <code>array</code></span> $models
+<span class="pydoc pydoc-param"><span>param</span> <code>string</code></span> $relation</p>
+<p><span class="pydoc pydoc-return"><span>return</span> <code>array</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">public</span> <span class="k">function</span> <span class="nf">initRelation</span><span class="p">(</span><span class="k">array</span> <span class="nv">$models</span><span class="p">,</span> <span class="nv">$relation</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$models</span> <span class="k">as</span> <span class="nv">$model</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$model</span><span class="o">-&gt;</span><span class="na">setRelation</span><span class="p">(</span><span class="nv">$relation</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">related</span><span class="o">-&gt;</span><span class="na">newCollection</span><span class="p">());</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$models</span><span class="p">;</span>
+    <span class="p">}</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>Match the eagerly loaded results to their parents.</p>
+<p><span class="pydoc pydoc-param"><span>param</span> <code>array</code></span> $models
+<span class="pydoc pydoc-param"><span>param</span> <code>\Illuminate\Database\Eloquent\Collection</code></span> $results
+<span class="pydoc pydoc-param"><span>param</span> <code>string</code></span> $relation</p>
+<p><span class="pydoc pydoc-return"><span>return</span> <code>array</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">public</span> <span class="k">function</span> <span class="nf">match</span><span class="p">(</span><span class="k">array</span> <span class="nv">$models</span><span class="p">,</span> <span class="nx">Collection</span> <span class="nv">$results</span><span class="p">,</span> <span class="nv">$relation</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$dictionary</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">buildDictionary</span><span class="p">(</span><span class="nv">$results</span><span class="p">);</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Once we have the dictionary we can simply spin through the parent models to link them up with their children using the keyed dictionary to make the matching very convenient and easy work. Then we'll just return them.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$models</span> <span class="k">as</span> <span class="nv">$model</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$key</span> <span class="o">=</span> <span class="nv">$model</span><span class="o">-&gt;</span><span class="na">getKey</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$dictionary</span><span class="p">[</span><span class="nv">$key</span><span class="p">]))</span> <span class="p">{</span>
+                <span class="nv">$value</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">related</span><span class="o">-&gt;</span><span class="na">newCollection</span><span class="p">(</span><span class="nv">$dictionary</span><span class="p">[</span><span class="nv">$key</span><span class="p">]);</span>
+
+                <span class="nv">$model</span><span class="o">-&gt;</span><span class="na">setRelation</span><span class="p">(</span><span class="nv">$relation</span><span class="p">,</span> <span class="nv">$value</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$models</span><span class="p">;</span>
+    <span class="p">}</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>Build model dictionary keyed by the relation's foreign key.</p>
+<p><span class="pydoc pydoc-param"><span>param</span> <code>\Illuminate\Database\Eloquent\Collection</code></span> $results</p>
+<p><span class="pydoc pydoc-return"><span>return</span> <code>array</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">protected</span> <span class="k">function</span> <span class="nf">buildDictionary</span><span class="p">(</span><span class="nx">Collection</span> <span class="nv">$results</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$dictionary</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+
+        <span class="nv">$foreign</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">firstKey</span><span class="p">;</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p>First we will create a dictionary of models keyed by the foreign key of the relationship as this will allow us to quickly access all of the related models without having to do nested looping which will be quite slow.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">foreach</span> <span class="p">(</span><span class="nv">$results</span> <span class="k">as</span> <span class="nv">$result</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$dictionary</span><span class="p">[</span><span class="nv">$result</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$foreign</span><span class="p">}][]</span> <span class="o">=</span> <span class="nv">$result</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$dictionary</span><span class="p">;</span>
+    <span class="p">}</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>Get the results of the relationship.</p>
+<p><span class="pydoc pydoc-return"><span>return</span> <code>mixed</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getResults</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">();</span>
+    <span class="p">}</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <p>Execute the query as a "select" statement.</p>
+<p><span class="pydoc pydoc-param"><span>param</span> <code>array</code></span> $columns</p>
+<p><span class="pydoc pydoc-return"><span>return</span> <code>\Illuminate\Database\Eloquent\Collection</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">public</span> <span class="k">function</span> <span class="nf">get</span><span class="p">(</span><span class="nv">$columns</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">))</span>
+    <span class="p">{</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      <p>First we'll add the proper select columns onto the query so it is run with the proper columns. Then, we will get the results and hydrate out pivot models with the result of those columns as a separate model relation.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nv">$select</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getSelectColumns</span><span class="p">(</span><span class="nv">$columns</span><span class="p">);</span>
+
+        <span class="nv">$models</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query</span><span class="o">-&gt;</span><span class="na">addSelect</span><span class="p">(</span><span class="nv">$select</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">getModels</span><span class="p">();</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <p>If we actually found models we will also eager load any relationships that have been specified as needing to be eager loaded. This will solve the n + 1 query problem for the developer and also increase performance.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">if</span> <span class="p">(</span><span class="nb">count</span><span class="p">(</span><span class="nv">$models</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$models</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query</span><span class="o">-&gt;</span><span class="na">eagerLoadRelations</span><span class="p">(</span><span class="nv">$models</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">related</span><span class="o">-&gt;</span><span class="na">newCollection</span><span class="p">(</span><span class="nv">$models</span><span class="p">);</span>
+    <span class="p">}</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      <p>Set the select clause for the relation query.</p>
+<p><span class="pydoc pydoc-param"><span>param</span> <code>array</code></span> $columns</p>
+<p><span class="pydoc pydoc-return"><span>return</span> <code>\Illuminate\Database\Eloquent\Relations\BelongsToMany</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">protected</span> <span class="k">function</span> <span class="nf">getSelectColumns</span><span class="p">(</span><span class="k">array</span> <span class="nv">$columns</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$columns</span> <span class="o">==</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$columns</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">related</span><span class="o">-&gt;</span><span class="na">getTable</span><span class="p">()</span> <span class="o">.</span> <span class="s1">&#39;.*&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nb">array_merge</span><span class="p">(</span><span class="nv">$columns</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">parent</span><span class="o">-&gt;</span><span class="na">getTable</span><span class="p">()</span> <span class="o">.</span> <span class="s1">&#39;.&#39;</span> <span class="o">.</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">firstKey</span><span class="p">));</span>
+    <span class="p">}</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <p>Get a paginator for the "select" statement.</p>
+<p><span class="pydoc pydoc-param"><span>param</span> <code>int</code></span> $perPage
+<span class="pydoc pydoc-param"><span>param</span> <code>array</code></span> $columns</p>
+<p><span class="pydoc pydoc-return"><span>return</span> <code>\Illuminate\Pagination\Paginator</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">public</span> <span class="k">function</span> <span class="nf">paginate</span><span class="p">(</span><span class="nv">$perPage</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="nv">$columns</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query</span><span class="o">-&gt;</span><span class="na">addSelect</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getSelectColumns</span><span class="p">(</span><span class="nv">$columns</span><span class="p">));</span>
+
+        <span class="nv">$pager</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">query</span><span class="o">-&gt;</span><span class="na">paginate</span><span class="p">(</span><span class="nv">$perPage</span><span class="p">,</span> <span class="nv">$columns</span><span class="p">);</span>
+
+        <span class="k">return</span> <span class="nv">$pager</span><span class="p">;</span>
+    <span class="p">}</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      <p>Get the key name of the parent model.</p>
+<p><span class="pydoc pydoc-return"><span>return</span> <code>string</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">protected</span> <span class="k">function</span> <span class="nf">getQualifiedParentKeyName</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">parent</span><span class="o">-&gt;</span><span class="na">getQualifiedKeyName</span><span class="p">();</span>
+    <span class="p">}</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      <p>Get the key for comparing against the parent key in "has" query.</p>
+<p><span class="pydoc pydoc-return"><span>return</span> <code>string</code></span> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">public</span> <span class="k">function</span> <span class="nf">getHasCompareKey</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">farParent</span><span class="o">-&gt;</span><span class="na">getQualifiedKeyName</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+</pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+</div>
+</body>

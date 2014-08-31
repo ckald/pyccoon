@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>../languages/utils.py</title>
+  <link rel="stylesheet" href="../pyccoon.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'>
+      <h1 id="breadcrumbs">/ <a href="utils.py.html/../../index.html">.</a> / <a href="utils.py.html/../index.html">languages</a> / <a href="utils.py.html">utils.py</a> </h1>
+      <ul id="children"></ul>
+    </div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Helper class that includes some frequently used routines </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">Section</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Check if there is some code </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">has_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s">&quot;code_text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Check if there are some docs </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">has_docs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s">&quot;docs_text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Emulate <code>collections.defaultdict</code> behavior </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__missing__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;&#39;</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Section</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Helper class that handles a list of methods and allows to insert item before or after some specific item. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">ParsingStrategy</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Initialize from an arbitrary sequence of arguments </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Return the index of a method which name is <code>name</code> or raise an exception. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">__name__</span> <span class="o">==</span> <span class="n">name</span><span class="p">),</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">index</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Step &#39;{}&#39;&#39; not found in the strategy: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">index</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Insert a <code>method</code> before an item with a name <code>key</code> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">insert_before</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">method</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>Insert a <code>method</code> after an item with a name <code>key</code> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">insert_after</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Remove the item with a name <code>key</code> </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">))</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Helper decorator to iterate through the <code>sections</code> while altering them.</p>
+<p><span class="pydoc pydoc-param"><span>param</span> <code>start</code></span> Section index to start with.
+<span class="pydoc pydoc-param"><span>param</span> <code>increment</code></span> Index increment. Use <code>-1</code> to iterate backwards.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">iterate_sections</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">increment</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">wrapped_f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sections</span><span class="p">):</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">start</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">sections</span><span class="p">)</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">new_i</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sections</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">new_i</span> <span class="k">if</span> <span class="n">new_i</span> <span class="k">else</span> <span class="n">i</span> <span class="o">+</span> <span class="n">increment</span>
+
+            <span class="k">return</span> <span class="n">sections</span>
+
+        <span class="n">wrapped_f</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="k">return</span> <span class="n">wrapped_f</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">return</span> <span class="n">wrap</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Helper method that splits a section into parts using the <code>regex</code> matching against the section code </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">split_section_by_regex</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">section</span><span class="o">.</span><span class="n">has_code</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">section</span><span class="p">]</span>
+
+    <span class="n">sections</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">regex</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">section</span><span class="p">[</span><span class="s">&quot;code_text&quot;</span><span class="p">]):</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">section</span><span class="p">[</span><span class="s">&quot;code_text&quot;</span><span class="p">][</span><span class="n">start</span><span class="p">:</span><span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="n">code</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Section</span><span class="p">(</span><span class="n">code_text</span><span class="o">=</span><span class="n">code</span><span class="p">))</span>
+        <span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Section</span><span class="p">(</span><span class="n">docs_text</span><span class="o">=</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+
+    <span class="n">remains</span> <span class="o">=</span> <span class="n">section</span><span class="p">[</span><span class="s">&quot;code_text&quot;</span><span class="p">][</span><span class="n">start</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">remains</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+        <span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Section</span><span class="p">(</span><span class="n">code_text</span><span class="o">=</span><span class="n">remains</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">sections</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">split_code_by_pos</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">sections</span><span class="p">):</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;code_text&quot;</span><span class="p">]</span>
+    <span class="n">section_1</span> <span class="o">=</span> <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">section_1</span><span class="p">[</span><span class="s">&#39;code_text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code</span><span class="p">[:</span><span class="n">pos</span><span class="p">]</span>
+    <span class="n">section_2</span> <span class="o">=</span> <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">section_2</span><span class="p">[</span><span class="s">&#39;docs_text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="n">section_2</span><span class="p">[</span><span class="s">&#39;code_text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code</span><span class="p">[</span><span class="n">pos</span><span class="p">:]</span>
+
+    <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">section_1</span><span class="p">,</span> <span class="n">section_2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">sections</span>
+
+</pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+</div>
+</body>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>../pyccoon.py</title>
+  <link rel="stylesheet" href="pyccoon.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div id="jump_to">
+    Contents
+    <div id="jump_wrapper">
+      <div id="jump_page">
+          <a class="source source-3" href="#section-3"> Main Documentation Generation Functions </a>
+          <a class="source source-3" href="#section-15"> Preprocessing the comments </a>
+          <a class="source source-3" href="#section-21"> Highlighting the source code </a>
+          <a class="source source-3" href="#section-23"> HTML Code generation </a>
+      </div>
+    </div>
+  </div>
+  <div class='section'>
+    <div class='docs'>
+      <h1 id="breadcrumbs">/ <a href="pyccoon.py.html/../index.html">.</a> / <a href="pyccoon.py.html">pyccoon.py</a> </h1>
+      <ul id="children"></ul>
+    </div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>!/usr/bin/env python
+ -<em>- coding: utf-8 -</em>-</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p><img alt="Pyccoon" src="pyccoon.svg" /></p>
+<p>"<strong>Pyccoon</strong>" is a side-to-side documentation generating system.</p>
+<p>It descended from <a href="https://github.com/fitzgen/pyccoon">Pyccoon</a> - a Python port of <a href="http://jashkenas.github.com/docco/">Docco</a>: the original quick-and-dirty, hundred-line-long, literate-programming-style documentation generator. It produces HTML that displays your comments alongside your code. Comments are passed through <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>, while code is passed through <a href="http://pygments.org/">Pygments</a> for syntax highlighting. <a href="https://github.com/defunkt/pystache">PyStache</a> is used for page templating.</p>
+<p><strong>This website is the result of running Pyccoon against its source.</strong></p>
+<p>Pyccoon generates the documentation folder structured correspondingly to the code. To create documentation <code>docs</code> for the project in <code>src</code> folder, run the following:</p>
+<pre><code>pyccoon -s src -d docs
+</code></pre>
+<p><a href="https://github.com/ckald/pyccoon">Pyccoon</a> is released on GitHub under the MIT license.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">optparse</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pystache</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>This module contains all of our static resources.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">resources</span>
+<span class="kn">from</span> <span class="nn">.languages</span> <span class="kn">import</span> <span class="n">get_language</span><span class="p">,</span> <span class="n">Language</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">shift</span><span class="p">,</span> <span class="n">ensure_directory</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <h3><span id="main-documentation-generation-functions" href="main-documentation-generation-functions"> Main Documentation Generation Functions </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">Pyccoon</span><span class="p">:</span>
+
+    <span class="n">add_lineno</span> <span class="o">=</span> <span class="bp">True</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>The CSS styles we'd like to apply to the documentation.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">css</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">css</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>The start of each Pygments highlight block.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">highlight_start</span> <span class="o">=</span> <span class="s">&quot;&lt;div class=</span><span class="se">\&quot;</span><span class="s">highlight</span><span class="se">\&quot;</span><span class="s">&gt;&lt;pre&gt;&quot;</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>The end of each Pygments highlight block.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">highlight_end</span> <span class="o">=</span> <span class="s">&quot;&lt;/pre&gt;&lt;/div&gt;&quot;</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">opts</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">opts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Missing the required &#39;outdir&#39; keyword argument.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Missing the required &#39;sourcedir&#39; keyword argument.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">outdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sources</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dirnames</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">))</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Create the template that we will use to generate the Pyccoon HTML page.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">page_template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">html</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>For each source file passed as argument, generate the documentation.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p><span class=todo><strong>TODO</strong>: this is all wrong. First, generate a filepaths mappings dict - this way you will be able to tell which files exist and will much simplify the cross-referencing and stuff</span></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">if</span> <span class="ow">not</span> <span class="n">sources</span><span class="p">:</span>
+            <span class="n">sources</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sources</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">ensure_directory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="s">&quot;pyccoon.css&quot;</span><span class="p">),</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">css_file</span><span class="p">:</span>
+            <span class="n">css_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">css</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Proceed to generating the documentation.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">while</span> <span class="n">sources</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">sources</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">source</span><span class="p">),</span> <span class="s">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sourcefile</span><span class="p">:</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="n">sourcefile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">get_language</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;{:s} -&gt; Skipped&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
+                <span class="k">continue</span>
+
+            <span class="n">dest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ensure_directory</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">dest</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">source</span><span class="p">)):</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generate_documentation</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">))</span>
+
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;{:s} -&gt; {:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;File does not exist: {:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">))</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>Ensure there is always an index file in the output folder</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s">&#39;index.html&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                <span class="n">dest</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">),</span> <span class="s">&#39;index.html&#39;</span><span class="p">)</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">),</span> <span class="s">&#39;index.html&#39;</span><span class="p">)</span>
+
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">Language</span><span class="p">()</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generate_html</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="p">[]))</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">context</span><span class="p">:</span> <span class="n">pystache</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>Generate the documentation for a source file by reading it in, splitting it up into comment/code sections, highlighting them for the appropriate language, and merging them into an HTML template.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">generate_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">sections</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">add_lineno</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">add_lineno</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sections</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_html</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sections</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <h3><span id="preprocessing-the-comments" href="preprocessing-the-comments"> Preprocessing the comments </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>Add cross-references before having the text processed by markdown.  It's possible to reference another file, like this : <code>[main.py](../../pyccoon_docs/main.py.html)</code> which renders <a href="../../pyccoon_docs/main.py.html">main.py</a>. You can also reference a specific section of another file, like this: <code>[main.py#highlighting-the-source-code](../../../pyccoon_docs/main.py.html#highlighting-the-source-code)</code> which renders as <a href="../../../pyccoon_docs/main.py.html#highlighting-the-source-code">main.py#highlighting-the-source-code</a>. Sections have to be manually declared; they are written on a single line, and surrounded by equals signs: <code>=== like this ===</code></p>
+<p><span class=todo><strong>TODO</strong>: currently broken</span></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment</span><span class="p">,</span> <span class="n">section_nr</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <p>Return URL-friendly section name representation </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">slugify</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">))</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">replace_crossref</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&quot;|&quot;</span><span class="p">)</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
+                <span class="k">return</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <p>Check if the match contains an anchor</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="k">if</span> <span class="s">&#39;#&#39;</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
+                <span class="n">link</span><span class="p">,</span> <span class="n">anchor</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;#&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">link</span>
+                    <span class="k">if</span> <span class="n">anchor</span><span class="p">:</span>
+                        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&#39;#&#39;</span> <span class="o">+</span> <span class="n">anchor</span>
+                <span class="k">return</span> <span class="s">&quot;[{:s}]({:s}#{:s})&quot;</span>\
+                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span>
+                            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">(</span><span class="n">link</span><span class="p">),</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">(</span><span class="n">source</span><span class="p">)),</span>
+                            <span class="n">anchor</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+                <span class="n">dest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">dest</span><span class="p">:</span>
+                    <span class="k">return</span>
+                <span class="k">return</span> <span class="s">&quot;[{:s}]({:s})&quot;</span>\
+                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">source</span><span class="p">)))</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">replace_section_name</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">{lvl} &lt;span id=&quot;{id}&quot; href=&quot;{id}&quot;&gt;{name}&lt;/span&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="p">{</span>
+                <span class="s">&quot;lvl&quot;</span><span class="p">:</span>  <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;#&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+                <span class="s">&quot;id&quot;</span><span class="p">:</span>   <span class="n">slugify</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span>
+                <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="p">})</span>
+
+        <span class="n">comment</span> <span class="o">=</span> <span class="n">comment</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span> <span class="s">&#39;&amp;lt;&#39;</span><span class="p">)</span>
+        <span class="n">comment</span> <span class="o">=</span> <span class="n">comment</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s">&#39;&amp;gt;&#39;</span><span class="p">)</span>
+
+        <span class="n">comment</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;^\s*#?\s*([=]+)([^=</span><span class="se">\n</span><span class="s">]+)([=]+)&#39;</span><span class="p">,</span> <span class="n">replace_section_name</span><span class="p">,</span> <span class="n">comment</span><span class="p">,</span>
+                         <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+        <span class="n">comment</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;\[\[([^\|]+\|)?(.+?)\]\]&#39;</span><span class="p">,</span> <span class="n">replace_crossref</span><span class="p">,</span> <span class="n">comment</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">comment</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <h3><span id="highlighting-the-source-code" href="highlighting-the-source-code"> Highlighting the source code </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      <p>Highlights a single chunk of code using the <strong>Pygments</strong> module, and runs the text of its corresponding comment through <strong>Markdown</strong>.</p>
+<p>We process the entire file in a single call to Pygments by inserting little marker comments between each section and then splitting the result string wherever our markers occur.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">highlight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">sections</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span>
+            <span class="n">language</span><span class="o">.</span><span class="n">divider_text</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">section</span><span class="p">[</span><span class="s">&quot;code_text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">sections</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">highlight_start</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">highlight_end</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">fragments</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">language</span><span class="o">.</span><span class="n">divider_html</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">section</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sections</span><span class="p">):</span>
+            <span class="n">section</span><span class="p">[</span><span class="s">&quot;code_html&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlight_start</span> <span class="o">+</span> <span class="n">shift</span><span class="p">(</span><span class="n">fragments</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlight_end</span>
+            <span class="n">docs_text</span> <span class="o">=</span> <span class="n">section</span><span class="p">[</span><span class="s">&quot;docs_text&quot;</span><span class="p">]</span>
+            <span class="n">section</span><span class="p">[</span><span class="s">&quot;docs_html&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">docs_text</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">source</span><span class="p">))</span>
+            <span class="p">)</span>
+            <span class="n">section</span><span class="p">[</span><span class="s">&quot;num&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      <h3><span id="html-code-generation" href="html-code-generation"> HTML Code generation </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-24'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-24'>#</a>
+      </div>
+      <p>Based on the source file path, generate linked breadcrumbs of the documentation.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">generate_breadcrumbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+        <span class="n">breadcrumbs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">crumbpath</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="n">dest_chunks</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">source_chunks</span> <span class="o">=</span> <span class="n">title</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">dest_chunks</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="n">source_chunks</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">crumb</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dest_chunks</span><span class="p">):</span>
+
+            <span class="n">crumbpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">crumbpath</span><span class="p">,</span> <span class="s">&quot;..&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">crumbpath</span> <span class="k">else</span> <span class="n">crumb</span>
+
+            <span class="n">breadcrumbs</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">{</span>
+                <span class="s">&quot;title&quot;</span><span class="p">:</span> <span class="n">source_chunks</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="s">&quot;path&quot;</span><span class="p">:</span> <span class="n">crumbpath</span> <span class="k">if</span> <span class="n">crumbpath</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;.html&#39;</span><span class="p">)</span>
+                <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">crumbpath</span><span class="p">,</span> <span class="s">&#39;index.html&#39;</span><span class="p">)</span>
+            <span class="p">})</span>
+        <span class="n">breadcrumbs</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s">&quot;title&quot;</span><span class="p">:</span> <span class="s">&quot;.&quot;</span><span class="p">,</span>
+            <span class="s">&quot;path&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">crumbpath</span><span class="p">,</span> <span class="s">&quot;../index.html&quot;</span><span class="p">)</span>
+        <span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">breadcrumbs</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-25'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-25'>#</a>
+      </div>
+      <p>For <code>index.html</code> files, generate a menu of folder contents.</p>
+<p><span class=todo><strong>TODO</strong>: remove language dependency</span></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">generate_navigation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="n">index_names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;__init__.py&#39;</span><span class="p">,</span> <span class="s">&#39;index.html&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">index_names</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">source</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+            <span class="n">isdir</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">filepath</span> <span class="o">=</span> <span class="bp">None</span>
+
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">filename</span><span class="p">)):</span>
+                <span class="n">isdir</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;index.html&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">index_names</span><span class="p">:</span>
+                    <span class="n">filepath</span> <span class="o">=</span> <span class="s">&quot;index.html&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">filepath</span> <span class="o">=</span> <span class="n">filename</span> <span class="o">+</span> <span class="s">&quot;.html&quot;</span>
+
+            <span class="k">if</span> <span class="n">filepath</span><span class="p">:</span>
+                <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s">&quot;title&quot;</span><span class="p">:</span> <span class="n">filename</span><span class="p">,</span>
+                    <span class="s">&quot;path&quot;</span><span class="p">:</span> <span class="n">filepath</span><span class="p">,</span>
+                    <span class="s">&quot;isdir&quot;</span><span class="p">:</span> <span class="n">isdir</span>
+                <span class="p">})</span>
+
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">children</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="ow">not</span> <span class="n">x</span><span class="p">[</span><span class="s">&#39;isdir&#39;</span><span class="p">])</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-26'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-26'>#</a>
+      </div>
+      <p>Gather the names of the documentation sections for "jump-to"-like navigation on the page.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">generate_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sections</span><span class="p">):</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">sections</span><span class="p">:</span>
+            <span class="n">section</span><span class="p">[</span><span class="s">&quot;code_html&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r&quot;\{\{&quot;</span><span class="p">,</span> <span class="s">r&quot;{{&quot;</span><span class="p">,</span> <span class="n">section</span><span class="p">[</span><span class="s">&quot;code_html&quot;</span><span class="p">])</span>
+
+            <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;&lt;h(\d)&gt;(.+)&lt;/h(\d)&gt;&#39;</span><span class="p">,</span> <span class="n">section</span><span class="p">[</span><span class="s">&quot;docs_html&quot;</span><span class="p">],</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                <span class="n">contents</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s">&quot;url&quot;</span><span class="p">:</span> <span class="s">&quot;#section-{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">section</span><span class="p">[</span><span class="s">&quot;num&quot;</span><span class="p">]),</span>
+                    <span class="s">&quot;basename&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;&lt;[^&lt;]+?&gt;&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span>
+                    <span class="s">&quot;level&quot;</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="p">})</span>
+        <span class="k">return</span> <span class="n">contents</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-27'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-27'>#</a>
+      </div>
+      <p>Once all of the code is finished highlighting, we can generate the HTML file and write out the documentation. Pass the completed sections into the template found in <code>resources/pyccoon.html</code>.</p>
+<p>Pystache will attempt to recursively render context variables, so we must replace any occurences of <code>{{</code>, which is valid in some languages, with a "unique enough" identifier before rendering, and then post-process the rendered template and change the identifier back to <code>{{</code>.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">generate_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">sections</span><span class="p">):</span>
+        <span class="n">dest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">source</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">)</span>
+        <span class="n">csspath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="s">&quot;pyccoon.css&quot;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">dest</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">breadcrumbs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_breadcrumbs</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_navigation</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_contents</span><span class="p">(</span><span class="n">sections</span><span class="p">)</span>
+
+        <span class="n">rendered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_template</span><span class="p">({</span>
+            <span class="s">&quot;title&quot;</span><span class="p">:</span>        <span class="n">title</span><span class="p">,</span>
+            <span class="s">&quot;breadcrumbs&quot;</span><span class="p">:</span>  <span class="n">breadcrumbs</span><span class="p">,</span>
+            <span class="s">&quot;children&quot;</span><span class="p">:</span>     <span class="n">children</span><span class="p">,</span>
+            <span class="s">&quot;stylesheet&quot;</span><span class="p">:</span>   <span class="n">csspath</span><span class="p">,</span>
+            <span class="s">&quot;sections&quot;</span><span class="p">:</span>     <span class="n">sections</span><span class="p">,</span>
+            <span class="s">&quot;source&quot;</span><span class="p">:</span>       <span class="n">source</span><span class="p">,</span>
+            <span class="s">&quot;contents&quot;</span><span class="p">:</span>     <span class="n">contents</span><span class="p">,</span>
+            <span class="s">&quot;contents?&quot;</span><span class="p">:</span>    <span class="nb">bool</span><span class="p">(</span><span class="n">contents</span><span class="p">),</span>
+            <span class="s">&quot;destination&quot;</span><span class="p">:</span>  <span class="n">dest</span>
+        <span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r&quot;{{&quot;</span><span class="p">,</span> <span class="s">&quot;{{&quot;</span><span class="p">,</span> <span class="n">rendered</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-28'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-28'>#</a>
+      </div>
+      <p>Compute the destination HTML path for an input source file path. If the source is <code>lib/example.py</code>, the HTML will be at <code>docs/lib/example.html</code></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">destination</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+        <span class="n">dirname</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="o">.</span><span class="n">transform_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">name</span><span class="p">)))</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-29'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-29'>#</a>
+      </div>
+      <p>Hook spot for the console script.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">optparse</span><span class="o">.</span><span class="n">OptionParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;-s&#39;</span><span class="p">,</span> <span class="s">&#39;--source&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">,</span>
+                      <span class="n">dest</span><span class="o">=</span><span class="s">&#39;sourcedir&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;.&#39;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&#39;The source files directory.&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;-d&#39;</span><span class="p">,</span> <span class="s">&#39;--directory&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">,</span>
+                      <span class="n">dest</span><span class="o">=</span><span class="s">&#39;outdir&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;docs&#39;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&#39;The output directory that the rendered files should go to.&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;-w&#39;</span><span class="p">,</span> <span class="s">&#39;--watch&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&#39;Watch original files and re-generate documentation on changes&#39;</span><span class="p">)</span>
+
+    <span class="n">opts</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">opts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="nb">vars</span><span class="p">(</span><span class="n">opts</span><span class="p">))</span>
+
+    <span class="n">pyccoon</span> <span class="o">=</span> <span class="n">Pyccoon</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>
+    <span class="n">pyccoon</span><span class="o">.</span><span class="n">process</span><span class="p">()</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-30'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-30'>#</a>
+      </div>
+      <p>If the -w / --watch option was present, monitor the source directories for changes and re-generate documentation for source files whenever they are modified.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">if</span> <span class="n">pyccoon</span><span class="o">.</span><span class="n">watch</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">watchdog.events</span>
+            <span class="kn">import</span> <span class="nn">watchdog.observers</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s">&#39;The -w/--watch option requires the watchdog package.&#39;</span><span class="p">)</span>
+
+        <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">monitor</span>
+        <span class="n">monitor</span><span class="p">(</span><span class="n">pyccoon</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-31'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-31'>#</a>
+      </div>
+      <p>Run the script.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+</pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+</div>
+</body>

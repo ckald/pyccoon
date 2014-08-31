@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>../utils.py</title>
+  <link rel="stylesheet" href="pyccoon.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'>
+      <h1 id="breadcrumbs">/ <a href="utils.py.html/../index.html">.</a> / <a href="utils.py.html">utils.py</a> </h1>
+      <ul id="children"></ul>
+    </div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Descriptor (non-data) for building an attribute on-demand on first use.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">cached_property</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>&lt;factory&gt; is called such: factory(instance) to build the attribute.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factory</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_attr_name</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_factory</span> <span class="o">=</span> <span class="n">factory</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Build the attribute.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_factory</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>Cache the value; hide ourselves.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="nb">setattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attr_name</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">attr</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Shift items off the front of the <code>list</code> until it is empty, then return
+<code>default</code>.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">default</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Ensure that the destination directory exists.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">ensure_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Monitor each source file and re-generate documentation on change.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">monitor</span><span class="p">(</span><span class="n">pyccoon</span><span class="p">):</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>The watchdog modules are imported in <code>main()</code> but we need to re-import here to bring them into the local namespace.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="kn">import</span> <span class="nn">watchdog.events</span>
+    <span class="kn">import</span> <span class="nn">watchdog.observers</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>A handler for recompiling files which triggered watchdog events</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">RegenerateHandler</span><span class="p">(</span><span class="n">watchdog</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">FileSystemEventHandler</span><span class="p">):</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Regenerate documentation for a file which triggered an event</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">on_any_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Re-generate documentation from a source file if it was listed on the command line. Watchdog monitors whole directories, so other files may cause notifications as well.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="n">pyccoon</span><span class="o">.</span><span class="n">process</span><span class="p">()</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>Set up an observer which monitors all directories for files given on the command line and notifies the handler defined above.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">event_handler</span> <span class="o">=</span> <span class="n">RegenerateHandler</span><span class="p">()</span>
+    <span class="n">observer</span> <span class="o">=</span> <span class="n">watchdog</span><span class="o">.</span><span class="n">observers</span><span class="o">.</span><span class="n">Observer</span><span class="p">()</span>
+    <span class="n">observer</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">event_handler</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">pyccoon</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>Run the file change monitoring loop until the user hits Ctrl-C.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">observer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="n">observer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="n">observer</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+</pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+</div>
+</body>

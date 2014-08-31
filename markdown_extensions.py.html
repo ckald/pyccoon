@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>../markdown_extensions.py</title>
+  <link rel="stylesheet" href="pyccoon.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'>
+      <h1 id="breadcrumbs">/ <a href="markdown_extensions.py.html/../index.html">.</a> / <a href="markdown_extensions.py.html">markdown_extensions.py</a> </h1>
+      <ul id="children"></ul>
+    </div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">markdown.preprocessors</span> <span class="kn">import</span> <span class="n">Preprocessor</span>
+<span class="kn">from</span> <span class="nn">markdown.postprocessors</span> <span class="kn">import</span> <span class="n">Postprocessor</span>
+<span class="kn">from</span> <span class="nn">markdown.extensions</span> <span class="kn">import</span> <span class="n">Extension</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">Todo</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>Markdown preprocessor that matches all TODO and FIXME strings occurring at the beginning of the line or after the <code>#</code> symbol and highlights them in the documentation.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Prep</span><span class="p">(</span><span class="n">Preprocessor</span><span class="p">):</span>
+        <span class="n">matched_strings</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;TODO&quot;</span><span class="p">,</span> <span class="s">&quot;FIXME&quot;</span><span class="p">,</span> <span class="s">&quot;WARNING&quot;</span><span class="p">,</span> <span class="s">&quot;CAUTION&quot;</span><span class="p">]</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;(#|^)\s*(&quot;</span> <span class="o">+</span> <span class="s">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">matched_strings</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;:?)(.*)&quot;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Intended markup for TODO strings. The type of the string is used as a class.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s">&quot;{:s}&lt;span class={:s}&gt;&lt;strong&gt;{:s}&lt;/strong&gt;{:s}&lt;/span&gt;&quot;</span>\
+                <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>String matching is case insensitive</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">extendMarkdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">md_globals</span><span class="p">):</span>
+        <span class="n">md</span><span class="o">.</span><span class="n">preprocessors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;todo&#39;</span><span class="p">,</span> <span class="n">Todo</span><span class="o">.</span><span class="n">Prep</span><span class="p">(</span><span class="n">md</span><span class="p">),</span> <span class="s">&#39;_end&#39;</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">LineConnector</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="s">r&quot;(\S)\s*</span><span class="se">\\</span><span class="s">\s*\n\s*(\S)&quot;</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="s">r&quot;\1 \2&quot;</span><span class="p">):</span>
+
+        <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+        <span class="k">class</span> <span class="nc">Prep</span><span class="p">(</span><span class="n">Preprocessor</span><span class="p">):</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Method ensures that there is exactly one space between 2 joined strings. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">regex</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">Prep</span> <span class="o">=</span> <span class="n">Prep</span><span class="p">()</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">LineConnector</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">extendMarkdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">md_globals</span><span class="p">):</span>
+        <span class="n">md</span><span class="o">.</span><span class="n">preprocessors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;line-connector&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Prep</span><span class="p">,</span> <span class="s">&#39;_end&#39;</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">SaneDefList</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Markdown preprocessor that prepares natural-style definition lists for native Markdown extension <code>def_list</code>. It allows to write more compact and readable class field definitions.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Prep</span><span class="p">(</span><span class="n">Preprocessor</span><span class="p">):</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>Searches for a line starting with a literal followed by a colon and multiple spaces:</p>
+<pre><code>some arbitrary parameter name
+:   and its definition separated by `:\s\s+`
+
+`parameter name` might contain everything except a [colon](//en.wikipedia.org/wiki/Colon_(punctuation)) and be multiline
+:   it still works
+</code></pre>
+<p>And turns it into:</p>
+<dl>
+<dt>some arbitrary parameter name</dt>
+<dd>and its definition separated by <code>:\s\s+</code></dd>
+<dt><code>parameter name</code> might contain everything except a <a href="//en.wikipedia.org/wiki/Colon_(punctuation)">colon</a> and be multiline</dt>
+<dd>it still works</dd>
+</dl>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+            <span class="n">new_lines</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+                <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r&#39;^(\s*)([^:]+):\s{2,}(.+)&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                    <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+                    <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;:   &#39;</span> <span class="o">+</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+                    <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">new_lines</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">extendMarkdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">md_globals</span><span class="p">):</span>
+        <span class="n">md</span><span class="o">.</span><span class="n">preprocessors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;sane-def-list&#39;</span><span class="p">,</span> <span class="n">SaneDefList</span><span class="o">.</span><span class="n">Prep</span><span class="p">(</span><span class="n">md</span><span class="p">),</span> <span class="s">&#39;_end&#39;</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">Pydoc</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p>Preprocessor used to parse PyDoc-style comments like <code>:param name:</code> and format them.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Prep</span><span class="p">(</span><span class="n">Postprocessor</span><span class="p">):</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p><span class="pydoc pydoc-param"><span>param</span> <code>text</code></span> Markdown-formatted text
+<span class="pydoc pydoc-return"><span>return</span></span> Text with parsed PyDoc comments</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+            <span class="n">new_lines</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <p>Regex that matches <code>@param name</code></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
+                    <span class="s">r&#39;^(\s?)@(\w+)\s+([&quot;</span><span class="se">\&#39;</span><span class="s">\`].+[&quot;</span><span class="se">\&#39;</span><span class="s">\`]|\S+)\s*&#39;</span><span class="p">,</span>
+                    <span class="s">r&#39;\1&lt;span class=&quot;pydoc pydoc-\2&quot;&gt;&lt;span&gt;\2&lt;/span&gt; &lt;code&gt;\3&lt;/code&gt;&lt;/span&gt; &#39;</span><span class="p">,</span>
+                    <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      <p>Regex that matches <code>@var</code></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
+                    <span class="s">r&#39;^(\s?)@(\w+)&#39;</span><span class="p">,</span>
+                    <span class="s">r&#39;\1&lt;span class=&quot;pydoc pydoc-\2&quot;&gt;&lt;span&gt;\2&lt;/span&gt;&lt;/span&gt;&#39;</span><span class="p">,</span>
+                    <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <p>Regex that matches <code>:param name:</code></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
+                    <span class="s">r&#39;^(\s?):([^: ]+) +([^:]+):&#39;</span><span class="p">,</span>
+                    <span class="s">r&#39;\1&lt;span class=&quot;pydoc pydoc-\2&quot;&gt;&lt;span&gt;\2&lt;/span&gt; &lt;code&gt;\3&lt;/code&gt;&lt;/span&gt;&#39;</span><span class="p">,</span>
+                    <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      <p>Regex that matches single-word comments: <code>:return:</code></p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>                <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
+                    <span class="s">r&#39;^(\s?):([^: ]+):&#39;</span><span class="p">,</span>
+                    <span class="s">r&#39;\1&lt;span class=&quot;pydoc pydoc-\2&quot;&gt;&lt;span&gt;\2&lt;/span&gt;&lt;/span&gt;&#39;</span><span class="p">,</span>
+                    <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+
+                <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>            <span class="k">return</span> <span class="n">new_lines</span></pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">extendMarkdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">md_globals</span><span class="p">):</span>
+        <span class="n">md</span><span class="o">.</span><span class="n">preprocessors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;pydoc&#39;</span><span class="p">,</span> <span class="n">Pydoc</span><span class="o">.</span><span class="n">Prep</span><span class="p">(</span><span class="n">md</span><span class="p">),</span> <span class="s">&#39;_end&#39;</span><span class="p">)</span>
+
+</pre></div>
+    </div>
+    <div class='clearall'></div>
+  </div>
+</div>
+</body>
