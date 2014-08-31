@@ -14,14 +14,14 @@ class Todo(Extension):
         """
 
         matched_strings = ["TODO", "FIXME", "WARNING", "CAUTION"]
-        regex = re.compile("(#|^)\s*((" + "|".join(matched_strings) + ")(:?.+)?)")
+        regex = re.compile("(#|^)\s*(" + "|".join(matched_strings) + ":?)(.*)", flags=re.I)
 
         def template(self, match):
             """
             Intended markup for TODO strings. The type of the string is used as a class.
             """
-            return "{:s}<span class={:s}>{:s}</span>".format(match.group(1),
-                                                             match.group(3).lower(), match.group(2))
+            return "{:s}<span class={:s}><strong>{:s}</strong>{:s}</span>"\
+                .format(match.group(1), match.group(2).lower(), match.group(2), match.group(3))
 
         def run(self, lines):
             """
@@ -39,31 +39,18 @@ class LineConnector(Extension):
 
         regex = re.compile(regex, flags=re.M)
 
-        class Post(Postprocessor):
+        class Prep(Preprocessor):
 
             def run(self, lines):
                 """ Method ensures that there is exactly one space between 2 joined strings. """
                 return regex.sub(sub, "\n".join(lines)).split("\n")
-                # new_lines = []
-                # append = False
-                # for line in lines:
-                #     if append and (not ignore_empty or line.strip()):
-                #         new_lines[-1] = regex.sub(sub, new_lines[-1]) + ' ' + line.lstrip()
-                #         append = False
-                #     else:
-                #         new_lines.append(line)
 
-                #     if regex.search(line):
-                #         append = True
-
-                # return new_lines
-
-        self.post = Post()
+        self.Prep = Prep()
 
         super(LineConnector, self).__init__()
 
     def extendMarkdown(self, md, md_globals):
-        md.preprocessors.add('line-connector', self.post, '_end')
+        md.preprocessors.add('line-connector', self.Prep, '_end')
 
 
 class SaneDefList(Extension):
