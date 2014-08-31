@@ -111,22 +111,22 @@ class Pydoc(Extension):
             for text in lines:
                 # Regex that matches `@param name`
                 text = re.sub(
-                    r'^(\s*)@(\w+)\s+(["\'\`].+["\'\`]|\S+)\s*',
+                    r'^(\s?)@(\w+)\s+(["\'\`].+["\'\`]|\S+)\s*',
                     r'\1<span class="pydoc pydoc-\2"><span>\2</span> <code>\3</code></span> ',
                     text, re.M)
                 # Regex that matches `@var`
                 text = re.sub(
-                    r'^(\s*)@(\w+)',
+                    r'^(\s?)@(\w+)',
                     r'\1<span class="pydoc pydoc-\2"><span>\2</span></span>',
                     text, re.M)
                 # Regex that matches `:param name:`
                 text = re.sub(
-                    r'^(\s*):([^: ]+) +([^:]+):',
+                    r'^(\s?):([^: ]+) +([^:]+):',
                     r'\1<span class="pydoc pydoc-\2"><span>\2</span> <code>\3</code></span>',
                     text, re.M)
                 # Regex that matches single-word comments: `:return:`
                 text = re.sub(
-                    r'^(\s*):([^: ]+):',
+                    r'^(\s?):([^: ]+):',
                     r'\1<span class="pydoc pydoc-\2"><span>\2</span></span>',
                     text, re.M)
 
