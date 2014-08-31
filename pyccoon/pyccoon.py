@@ -137,6 +137,8 @@ class Pyccoon:
         [[main.py#highlighting-the-source-code]]. Sections have to be manually\
         declared; they are written on a single line, and surrounded by equals signs:\
         `=== like this ===`
+
+        TODO: currently broken
         """
 
         def slugify(name):
@@ -156,12 +158,13 @@ class Pyccoon:
             if '#' in path:
                 link, anchor = path.split('#')
                 if not name:
-                    name = path
+                    name = link
                     if anchor:
                         name = name + '#' + anchor
                 return "[{:s}]({:s}#{:s})"\
                     .format(name,
-                            os.path.relpath(self.destination(link), os.path.dirname(source)),
+                            os.path.relpath(self.destination(link),
+                                            self.destination(source)),
                             anchor)
 
             else:

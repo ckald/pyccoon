@@ -14,9 +14,14 @@ from .utils import Section, ParsingStrategy, iterate_sections,\
     split_section_by_regex, split_code_by_pos
 
 
-# == Pyccoon Language definition ==
-
 class Language(object):
+    """
+    == Pyccoon Language definition ==
+
+    This class governs all source file parsing routines. Due to differences in programming \
+    languages, an extensible parsing `strategy` is required \
+    (see [[pyccoon/languages/utils.py#ParsingStrategy]])
+    """
 
     scope_keywords = []
     filename_substitutes = {}
@@ -156,7 +161,11 @@ class Language(object):
 
 
 class InlineCommentLanguage(Language):
-    """ Language mixin for inline comments """
+    """
+    == Inline commenting mixins ==
+
+    Language mixin for separate inline comments and whole stacks of them.
+    """
 
     inline_delimiter = "#"
 
@@ -194,7 +203,13 @@ class InlineCommentLanguage(Language):
 
 
 class MultilineCommentLanguage(Language):
-    """ Language mixin for multiline comments """
+    """
+    == Multiline commenting mixins ==
+
+    Language mixin for multiline comments. Some languages also have another syntax entity\
+    called "docblocks" - they probably should be treated separately, although they are usually\
+    captured along with multiline comments.
+    """
 
     multistart = '"""'
     multiend = '"""'
@@ -221,6 +236,21 @@ class MultilineCommentLanguage(Language):
 
 
 class IndentBasedLanguage(Language):
+
+    """
+    == Mixins for indent-based languages (Python, Ruby, etc.) ==
+
+    In indent-based languages it is quite easy to find a proper place to split the code section:\
+    basically, whenever an indent of the line becomes smaller, than the indent of the first line \
+    of the section - split up.
+
+    TODO: Consider using some preprocessor instead of literal matching of the indentation. For \
+        example, https://github.com/sirthias/parboiled/wiki/Indentation-Based-Grammars, \
+        https://github.com/Cirru/cirru-parser
+
+    TODO: this docs block is parsed incorrectly - the problem is somewhere in the newline after\
+        the class definition (which is now in code style convention for Python 3)
+    """
 
     @iterate_sections(start=0)
     def split_by_scopes(self, sections, i):
@@ -251,20 +281,14 @@ class IndentBasedLanguage(Language):
         return base_strategy
 
 
+# == Mixins for brace-based languages (C/C++, JavaScript, PHP, etc.) ==
+
 class BraceBasedLanguage(Language):
 
     @iterate_sections(start=0)
     def split_by_scopes(self, sections, i):
-        # indent = re.match(r"^(\s*)", sections[i]["code_text"].strip("\n")).group(1)
-
-        # regex = re.compile(r"^(\s{{0,{}}}\S)".format(len(indent) - 1), flags=re.M)
-        # match = regex.search(sections[i]["code_text"], pos=len(indent) + 1)
-
-        # if match:
-        #     split_code_by_pos(i, match.start(), sections)
-        #     sections[i]['level'] = len(indent)
-        #     sections[i+1]['level'] = len(match.group(1)[:-1])
-        #     sections[i+1]['scope'] = ''
+        """ Split the code sections by `scope_keywords` of the language
+            TODO: consider splitting also by braces interiors"""
 
         regex = re.compile(r"^({})".format("|".join(self.scope_keywords)), flags=re.M)
         match = regex.search(sections[i]["code_text"])
@@ -283,33 +307,24 @@ class BraceBasedLanguage(Language):
         return base_strategy
 
 
-# class CoffeScript(InlineCommentLanguage, MultilineCommentLanguage):
-#     extensions = [".coffee"]
-#     name = "Coffee-Script"
-#     inline_delimiter = "#"
-#     multistart = "###"
-#     multiend = "###"
-
-
-# class Perl(InlineCommentLanguage):
-#     extensions = [".pl"]
-#     inline_delimiter = "#"
-
-
-# class SQL(InlineCommentLanguage):
-#     extensions = [".sql"]
-#     inline_delimiter = "--"
-
+# == Specific languages definitions ==
 
 class C(BraceBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
     """
-    === C/C++ language syntax schema ===
+    === C/C++ ===
 
-    Styling of the C/C++ code is largely historical and oriented on reading long hopeless codes \
+    Styling of the C/C++ code is largely historical and oriented on reading hopelessly long codes \
     on the old terminal screens.
 
-    inline comment:   SHORT_DATETIME_FORMAT
-    outline:  shishi
+    TODO: detect whole style docs blocks, for example, boxes:
+
+        ////////////////////////////
+        ////// Nice comment! ///////
+        ////////////////////////////
+
+        /***************************
+        **** We love ASCII-art! ****
+        ***************************/
     """
     extensions = [".c", ".cpp", ".h", ".cc"]
     inline_delimiter = "//"
@@ -342,6 +357,17 @@ class C(BraceBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
 
 
 class JavaScript(C):
+    """
+    === JavaScript ===
+    JavaScript is largely identical to C/C++, although it has far less scope keywords and far more\
+    flexibility in defining functions and objects.
+
+    TODO: test function-defining scopes
+
+        function name(args) { ... }
+        name = function(args) { ... }
+    """
+
     extensions = [".js"]
 
     scope_keywords = [r"\s*(class)", r"^.*(function)[ \t]*\("]
@@ -357,11 +383,16 @@ class PHP(C):
 
 
 class Python(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguage):
+    """
+    === Python ===
+    Obviously, Python language parsing is a best-developed part of Pyccoon.
+    """
     extensions = [".py"]
     inline_delimiter = "#"
     multistart = '"""'
     multiend = '"""'
 
+    # `__init__.py` files can perfectly serve as modules index files.
     filename_substitutes = {
         "__init__.py": "index.html"
     }
@@ -375,6 +406,13 @@ class Python(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguag
 
     @iterate_sections()
     def python_absorb(self, sections, i):
+        """
+        Python decorators are the tricky part of proper parsing of the source file into \
+        sections of docs and code.
+
+        Whenever a decorator section occurs, it should be merged not into the previous sections,
+        but into the next.
+        """
         if '@' in sections[i-1]['scope']:
             sections[i]['code_text'] = sections[i-1]['code_text'].strip("\n") \
                 + '\n' + sections[i]['code_text'].strip("\n")
@@ -383,12 +421,34 @@ class Python(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguag
 
 
 class Ruby(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
+    """
+    === Ruby ===
+    Mostly identical to Python.
+    """
     extensions = [".rb"]
     inline_delimiter = "#"
     multistart = "=begin"
     multiend = "=end"
 
     scope_keywords = [r"^\s*(module) ", r"^\s*(class) ", r"^\s*(def) "]
+
+
+# class CoffeScript(InlineCommentLanguage, MultilineCommentLanguage):
+#     extensions = [".coffee"]
+#     name = "Coffee-Script"
+#     inline_delimiter = "#"
+#     multistart = "###"
+#     multiend = "###"
+
+
+# class Perl(InlineCommentLanguage):
+#     extensions = [".pl"]
+#     inline_delimiter = "#"
+
+
+# class SQL(InlineCommentLanguage):
+#     extensions = [".sql"]
+#     inline_delimiter = "--"
 
 
 # class Scheme(InlineCommentLanguage, MultilineCommentLanguage):
