@@ -4,4 +4,6 @@
 
 Fork of the http://fitzgen.github.io/pycco/, grandfork of the http://jashkenas.github.com/docco/ . And an object-oriented one.
 
+[Example of work](https://www.dropbox.com/s/c4ea8ra4f35cdrp/docpage.png?dl=1)
+
 Raccoon designed by <a href="http://www.thenounproject.com/cnpresler">Christy Presler</a> from the <a href="http://www.thenounproject.com">Noun Project</a>
