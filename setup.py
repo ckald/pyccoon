@@ -12,12 +12,7 @@ readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 
-requirements = [
-    "wheel==0.23.0",
-    "pystache==0.6",
-    "markdown==2.4.1",
-    "Pygments==1.6"
-]
+requirements = open("requirements.txt").read().split("\n")
 
 test_requirements = [
     # TODO: put package test requirements here
@@ -51,5 +46,10 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
     test_suite='tests',
-    tests_require=test_requirements
+    tests_require=test_requirements,
+
+    entry_points="""
+    [console_scripts]
+    pyccoon = pyccoon.pyccoon:main
+    """
 )
