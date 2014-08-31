@@ -2,22 +2,27 @@
 # -*- coding: utf-8 -*-
 
 """
-"**Pyccoon**" is a Python port of [Docco](http://jashkenas.github.com/docco/):\
+![Pyccoon](pyccoon.svg)
+
+"**Pyccoon**" is a side-to-side documentation generating system.
+
+It descended from [Pyccoon](https://github.com/fitzgen/pyccoon) - a Python port of\
+[Docco](http://jashkenas.github.com/docco/):\
 the original quick-and-dirty, hundred-line-long, literate-programming-style\
 documentation generator. It produces HTML that displays your comments\
 alongside your code. Comments are passed through \
-[Markdown](http://daringfireball.net/projects/markdown/syntax) and\
-[SmartyPants](http://daringfireball.net/projects/smartypants), while code is\
-passed through [Pygments](http://pygments.org/) for syntax highlighting.
-This page is the result of running Pyccoon against its own source file.
+[Markdown](http://daringfireball.net/projects/markdown/syntax), while code is\
+passed through [Pygments](http://pygments.org/) for syntax highlighting. \
+[PyStache](https://github.com/defunkt/pystache) is used for page templating.
+
+**This website is the result of running Pyccoon against its source.**
 
 Pyccoon generates the documentation folder structured correspondingly to the code. To create \
 documentation `docs` for the project in `src` folder, run the following:
 
-    $ python src/utils/pyccoon.py -s src -d docs
+    pyccoon -s src -d docs
 
-The [original source for Pyccoon](https://github.com/fitzgen/pyccoon) is available on GitHub,\
-and released under the MIT license.
+[Pyccoon](https://github.com/ckald/pyccoon) is released on GitHub under the MIT license.
 """
 
 import optparse
