@@ -23,6 +23,7 @@ class Language(object):
     (see [[pyccoon/languages/utils.py#ParsingStrategy]])
     """
 
+    extensions = []
     scope_keywords = []
     filename_substitutes = {}
     markdown_extensions = [
@@ -67,16 +68,14 @@ class Language(object):
 
         for extension in self.extensions:
             if filename.endswith(extension):
-                return filename[:-len(extension)] + ".html"
+                return filename + ".html"
 
         return filename
 
     def strategy(self):
         """ Language parsing strategy - i.e., a list of methods to be applied to the code \
             to derive a properly formatter set of docs-code sections """
-        return ParsingStrategy(self.merge_docs,
-                               self.set_sections_levels,
-                               self.strip_docs_indentation,
+        return ParsingStrategy(self.set_sections_levels, self.strip_docs_indentation,
                                self.set_sections_levels, self.merge_up,
                                self.set_sections_levels, self.merge_down,
                                self.set_sections_levels, self.absorb)
@@ -114,14 +113,6 @@ class Language(object):
                                           sections[i]["docs_text"], flags=re.M)
 
     @iterate_sections()
-    def merge_docs(self, sections, i):
-        """ Merge subsequent docs sections while preserving line endings """
-        if not sections[i-1].has_code() and sections[i-1].has_docs() and sections[i].has_docs():
-            sections[i-1]['docs_text'] += "\n" + sections[i]['docs_text']
-            sections[i-1]['code_text'] += sections[i]['code_text']
-            sections[i:i+1] = []
-
-    @iterate_sections()
     def merge_up(self, sections, i):
         """ Suck up the documentation added right under the scope-defining lines (e.g., class or \
             function definition) """
@@ -138,17 +129,11 @@ class Language(object):
         """ Merge the documentation placed above the code (just like the next comment) """
 
         # if there was no code, but were docs - merge
-        if not sections[i-1].has_code() and sections[i-1].has_docs():
-
-            if not sections[i].has_code():
-                sections[i-1]["docs_text"] += "\n" + sections[i]["docs_text"]
-                sections[i-1]["scope"] = sections[i]["scope"]
-                sections[i:i+1] = []
-
-            elif not sections[i].has_docs():
-                sections[i-1]["code_text"] = sections[i]["code_text"]
-                sections[i-1]["scope"] = sections[i]["scope"]
-                sections[i:i+1] = []
+        if not sections[i-1].has_code() and sections[i-1].has_docs()\
+                and not sections[i].has_docs() and sections[i].has_code():
+            sections[i-1]["code_text"] = sections[i]["code_text"]
+            sections[i-1]["scope"] = sections[i]["scope"]
+            sections[i:i+1] = []
 
     @iterate_sections()
     def absorb(self, sections, i):
@@ -232,7 +217,7 @@ class MultilineCommentLanguage(Language):
     def parse_multiline(self, sections, i):
         sections[i:i+1] = split_section_by_regex(sections[i], self.multiline_re)
         sections[i]["docs_text"] = re.sub(r"^(\s*){}".format(self.multistart), r"\1",
-                                          sections[i]["docs_text"])
+                                          sections[i]["docs_text"]).strip("\n")
 
 
 class IndentBasedLanguage(Language):
@@ -277,7 +262,7 @@ class IndentBasedLanguage(Language):
 
     def strategy(self):
         base_strategy = super(IndentBasedLanguage, self).strategy()
-        base_strategy.insert_after('merge_docs', self.split_by_scopes)
+        base_strategy.insert_before('merge_up', self.split_by_scopes)
         return base_strategy
 
 
@@ -303,7 +288,7 @@ class BraceBasedLanguage(Language):
 
     def strategy(self):
         base_strategy = super(BraceBasedLanguage, self).strategy()
-        base_strategy.insert_after('merge_docs', self.split_by_scopes)
+        base_strategy.insert_before('merge_up', self.split_by_scopes)
         return base_strategy
 
 

@@ -29,7 +29,7 @@ from collections import defaultdict
 
 # This module contains all of our static resources.
 from . import resources
-from .languages import get_language
+from .languages import get_language, Language
 
 from .utils import shift, ensure_directory
 
@@ -75,6 +75,9 @@ class Pyccoon:
     def process(self, sources=None, language=None):
         """For each source file passed as argument, generate the documentation."""
 
+        # TODO: this is all wrong. First, generate a filepaths mappings dict - this way you will \
+        # be able to tell which files exist and will much simplify the cross-referencing and stuff
+
         if not sources:
             sources = sorted(self.sources)
 
@@ -100,7 +103,7 @@ class Pyccoon:
             dest = self.destination(source)
 
             try:
-                os.makedirs(os.path.split(dest)[0])
+                ensure_directory(os.path.split(dest)[0])
             except OSError:
                 pass
 
@@ -111,6 +114,16 @@ class Pyccoon:
                 print("{:s} -> {:s}".format(source, os.path.relpath(dest, self.outdir)))
             else:
                 print("File does not exist: {:s}".format(source))
+
+        # Ensure there is always an index file in the output folder
+        for root, dirs, files in os.walk(self.outdir):
+            if 'index.html' not in files:
+                dest = os.path.join(self.outdir, os.path.relpath(root, self.outdir), 'index.html')
+                source = os.path.join(os.path.relpath(root, self.outdir), 'index.html')
+
+                with open(dest, 'w') as f:
+                    self.language = Language()
+                    f.write(self.generate_html(source, []))
 
     def template(self, source):
         return lambda context: pystache.render(source, context)
@@ -254,7 +267,8 @@ class Pyccoon:
 
         TODO: remove language dependency
         """
-        if os.path.basename(source) != '__init__.py':
+        index_names = ['__init__.py', 'index.html']
+        if os.path.basename(source) not in index_names:
             return []
 
         children = []
@@ -266,11 +280,11 @@ class Pyccoon:
             if os.path.isdir(os.path.join(folder, filename)):
                 isdir = True
                 filepath = os.path.join(filename, "index.html")
-            elif filename.endswith(".py"):
-                if filename == '__init__.py':
+            else:
+                if filename in index_names:
                     filepath = "index.html"
                 else:
-                    filepath = filename[:-3] + ".html"
+                    filepath = filename + ".html"
 
             if filepath:
                 children.append({
