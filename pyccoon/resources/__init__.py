@@ -8,3 +8,5 @@ with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "pycco.html"
 
 with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "pycco.css"), 'r') as f:
     css = f.read()
+
+static_files = ['pyccoon.svg', 'pyccoon_icon.svg']

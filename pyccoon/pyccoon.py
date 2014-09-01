@@ -14,6 +14,7 @@ import pystache
 import re
 import sys
 import json
+from datetime import datetime
 from collections import defaultdict
 
 # This module contains all of our static resources.
@@ -99,6 +100,12 @@ class Pyccoon:
         ensure_directory(self.outdir)
         with open(os.path.join(self.outdir, "pyccoon.css"), 'w') as css_file:
             css_file.write(resources.css)
+
+        for file in resources.static_files:
+            shutil.copyfile(
+                os.path.join(os.path.split(resources.__file__)[0], file),
+                os.path.join(self.outdir, file)
+            )
 
         # Proceed to generating the documentation.
         for source, (dest, process) in sources.items():
@@ -349,7 +356,8 @@ class Pyccoon:
         """
 
         dest = self.destination(source)
-        title = os.path.relpath(os.path.abspath(source), self.sourcedir)
+        title = os.path.relpath(source, self.sourcedir)
+        page_title = self.project_name + ": " + os.path.relpath(source, self.sourcedir).lstrip('./')
         csspath = os.path.relpath(os.path.join(self.outdir, "pyccoon.css"), os.path.split(dest)[0])
 
         breadcrumbs = self.generate_breadcrumbs(dest, title)
@@ -357,15 +365,18 @@ class Pyccoon:
         contents = self.generate_contents(sections)
 
         rendered = self.page_template({
-            "title":        title,
-            "breadcrumbs":  breadcrumbs,
-            "children":     children,
-            "stylesheet":   csspath,
-            "sections":     sections,
-            "source":       source,
-            "contents":     contents,
-            "contents?":    bool(contents),
-            "destination":  dest
+            "title":            page_title,
+            "breadcrumbs":      breadcrumbs,
+            "children":         children,
+            "stylesheet":       csspath,
+            "sections":         sections,
+            "source":           source,
+            "contents":         contents,
+            "contents?":        bool(contents),
+            "destination":      dest,
+            "generation_time":  datetime.now(),
+            "root_path":        os.path.relpath(".", os.path.split(source)[0]),
+            "project_name":     self.project_name
         })
 
         return re.sub(r"__DOUBLE_OPEN_STACHE__", "{{", rendered)
