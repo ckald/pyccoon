@@ -24,7 +24,7 @@
     </div>
     </div>
     <div class="generation-time">
-        Generated at <img id="pyccoon-icon" src="./pyccoon_icon.svg"><code>2014-09-01 19:46:10.603161</code>/ by a diligent <a target="_blank" href="http://ckald.github.io/pyccoon/">pyccoon</a>
+        Generated at <img id="pyccoon-icon" src="./pyccoon_icon.svg"><code>2014-09-01 20:14:09.989455</code>/ by a diligent <a target="_blank" href="http://ckald.github.io/pyccoon/">pyccoon</a>
     </div>
   </div>
   <div class='section'>
@@ -88,7 +88,7 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
       </div>
-      <h3><span id="main-documentation-generation-functions" href="main-documentation-generation-functions"> Main Documentation Generation Functions </span></h3>
+      <h3><span class="header" id="main-documentation-generation-functions" href="main-documentation-generation-functions"> Main Documentation Generation Functions </span></h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">class</span> <span class="nc">Pyccoon</span><span class="p">:</span>
@@ -262,6 +262,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">get_language</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">:</span>
                     <span class="n">process</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">[</span><span class="n">source</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">process</span><span class="p">)</span>
 
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">ensure_directory</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">dest</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
@@ -299,12 +300,12 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="o">==</span> <span class="n">dest</span>
                         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="o">.</span><span class="n">items</span><span class="p">()]):</span>
                 <span class="n">source</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">&#39;index.html&#39;</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">[</span><span class="n">source</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">[</span><span class="n">source</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="n">index</span><span class="p">),</span> <span class="bp">False</span><span class="p">)</span>
 
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="n">index</span><span class="p">),</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">Language</span><span class="p">()</span>
                     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generate_html</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="p">[]))</span>
-                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Generated -&gt; {:s} {:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">))</span></pre></div>
+                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Generated -&gt; {:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">))</span></pre></div>
     </div>
     <div class='clearall'></div>
   </div>
@@ -341,7 +342,7 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-16'>#</a>
       </div>
-      <h3><span id="preprocessing-the-comments" href="preprocessing-the-comments"> Preprocessing the comments </span></h3>
+      <h3><span class="header" id="preprocessing-the-comments" href="preprocessing-the-comments"> Preprocessing the comments </span></h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
@@ -434,7 +435,7 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">replace_section_name</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">{lvl} &lt;span id=&quot;{id}&quot; href=&quot;{id}&quot;&gt;{name}&lt;/span&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="p">{</span>
+            <span class="k">return</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">{lvl} &lt;span class=&quot;header&quot; id=&quot;{id}&quot; href=&quot;{id}&quot;&gt;{name}&lt;/span&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="p">{</span>
                 <span class="s">&quot;lvl&quot;</span><span class="p">:</span>  <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;#&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
                 <span class="s">&quot;id&quot;</span><span class="p">:</span>   <span class="n">slugify</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span>
                 <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -456,7 +457,7 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-22'>#</a>
       </div>
-      <h3><span id="highlighting-the-source-code" href="highlighting-the-source-code"> Highlighting the source code </span></h3>
+      <h3><span class="header" id="highlighting-the-source-code" href="highlighting-the-source-code"> Highlighting the source code </span></h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
@@ -494,7 +495,7 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-24'>#</a>
       </div>
-      <h3><span id="html-code-generation" href="html-code-generation"> HTML Code generation </span></h3>
+      <h3><span class="header" id="html-code-generation" href="html-code-generation"> HTML Code generation </span></h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
