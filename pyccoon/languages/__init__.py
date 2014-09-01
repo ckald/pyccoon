@@ -31,7 +31,9 @@ class Language(object):
         markdown_extensions.SaneDefList(),
         markdown_extensions.Todo(),
         markdown_extensions.Pydoc(),
-        "def_list"
+        markdown_extensions.AutoLinkExtension(),
+        markdown_extensions.FencedCodeExtension(),
+        "def_list"  # , "fenced_code"
     ]
 
     @property
@@ -161,8 +163,10 @@ class InlineCommentLanguage(Language):
 
     @cached_property
     def inline_re(self):
-        # ^\s*{}\s*(.+$)
-        # (^[ \t]*{}(.*)$)+
+        """
+            ^\s*{}\s*(.+$)
+            (^[ \t]*{}(.*)$)+
+        """
         return re.compile(r"((^[ \t]*{}.*\n)+)".format(self.inline_delimiter), flags=re.M)
 
     @property
@@ -298,11 +302,12 @@ class C(BraceBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
     """
     === C/C++ ===
 
-    Styling of the C/C++ code is largely historical and oriented on reading hopelessly long codes \
+    Styling of the C/C++ code is largely historical and oriented on reading hopelessly long codes\
     on the old terminal screens.
 
     TODO: detect whole style docs blocks, for example, boxes:
 
+    ```c
         ////////////////////////////
         ////// Nice comment! ///////
         ////////////////////////////
@@ -310,6 +315,8 @@ class C(BraceBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
         /***************************
         **** We love ASCII-art! ****
         ***************************/
+    ```
+
     """
     extensions = [".c", ".cpp", ".h", ".cc"]
     inline_delimiter = "//"
@@ -321,13 +328,15 @@ class C(BraceBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
                        "public", "private", "protected", "abstract", "inline", "virtual",
                        "void", "int", "double", "bool",  "float"]]
 
-    markdown_extensions = [
-        markdown_extensions.LineConnector(regex=r"([\w\.])[ \t]*\n[ \t]*(\w)"),
-        markdown_extensions.SaneDefList(),
-        markdown_extensions.Todo(),
-        markdown_extensions.Pydoc(),
-        "def_list"
-    ]
+    # FIXME: this redefinition brakes the whole extension
+    # ```python
+    # def __init__(self, *args, **kwargs):
+    #     super(C, self).__init__(*args, **kwargs)
+    #     for i, ext in enumerate(self.markdown_extensions):
+    #         if isinstance(ext, markdown_extensions.LineConnector):
+    #             self.markdown_extensions[i] = \
+    #                 markdown_extensions.LineConnector(regex=r"([\w\.])[ \t]*\n[ \t]*(\w)")
+    # ```
 
     @iterate_sections(start=0)
     def strip_commenting_design(self, sections, i):
@@ -349,8 +358,11 @@ class JavaScript(C):
 
     TODO: test function-defining scopes
 
+    ```javascript
         function name(args) { ... }
         name = function(args) { ... }
+    ```
+
     """
 
     extensions = [".js"]
@@ -417,55 +429,60 @@ class Ruby(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage)
 
     scope_keywords = [r"^\s*(module) ", r"^\s*(class) ", r"^\s*(def) "]
 
+"""
+== Languages in development ==
 
-# class CoffeScript(InlineCommentLanguage, MultilineCommentLanguage):
-#     extensions = [".coffee"]
-#     name = "Coffee-Script"
-#     inline_delimiter = "#"
-#     multistart = "###"
-#     multiend = "###"
-
-
-# class Perl(InlineCommentLanguage):
-#     extensions = [".pl"]
-#     inline_delimiter = "#"
+```python
+class CoffeScript(InlineCommentLanguage, MultilineCommentLanguage):
+    extensions = [".coffee"]
+    name = "Coffee-Script"
+    inline_delimiter = "#"
+    multistart = "###"
+    multiend = "###"
 
 
-# class SQL(InlineCommentLanguage):
-#     extensions = [".sql"]
-#     inline_delimiter = "--"
+class Perl(InlineCommentLanguage):
+    extensions = [".pl"]
+    inline_delimiter = "#"
 
 
-# class Scheme(InlineCommentLanguage, MultilineCommentLanguage):
-#     extensions = [".scm"]
-#     inline_delimiter = ";;"
-#     multistart = "#|"
-#     multiend = "|#"
+class SQL(InlineCommentLanguage):
+    extensions = [".sql"]
+    inline_delimiter = "--"
 
 
-# class Lua(InlineCommentLanguage, MultilineCommentLanguage):
-#     extensions = [".lua"]
-#     inline_delimiter = "--"
-#     multistart = "--[["
-#     multiend = "--]]"
+class Scheme(InlineCommentLanguage, MultilineCommentLanguage):
+    extensions = [".scm"]
+    inline_delimiter = ";;"
+    multistart = "#|"
+    multiend = "|#"
 
 
-# class Erlang(InlineCommentLanguage):
-#     extensions = [".erl"]
-#     inline_delimiter = "%%"
+class Lua(InlineCommentLanguage, MultilineCommentLanguage):
+    extensions = [".lua"]
+    inline_delimiter = "--"
+    multistart = "--[["
+    multiend = "--]]"
 
 
-# class Tcl(InlineCommentLanguage):
-#     extensions = [".tcl"]
-#     inline_delimiter = "#"
+class Erlang(InlineCommentLanguage):
+    extensions = [".erl"]
+    inline_delimiter = "%%"
 
 
-# class Haskell(InlineCommentLanguage, MultilineCommentLanguage):
-#     extensions = [".hs"]
-#     inline_delimiter = "--"
-#     multistart = "{-"
-#     multiend = "-}"
+class Tcl(InlineCommentLanguage):
+    extensions = [".tcl"]
+    inline_delimiter = "#"
 
+
+class Haskell(InlineCommentLanguage, MultilineCommentLanguage):
+    extensions = [".hs"]
+    inline_delimiter = "--"
+    multistart = "{-"
+    multiend = "-}"
+
+```
+"""
 
 extensions_mapping = {}
 # languages = [CoffeScript, Perl, SQL, C, PHP,  JavaScript, Ruby, Python, Scheme,

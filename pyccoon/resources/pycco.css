@@ -58,7 +58,7 @@ h2, h3, h4, h5, h6 {
   display: block;
 }
 .section:hover {
-  background: rgba(0,0,100,0.1);
+  background: rgba(0,0,100,0.05);
 }
 #background {
   position: absolute;
@@ -211,6 +211,13 @@ div.code {
 }
   .code pre, .docs p code {
     font-size: 12px;
+  }
+  .docs .highlight {
+    font-size: 12px;
+    opacity: 0.7;
+  }
+  .docs .highlight:hover {
+    opacity: 1;
   }
     pre, tt, code {
       line-height: 18px;

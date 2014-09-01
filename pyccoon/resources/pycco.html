@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <title>{{ title }}</title>
-  <link rel="stylesheet" href="{{ stylesheet }}">
+  <link rel="stylesheet" href="{{ root_path}}/pyccoon.css">
 </head>
 <body>
 <div id='container'>
@@ -25,7 +25,12 @@
     </div>
     {{/contents?}}
     <div class="generation-time">
-        Generated at <img id="pyccoon-icon" src="{{ root_path }}/pyccoon_icon.svg"><code>{{ generation_time }}</code>/ by a diligent <a target="_blank" href="http://ckald.github.io/pyccoon/">pyccoon</a>
+        Generated at
+        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
+            <img id="pyccoon-icon" src="{{ root_path }}/pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
+        <code>{{ generation_time }}</code>/
+        by a diligent
+        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
   </div>
   <div class='section'>

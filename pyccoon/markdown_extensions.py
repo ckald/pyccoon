@@ -1,8 +1,12 @@
 import re
 
+from markdown.util import etree
+from markdown.inlinepatterns import Pattern
 from markdown.preprocessors import Preprocessor
-from markdown.postprocessors import Postprocessor
 from markdown.extensions import Extension
+
+import pygments
+from pygments import lexers, formatters
 
 
 class Todo(Extension):
@@ -35,7 +39,7 @@ class Todo(Extension):
 
 class LineConnector(Extension):
 
-    def __init__(self, regex=r"(\S)\s*\\\s*\n\s*(\S)", sub=r"\1 \2"):
+    def __init__(self, regex=r"(\S)\s*\\\s*\n\s*(\S)", sub=r"\1 \2", *args, **kwargs):
 
         regex = re.compile(regex, flags=re.M)
 
@@ -47,7 +51,7 @@ class LineConnector(Extension):
 
         self.Prep = Prep()
 
-        super(LineConnector, self).__init__()
+        super(LineConnector, self).__init__(*args, **kwargs)
 
     def extendMarkdown(self, md, md_globals):
         md.preprocessors.add('line-connector', self.Prep, '_end')
@@ -96,7 +100,7 @@ class SaneDefList(Extension):
 
 
 class Pydoc(Extension):
-    class Prep(Postprocessor):
+    class Prep(Preprocessor):
 
         """
         Preprocessor used to parse PyDoc-style comments like `:param name:` and format them.
@@ -104,8 +108,8 @@ class Pydoc(Extension):
 
         def run(self, lines):
             """
-            :param text: Markdown-formatted text
-            :return: Text with parsed PyDoc comments
+            :param lines: Documentation lines
+            :return: Lines of text with parsed PyDoc comments
             """
             new_lines = []
             for text in lines:
@@ -135,3 +139,64 @@ class Pydoc(Extension):
 
     def extendMarkdown(self, md, md_globals):
         md.preprocessors.add('pydoc', Pydoc.Prep(md), '_end')
+
+
+class AutoLinkExtension(Extension):
+    """
+    There's already an inline pattern called autolink which handles
+    <http://www.google.com> type links. So lets call this extra_autolink
+    """
+
+    EXTRA_AUTOLINK_RE = r'(?<!"|>)((https?://|www)[-\w./#?%=&]+)'
+
+    class pattern(Pattern):
+
+        def handleMatch(self, m):
+            el = etree.Element('a')
+            if m.group(2).startswith('http'):
+                href = m.group(2)
+            else:
+                href = 'http://%s' % m.group(2)
+            el.set('href', href)
+            el.text = m.group(2)
+            return el
+
+    def extendMarkdown(self, md, md_globals):
+        md.inlinePatterns.add(
+            'extra_autolink',
+            AutoLinkExtension.pattern(self.EXTRA_AUTOLINK_RE, self),
+            '>autolink'
+        )
+
+
+class FencedCodeExtension(Extension):
+
+    class Prep(Preprocessor):
+
+        """
+        Preprocessor used to parse fenced code blocks (Github syntax) highlight and format them.
+        """
+
+        regex = re.compile(r'```(\w*)$\n^([\s\S]*)$\n^\s*```', flags=re.M)
+
+        def run(self, lines):
+            text = "\n".join(lines)
+            for match in self.regex.finditer(text):
+                code = match.group(2)
+                language = match.group(1)
+
+                try:
+                    lexer = lexers.get_lexer_by_name(language)
+                except:
+                    print("Pygments lexer `{}` not found, guessing".format(language))
+                    lexer = lexers.guess_lexer(code)
+
+                text = text[:match.start()]\
+                    + pygments.highlight(
+                        code, lexer,
+                        formatters.get_formatter_by_name('html'))\
+                    + text[match.end():]
+            return text.split('\n')
+
+    def extendMarkdown(self, md, md_globals):
+        md.preprocessors.add('fenced_code_highlight', FencedCodeExtension.Prep(md), '<html_block')
