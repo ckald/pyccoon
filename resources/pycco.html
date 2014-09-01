@@ -36,17 +36,20 @@
   </div>
   <div class='clearall'>
   {{#sections}}
-  <div class='section' id='section-{{ num }}'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-{{ num }}'>#</a>
-      </div>
-      {{{ docs_html }}}
-    </div>
-    <div class='code'>
-      {{{ code_html }}}
-    </div>
-    <div class='clearall'></div>
+  <div class='section'>
+    <a id="section-{{ num }}" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-{{ num }}'>#</a>
+          </div>
+          {{{ docs_html }}}
+        </div>
+        <div class='code'>
+          {{{ code_html }}}
+        </div>
+        <div class='clearall'></div>
+    </section>
   </div>
   {{/sections}}
 </div>
