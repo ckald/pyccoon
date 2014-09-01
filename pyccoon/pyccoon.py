@@ -219,7 +219,10 @@ class Pyccoon:
                     .format(name, os.path.relpath(dest, os.path.dirname(source)))
 
         def replace_section_name(match):
-            return '\n{lvl} <span class="header" id="{id}" href="{id}">{name}</span>'.format(**{
+            return (
+                '\n{lvl} <span class="header" href="{id}">{name}</span>'
+                '<a id="{id}" class="header-anchor"></a>'
+            ).format(**{
                 "lvl":  re.sub('=', '#', match.group(1)),
                 "id":   slugify(match.group(2)),
                 "name": match.group(2)

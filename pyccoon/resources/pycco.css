@@ -51,9 +51,11 @@ h2, h3, h4, h5, h6 {
 #container, div.section {
   position: relative;
 }
-.section, .header {
-  padding-top: 40px;
-  margin-top: -40px;
+.section-anchor, .header-anchor {
+  position: relative;
+  top: -40px;
+  visibility: hidden;
+  display: block;
 }
 .section:hover {
   background: rgba(0,0,100,0.1);
