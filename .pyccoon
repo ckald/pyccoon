@@ -1,0 +1,4 @@
+{
+    "skip_files": [".+\\.pyc", "__pycache__", ".travis.yml", ".git"],
+    "copy_files": ["pyccoon.svg", "pyccoon_icon.svg", ".+\\.html", ".+\\.css", ".pyccoon"]
+}

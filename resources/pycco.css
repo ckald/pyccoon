@@ -1,0 +1,263 @@
+/*--------------------- Layout and Typography ----------------------------*/
+body {
+  font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #252519;
+  margin: 0; padding: 0;
+  background: #f5f5ff;
+}
+a {
+  color: #261a3b;
+}
+  a:visited {
+    color: #261a3b;
+  }
+p {
+  margin: 0 0 15px 0;
+}
+
+#breadcrumbs {
+  white-space: nowrap;
+}
+
+#children {
+  list-style-type: none;
+}
+
+#children .directory {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.todo, .fixme {
+  background: #FBD;
+  padding: 5px;
+  border: 1px solid #c00;
+  display: inline-block;
+  clear: right;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 40px 0 15px 0;
+}
+h2, h3, h4, h5, h6 {
+    margin-top: 0;
+  }
+#container {
+  background: white;
+ }
+#container, div.section {
+  position: relative;
+}
+.section:hover {
+  background: rgba(0,0,100,0.1);
+}
+#background {
+  position: absolute;
+  top: 0; left: 40%; right: 0; bottom: 0;
+  background: #f5f5ff;
+  border-left: 1px solid #e5e5ee;
+  z-index: 0;
+}
+#jump_to, #jump_page {
+  background: white;
+  -webkit-box-shadow: 0 0 10px #777; -moz-box-shadow: 0 0 10px #777;
+  -webkit-border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-right-radius: 5px; -moz-border-radius-bottomright: 5px;
+  cursor: pointer;
+  z-index: 10;
+}
+#jump_to, #jump_wrapper {
+  position: fixed;
+  right: 50px; top: 0;
+  padding: 5px 10px;
+}
+  #jump_wrapper {
+    padding: 0;
+    display: none;
+  }
+    #jump_to:hover #jump_wrapper {
+      display: block;
+    }
+    #jump_page {
+      padding: 5px 0 3px;
+      margin: 0 0 25px 25px;
+    }
+      #jump_page .source {
+        display: block;
+        padding: 5px 20px 5px 10px;
+        text-decoration: none;
+        border-top: 1px solid #eee;
+      }
+        #jump_page .source-1 {
+          font-weight: bold;
+        }
+        #jump_page .source-2 {
+          padding-left: 20px;
+        }
+        #jump_page .source-3 {
+          padding-left: 30px;
+        }
+        #jump_page .source-4 {
+          padding-left: 40px;
+        }
+        #jump_page .source-5 {
+          padding-left: 50px;
+        }
+        #jump_page .source-6 {
+          padding-left: 60px;
+        }
+        #jump_page .source:hover {
+          background: #f5f5ff;
+        }
+        #jump_page .source:first-child {
+        }
+div.docs {
+  float: left;
+  width: 35%;
+  min-height: 5px;
+  padding: 10px 25px 1px 50px;
+  vertical-align: top;
+  text-align: left;
+}
+  .docs p, .docs pre {
+    white-space: pre-wrap;
+  }
+  .docs pre {
+    margin: 15px 0 15px;
+    padding-left: 15px;
+  }
+  .docs pre code {
+    display: block;
+  }
+  .docs p tt, .docs p code, .docs dl code, .docs li code {
+    background: #f8f8ff;
+    border: 1px solid #dedede;
+    font-size: 12px;
+    padding: 0 0.2em;
+  }
+  .octowrap {
+    position: relative;
+  }
+    .octothorpe {
+      font: 12px Arial;
+      text-decoration: none;
+      color: #454545;
+      position: absolute;
+      top: 3px; left: -20px;
+      padding: 1px 2px;
+      opacity: 0;
+      -webkit-transition: opacity 0.2s linear;
+    }
+      div.docs:hover .octothorpe {
+        opacity: 1;
+      }
+div.code {
+  margin-left: 40%;
+  padding: 5px 15px 7px 13px;
+  vertical-align: top;
+}
+  .code pre, .docs p code {
+    font-size: 12px;
+  }
+    pre, tt, code {
+      line-height: 18px;
+      font-family: Monaco, Consolas, "Lucida Console", monospace;
+      margin: 0; padding: 0;
+    }
+div.clearall {
+    clear: both;
+}
+
+.pydoc {
+    padding: 2px;
+    line-height: 16px;
+    display: inline-block;
+}
+.pydoc span {
+    padding: 0 2px;
+    font-size: 12px;
+    font-family:  Monaco, Consolas, "Lucida Console", monospace;
+    border-radius: 3px;
+    background: #fff;
+    border: 1px solid #ccc;
+}
+.pydoc-return span, .pydoc-returns span {
+    border: 1px solid #4CAE4C;
+    color: #4CAE4C;
+}
+.pydoc-param span, .pydoc-var span {
+    border: 1px solid #EEA236;
+    color: #EEA236;
+}
+
+.pydoc-raises span, .pydoc-throws span {
+    border: 1px solid #c00;
+    color: #c00;
+}
+
+/*---------------------- Syntax Highlighting -----------------------------*/
+td.linenos { background-color: #f0f0f0; padding-right: 10px; }
+span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
+body .hll { background-color: #ffffcc }
+body .c { color: #408080; font-style: italic }  /* Comment */
+body .err { border: 1px solid #FF0000 }         /* Error */
+body .k { color: #954121 }                      /* Keyword */
+body .o { color: #666666 }                      /* Operator */
+body .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+body .cp { color: #BC7A00 }                     /* Comment.Preproc */
+body .c1 { color: #408080; font-style: italic } /* Comment.Single */
+body .cs { color: #408080; font-style: italic } /* Comment.Special */
+body .gd { color: #A00000 }                     /* Generic.Deleted */
+body .ge { font-style: italic }                 /* Generic.Emph */
+body .gr { color: #FF0000 }                     /* Generic.Error */
+body .gh { color: #000080; font-weight: bold }  /* Generic.Heading */
+body .gi { color: #00A000 }                     /* Generic.Inserted */
+body .go { color: #808080 }                     /* Generic.Output */
+body .gp { color: #000080; font-weight: bold }  /* Generic.Prompt */
+body .gs { font-weight: bold }                  /* Generic.Strong */
+body .gu { color: #800080; font-weight: bold }  /* Generic.Subheading */
+body .gt { color: #0040D0 }                     /* Generic.Traceback */
+body .kc { color: #954121 }                     /* Keyword.Constant */
+body .kd { color: #954121; font-weight: bold }  /* Keyword.Declaration */
+body .kn { color: #954121; font-weight: bold }  /* Keyword.Namespace */
+body .kp { color: #954121 }                     /* Keyword.Pseudo */
+body .kr { color: #954121; font-weight: bold }  /* Keyword.Reserved */
+body .kt { color: #B00040 }                     /* Keyword.Type */
+body .m { color: #666666 }                      /* Literal.Number */
+body .s { color: #219161 }                      /* Literal.String */
+body .na { color: #7D9029 }                     /* Name.Attribute */
+body .nb { color: #954121 }                     /* Name.Builtin */
+body .nc { color: #0000FF; font-weight: bold }  /* Name.Class */
+body .no { color: #880000 }                     /* Name.Constant */
+body .nd { color: #AA22FF }                     /* Name.Decorator */
+body .ni { color: #999999; font-weight: bold }  /* Name.Entity */
+body .ne { color: #D2413A; font-weight: bold }  /* Name.Exception */
+body .nf { color: #0000FF }                     /* Name.Function */
+body .nl { color: #A0A000 }                     /* Name.Label */
+body .nn { color: #0000FF; font-weight: bold }  /* Name.Namespace */
+body .nt { color: #954121; font-weight: bold }  /* Name.Tag */
+body .nv { color: #19469D }                     /* Name.Variable */
+body .ow { color: #AA22FF; font-weight: bold }  /* Operator.Word */
+body .w { color: #bbbbbb }                      /* Text.Whitespace */
+body .mf { color: #666666 }                     /* Literal.Number.Float */
+body .mh { color: #666666 }                     /* Literal.Number.Hex */
+body .mi { color: #666666 }                     /* Literal.Number.Integer */
+body .mo { color: #666666 }                     /* Literal.Number.Oct */
+body .sb { color: #219161 }                     /* Literal.String.Backtick */
+body .sc { color: #219161 }                     /* Literal.String.Char */
+body .sd { color: #219161; font-style: italic } /* Literal.String.Doc */
+body .s2 { color: #219161 }                     /* Literal.String.Double */
+body .se { color: #BB6622; font-weight: bold }  /* Literal.String.Escape */
+body .sh { color: #219161 }                     /* Literal.String.Heredoc */
+body .si { color: #BB6688; font-weight: bold }  /* Literal.String.Interpol */
+body .sx { color: #954121 }                     /* Literal.String.Other */
+body .sr { color: #BB6688 }                     /* Literal.String.Regex */
+body .s1 { color: #219161 }                     /* Literal.String.Single */
+body .ss { color: #19469D }                     /* Literal.String.Symbol */
+body .bp { color: #954121 }                     /* Name.Builtin.Pseudo */
+body .vc { color: #19469D }                     /* Name.Variable.Class */
+body .vg { color: #19469D }                     /* Name.Variable.Global */
+body .vi { color: #19469D }                     /* Name.Variable.Instance */
+body .il { color: #666666 }                     /* Literal.Number.Integer.Long */
