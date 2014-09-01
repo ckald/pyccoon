@@ -1,0 +1,5 @@
+{
+    "project_name": "pyccoon v0.1.0 documentation",
+    "skip_files": [".+\\.pyc", "__pycache__", ".travis.yml", ".git"],
+    "copy_files": ["pyccoon.svg", "pyccoon_icon.svg", ".+\\.html", ".+\\.css", ".pyccoon"]
+}

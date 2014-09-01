@@ -9,9 +9,11 @@
 
 import optparse
 import os
+import shutil
 import pystache
 import re
 import sys
+import json
 from collections import defaultdict
 
 # This module contains all of our static resources.
@@ -50,6 +52,20 @@ class Pyccoon:
         self.sourcedir = os.path.abspath(self.sourcedir)
 
         self.sources = []
+        # Try to get `.pyccoon` config file
+        self.config_file = os.path.join(self.sourcedir, '.pyccoon')
+        self.config = defaultdict(lambda: [])
+        if os.path.exists(self.config_file):
+            print('Using config {:s}'.format(self.config_file))
+            with open(self.config_file, 'r') as f:
+                self.config.update(json.loads(f.read()))
+
+        self.config['skip_files'] = [re.compile(p) for p in self.config['skip_files']]
+        self.config['copy_files'] = [re.compile(p) for p in self.config['copy_files']]
+
+        self.project_name = self.config['project_name'] \
+            or (os.path.split(self.sourcedir)[1] + " documentation")
+
         for dirpath, dirnames, files in os.walk(self.sourcedir):
             for name in files:
                 if name not in dirnames:
