@@ -116,14 +116,14 @@ class Pyccoon:
 
                 self.language = get_language(source, code, language=language)
                 if not self.language:
-                    print("{:s} -> Skipped".format(source))
-                    continue
+                    process = False
 
                 try:
                     ensure_directory(os.path.split(dest)[0])
                 except OSError:
                     pass
 
+            if process:
                 if os.path.exists(os.path.join(self.sourcedir, source)):
                     with open(dest, "w") as f:
                         f.write(self.generate_documentation(source, code, language=self.language))
@@ -138,14 +138,19 @@ class Pyccoon:
                 print("{:s} -> Copied".format(source))
 
         # Ensure there is always an index file in the output folder
-        for root, dirs, files in os.walk(self.outdir):
-            if 'index.html' not in files:
-                dest = os.path.join(self.outdir, os.path.relpath(root, self.outdir), 'index.html')
-                source = os.path.join(os.path.relpath(root, self.outdir), 'index.html')
+        for _, (dest, _) in self.sources.items():
+            folder = os.path.relpath(os.path.split(dest)[0], self.outdir).lstrip('./')
+            index = os.path.join(folder, "index.html")
 
-                with open(dest, 'w') as f:
+            if not any([os.path.join(self.outdir, index) == dest
+                        for _, (dest, _) in self.sources.items()]):
+                source = os.path.join(folder, 'index.html')
+                self.sources[source] = (index, False)
+
+                with open(os.path.join(self.outdir, index), 'w') as f:
                     self.language = Language()
                     f.write(self.generate_html(source, []))
+                    print("Generated -> {:s} {:s}".format(source))
 
     def template(self, source):
         return lambda context: pystache.render(source, context)
