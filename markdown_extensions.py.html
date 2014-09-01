@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <title>pyccoon v0.1.0 documentation: markdown_extensions.py</title>
-  <link rel="stylesheet" href="pyccoon.css">
+  <link rel="stylesheet" href="./pyccoon.css">
 </head>
 <body>
 <div id='container'>
@@ -13,7 +13,12 @@
     <a class="btn" id="project-name" href="./index.html">pyccoon v0.1.0 documentation</a>
     <a class="btn" class="source source-1" href="#top">Back to top</a>
     <div class="generation-time">
-        Generated at <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator"><img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a><code>2014-09-01 20:25:27.679887</code>/ by a diligent <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
+        Generated at
+        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
+            <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
+        <code>2014-09-02 01:13:12.241198</code>/
+        by a diligent
+        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
   </div>
   <div class='section'>
@@ -35,9 +40,13 @@
         <div class='code'>
           <div class="highlight"><pre><span class="kn">import</span> <span class="nn">re</span>
 
+<span class="kn">from</span> <span class="nn">markdown.util</span> <span class="kn">import</span> <span class="n">etree</span>
+<span class="kn">from</span> <span class="nn">markdown.inlinepatterns</span> <span class="kn">import</span> <span class="n">Pattern</span>
 <span class="kn">from</span> <span class="nn">markdown.preprocessors</span> <span class="kn">import</span> <span class="n">Preprocessor</span>
-<span class="kn">from</span> <span class="nn">markdown.postprocessors</span> <span class="kn">import</span> <span class="n">Postprocessor</span>
-<span class="kn">from</span> <span class="nn">markdown.extensions</span> <span class="kn">import</span> <span class="n">Extension</span></pre></div>
+<span class="kn">from</span> <span class="nn">markdown.extensions</span> <span class="kn">import</span> <span class="n">Extension</span>
+
+<span class="kn">import</span> <span class="nn">pygments</span>
+<span class="kn">from</span> <span class="nn">pygments</span> <span class="kn">import</span> <span class="n">lexers</span><span class="p">,</span> <span class="n">formatters</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -135,7 +144,7 @@
         <div class='code'>
           <div class="highlight"><pre><span class="k">class</span> <span class="nc">LineConnector</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="s">r&quot;(\S)\s*</span><span class="se">\\</span><span class="s">\s*\n\s*(\S)&quot;</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="s">r&quot;\1 \2&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="s">r&quot;(\S)\s*</span><span class="se">\\</span><span class="s">\s*\n\s*(\S)&quot;</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="s">r&quot;\1 \2&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
         <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
         <span class="k">class</span> <span class="nc">Prep</span><span class="p">(</span><span class="n">Preprocessor</span><span class="p">):</span></pre></div>
@@ -171,7 +180,7 @@
         <div class='code'>
           <div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">Prep</span> <span class="o">=</span> <span class="n">Prep</span><span class="p">()</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">LineConnector</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span></pre></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LineConnector</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -302,7 +311,7 @@
           <p>Preprocessor used to parse PyDoc-style comments like <code>:param name:</code> and format them.</p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Prep</span><span class="p">(</span><span class="n">Postprocessor</span><span class="p">):</span></pre></div>
+          <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Prep</span><span class="p">(</span><span class="n">Preprocessor</span><span class="p">):</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -314,8 +323,8 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-16'>#</a>
           </div>
-          <p><span class="pydoc pydoc-param"><span>param</span> <code>text</code></span> Markdown-formatted text
-<span class="pydoc pydoc-return"><span>return</span></span> Text with parsed PyDoc comments</p>
+          <p><span class="pydoc pydoc-param"><span>param</span> <code>lines</code></span> Documentation lines
+<span class="pydoc pydoc-return"><span>return</span></span> Lines of text with parsed PyDoc comments</p>
         </div>
         <div class='code'>
           <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
@@ -425,7 +434,119 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">extendMarkdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">md_globals</span><span class="p">):</span>
-        <span class="n">md</span><span class="o">.</span><span class="n">preprocessors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;pydoc&#39;</span><span class="p">,</span> <span class="n">Pydoc</span><span class="o">.</span><span class="n">Prep</span><span class="p">(</span><span class="n">md</span><span class="p">),</span> <span class="s">&#39;_end&#39;</span><span class="p">)</span>
+        <span class="n">md</span><span class="o">.</span><span class="n">preprocessors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;pydoc&#39;</span><span class="p">,</span> <span class="n">Pydoc</span><span class="o">.</span><span class="n">Prep</span><span class="p">(</span><span class="n">md</span><span class="p">),</span> <span class="s">&#39;_end&#39;</span><span class="p">)</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+  </div>
+  <div class='section'>
+    <a id="section-23" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-23'>#</a>
+          </div>
+          <p>There's already an inline pattern called autolink which handles
+&lt;<a href="http://www.google.com&amp;gt">http://www.google.com&amp;gt</a>; type links. So lets call this extra_autolink</p>
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre><span class="k">class</span> <span class="nc">AutoLinkExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
+    <span class="n">EXTRA_AUTOLINK_RE</span> <span class="o">=</span> <span class="s">r&#39;(?&lt;!&quot;|&gt;)((https?://|www)[-\w./#?%=&amp;]+)&#39;</span>
+    <span class="k">class</span> <span class="nc">pattern</span><span class="p">(</span><span class="n">Pattern</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">handleMatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+            <span class="n">el</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;http&#39;</span><span class="p">):</span>
+                <span class="n">href</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">href</span> <span class="o">=</span> <span class="s">&#39;http://</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">el</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;href&#39;</span><span class="p">,</span> <span class="n">href</span><span class="p">)</span>
+            <span class="n">el</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">el</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+  </div>
+  <div class='section'>
+    <a id="section-24" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-24'>#</a>
+          </div>
+          
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">extendMarkdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">md_globals</span><span class="p">):</span>
+        <span class="n">md</span><span class="o">.</span><span class="n">inlinePatterns</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="s">&#39;extra_autolink&#39;</span><span class="p">,</span>
+            <span class="n">AutoLinkExtension</span><span class="o">.</span><span class="n">pattern</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">EXTRA_AUTOLINK_RE</span><span class="p">,</span> <span class="bp">self</span><span class="p">),</span>
+            <span class="s">&#39;&gt;autolink&#39;</span>
+        <span class="p">)</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+  </div>
+  <div class='section'>
+    <a id="section-25" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-25'>#</a>
+          </div>
+          
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre><span class="k">class</span> <span class="nc">FencedCodeExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+  </div>
+  <div class='section'>
+    <a id="section-26" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-26'>#</a>
+          </div>
+          <p>Preprocessor used to parse fenced code blocks (Github syntax) highlight and format them.</p>
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Prep</span><span class="p">(</span><span class="n">Preprocessor</span><span class="p">):</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;```(\w*)$\n^([\s\S]*)$\n^\s*```&#39;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+                <span class="n">language</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">lexer</span> <span class="o">=</span> <span class="n">lexers</span><span class="o">.</span><span class="n">get_lexer_by_name</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Pygments lexer `{}` not found, guessing&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">language</span><span class="p">))</span>
+                    <span class="n">lexer</span> <span class="o">=</span> <span class="n">lexers</span><span class="o">.</span><span class="n">guess_lexer</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+                <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">()]</span>\
+                    <span class="o">+</span> <span class="n">pygments</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span>
+                        <span class="n">code</span><span class="p">,</span> <span class="n">lexer</span><span class="p">,</span>
+                        <span class="n">formatters</span><span class="o">.</span><span class="n">get_formatter_by_name</span><span class="p">(</span><span class="s">&#39;html&#39;</span><span class="p">))</span>\
+                    <span class="o">+</span> <span class="n">text</span><span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">():]</span>
+            <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+  </div>
+  <div class='section'>
+    <a id="section-27" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-27'>#</a>
+          </div>
+          
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">extendMarkdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">md_globals</span><span class="p">):</span>
+        <span class="n">md</span><span class="o">.</span><span class="n">preprocessors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;fenced_code_highlight&#39;</span><span class="p">,</span> <span class="n">FencedCodeExtension</span><span class="o">.</span><span class="n">Prep</span><span class="p">(</span><span class="n">md</span><span class="p">),</span> <span class="s">&#39;&lt;html_block&#39;</span><span class="p">)</span>
 
 </pre></div>
         </div>

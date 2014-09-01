@@ -23,14 +23,20 @@
           <a class="source source-2" href="#section-22"> Mixins for brace-based languages (C/C++, JavaScript, PHP, etc.) </a>
           <a class="source source-2" href="#section-25"> Specific languages definitions </a>
           <a class="source source-3" href="#section-26"> C/C++ </a>
-          <a class="source source-3" href="#section-27"> JavaScript </a>
-          <a class="source source-3" href="#section-29"> Python </a>
-          <a class="source source-3" href="#section-33"> Ruby </a>
+          <a class="source source-3" href="#section-30"> JavaScript </a>
+          <a class="source source-3" href="#section-32"> Python </a>
+          <a class="source source-3" href="#section-36"> Ruby </a>
+          <a class="source source-2" href="#section-37"> Languages in development </a>
       </div>
     </div>
     </div>
     <div class="generation-time">
-        Generated at <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator"><img id="pyccoon-icon" src="../pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a><code>2014-09-01 20:25:27.809228</code>/ by a diligent <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
+        Generated at
+        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
+            <img id="pyccoon-icon" src="../pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
+        <code>2014-09-02 01:13:12.394885</code>/
+        by a diligent
+        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
   </div>
   <div class='section'>
@@ -86,7 +92,9 @@
         <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">SaneDefList</span><span class="p">(),</span>
         <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">Todo</span><span class="p">(),</span>
         <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">Pydoc</span><span class="p">(),</span>
-        <span class="s">&quot;def_list&quot;</span>
+        <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">AutoLinkExtension</span><span class="p">(),</span>
+        <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">FencedCodeExtension</span><span class="p">(),</span>
+        <span class="s">&quot;def_list&quot;</span>  <span class="c"># , &quot;fenced_code&quot;</span>
     <span class="p">]</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -376,8 +384,9 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-16'>#</a>
           </div>
-          <p>^\s<em>{}\s</em>(.+$)
-(^[ \t]<em>{}(.</em>)$)+</p>
+          <pre><code>^\s*{}\s*(.+$)
+(^[ \t]*{}(.*)$)+
+</code></pre>
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="nd">@cached_property</span>
@@ -487,7 +496,7 @@
           </div>
           <h2><span class="header" href="mixins-for-indent-based-languages-(python,-ruby,-etc.)"> Mixins for indent-based languages (Python, Ruby, etc.) </span><a id="mixins-for-indent-based-languages-(python,-ruby,-etc.)" class="header-anchor"></a></h2>
 <p>In indent-based languages it is quite easy to find a proper place to split the code section: basically, whenever an indent of the line becomes smaller, than the indent of the first line of the section - split up.</p>
-<p><span class=todo><strong>TODO</strong>: Consider using some preprocessor instead of literal matching of the indentation. For example, https://github.com/sirthias/parboiled/wiki/Indentation-Based-Grammars, https://github.com/Cirru/cirru-parser</span></p>
+<p><span class=todo><strong>TODO</strong>: Consider using some preprocessor instead of literal matching of the indentation. For example, <a href="https://github.com/sirthias/parboiled/wiki/Indentation-Based-Grammars">https://github.com/sirthias/parboiled/wiki/Indentation-Based-Grammars</a>, <a href="https://github.com/Cirru/cirru-parser">https://github.com/Cirru/cirru-parser</a></span></p>
 <p><span class=todo><strong>TODO</strong>: this docs block is parsed incorrectly - the problem is somewhere in the newline after the class definition (which is now in code style convention for Python 3)</span></p>
         </div>
         <div class='code'>
@@ -607,14 +616,14 @@
           <h3><span class="header" href="c/c++"> C/C++ </span><a id="c/c++" class="header-anchor"></a></h3>
 <p>Styling of the C/C++ code is largely historical and oriented on reading hopelessly long codes on the old terminal screens.</p>
 <p><span class=todo><strong>TODO</strong>: detect whole style docs blocks, for example, boxes:</span></p>
-<pre><code>////////////////////////////
-////// Nice comment! ///////
-////////////////////////////
+<div class="highlight"><pre>    <span class="c1">////////////////////////////</span>
+    <span class="c1">////// Nice comment! ///////</span>
+    <span class="c1">////////////////////////////</span>
 
-/***************************
-**** We love ASCII-art! ****
-***************************/
-</code></pre>
+    <span class="cm">/***************************</span>
+<span class="cm">    **** We love ASCII-art! ****</span>
+<span class="cm">    ***************************/</span>
+</pre></div>
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="n">BraceBasedLanguage</span><span class="p">,</span> <span class="n">InlineCommentLanguage</span><span class="p">,</span> <span class="n">MultilineCommentLanguage</span><span class="p">):</span>
@@ -626,24 +635,7 @@
     <span class="n">scope_keywords</span> <span class="o">=</span> <span class="p">[</span><span class="s">r&quot;\s*({}) \w+&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span>
                       <span class="p">[</span><span class="s">&quot;class&quot;</span><span class="p">,</span> <span class="s">&quot;function&quot;</span><span class="p">,</span> <span class="s">&quot;namespace&quot;</span><span class="p">,</span>
                        <span class="s">&quot;public&quot;</span><span class="p">,</span> <span class="s">&quot;private&quot;</span><span class="p">,</span> <span class="s">&quot;protected&quot;</span><span class="p">,</span> <span class="s">&quot;abstract&quot;</span><span class="p">,</span> <span class="s">&quot;inline&quot;</span><span class="p">,</span> <span class="s">&quot;virtual&quot;</span><span class="p">,</span>
-                       <span class="s">&quot;void&quot;</span><span class="p">,</span> <span class="s">&quot;int&quot;</span><span class="p">,</span> <span class="s">&quot;double&quot;</span><span class="p">,</span> <span class="s">&quot;bool&quot;</span><span class="p">,</span>  <span class="s">&quot;float&quot;</span><span class="p">]]</span>
-
-    <span class="n">markdown_extensions</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">LineConnector</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s">r&quot;([\w\.])[ \t]*\n[ \t]*(\w)&quot;</span><span class="p">),</span>
-        <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">SaneDefList</span><span class="p">(),</span>
-        <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">Todo</span><span class="p">(),</span>
-        <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">Pydoc</span><span class="p">(),</span>
-        <span class="s">&quot;def_list&quot;</span>
-    <span class="p">]</span>
-    <span class="nd">@iterate_sections</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">strip_commenting_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sections</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;docs_text&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r&quot;^\s*(\/+|\*+)(.*)$&quot;</span><span class="p">,</span> <span class="s">r&quot;\2&quot;</span><span class="p">,</span>
-                                          <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;docs_text&quot;</span><span class="p">],</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">base_strategy</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">strategy</span><span class="p">()</span>
-        <span class="n">base_strategy</span><span class="o">.</span><span class="n">insert_before</span><span class="p">(</span><span class="s">&#39;strip_docs_indentation&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">strip_commenting_design</span><span class="p">)</span>
-        <span class="n">base_strategy</span><span class="o">.</span><span class="n">insert_after</span><span class="p">(</span><span class="s">&#39;strip_docs_indentation&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_by_scopes</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">base_strategy</span></pre></div>
+                       <span class="s">&quot;void&quot;</span><span class="p">,</span> <span class="s">&quot;int&quot;</span><span class="p">,</span> <span class="s">&quot;double&quot;</span><span class="p">,</span> <span class="s">&quot;bool&quot;</span><span class="p">,</span>  <span class="s">&quot;float&quot;</span><span class="p">]]</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -655,12 +647,69 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-27'>#</a>
           </div>
+          <p><span class=fixme><strong>FIXME</strong>: this redefinition brakes the whole extension</span>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf"><strong>init</strong></span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o"><em></span><span class="n">args</span><span class="p">,</span> <span class="o"><strong></span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n"><strong>init</strong></span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o"></strong></span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ext</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">markdown_extensions</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">LineConnector</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">markdown_extensions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">LineConnector</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s">r&quot;([\w.])[ \t]</em>\n[ \t]*(\w)&quot;</span><span class="p">)</span>
+</pre></div></p>
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>    <span class="nd">@iterate_sections</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+  </div>
+  <div class='section'>
+    <a id="section-28" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-28'>#</a>
+          </div>
+          
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">strip_commenting_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sections</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;docs_text&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r&quot;^\s*(\/+|\*+)(.*)$&quot;</span><span class="p">,</span> <span class="s">r&quot;\2&quot;</span><span class="p">,</span>
+                                          <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;docs_text&quot;</span><span class="p">],</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+  </div>
+  <div class='section'>
+    <a id="section-29" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-29'>#</a>
+          </div>
+          
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">base_strategy</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">strategy</span><span class="p">()</span>
+        <span class="n">base_strategy</span><span class="o">.</span><span class="n">insert_before</span><span class="p">(</span><span class="s">&#39;strip_docs_indentation&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">strip_commenting_design</span><span class="p">)</span>
+        <span class="n">base_strategy</span><span class="o">.</span><span class="n">insert_after</span><span class="p">(</span><span class="s">&#39;strip_docs_indentation&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_by_scopes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">base_strategy</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+  </div>
+  <div class='section'>
+    <a id="section-30" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-30'>#</a>
+          </div>
           <h3><span class="header" href="javascript"> JavaScript </span><a id="javascript" class="header-anchor"></a></h3>
 <p>JavaScript is largely identical to C/C++, although it has far less scope keywords and far more flexibility in defining functions and objects.</p>
 <p><span class=todo><strong>TODO</strong>: test function-defining scopes</span></p>
-<pre><code>function name(args) { ... }
-name = function(args) { ... }
-</code></pre>
+<div class="highlight"><pre>    <span class="kd">function</span> <span class="nx">name</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">class</span> <span class="nc">JavaScript</span><span class="p">(</span><span class="n">C</span><span class="p">):</span>
@@ -672,11 +721,11 @@ name = function(args) { ... }
     </section>
   </div>
   <div class='section'>
-    <a id="section-28" class="section-anchor"></a>
+    <a id="section-31" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-28'>#</a>
+            <a class='octothorpe' href='#section-31'>#</a>
           </div>
           
         </div>
@@ -693,11 +742,11 @@ name = function(args) { ... }
     </section>
   </div>
   <div class='section'>
-    <a id="section-29" class="section-anchor"></a>
+    <a id="section-32" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-29'>#</a>
+            <a class='octothorpe' href='#section-32'>#</a>
           </div>
           <h3><span class="header" href="python"> Python </span><a id="python" class="header-anchor"></a></h3>
 <p>Obviously, Python language parsing is a best-developed part of Pyccoon.</p>
@@ -713,11 +762,11 @@ name = function(args) { ... }
     </section>
   </div>
   <div class='section'>
-    <a id="section-30" class="section-anchor"></a>
+    <a id="section-33" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-30'>#</a>
+            <a class='octothorpe' href='#section-33'>#</a>
           </div>
           <p><code>__init__.py</code> files can perfectly serve as modules index files.</p>
         </div>
@@ -732,11 +781,11 @@ name = function(args) { ... }
     </section>
   </div>
   <div class='section'>
-    <a id="section-31" class="section-anchor"></a>
+    <a id="section-34" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-31'>#</a>
+            <a class='octothorpe' href='#section-34'>#</a>
           </div>
           
         </div>
@@ -750,11 +799,11 @@ name = function(args) { ... }
     </section>
   </div>
   <div class='section'>
-    <a id="section-32" class="section-anchor"></a>
+    <a id="section-35" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-32'>#</a>
+            <a class='octothorpe' href='#section-35'>#</a>
           </div>
           <p>Python decorators are the tricky part of proper parsing of the source file into sections of docs and code.</p>
 <p>Whenever a decorator section occurs, it should be merged not into the previous sections,
@@ -773,11 +822,11 @@ but into the next.</p>
     </section>
   </div>
   <div class='section'>
-    <a id="section-33" class="section-anchor"></a>
+    <a id="section-36" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-33'>#</a>
+            <a class='octothorpe' href='#section-36'>#</a>
           </div>
           <h3><span class="header" href="ruby"> Ruby </span><a id="ruby" class="header-anchor"></a></h3>
 <p>Mostly identical to Python.</p>
@@ -795,74 +844,63 @@ but into the next.</p>
     </section>
   </div>
   <div class='section'>
-    <a id="section-34" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-34'>#</a>
-          </div>
-          <p>class CoffeScript(InlineCommentLanguage, MultilineCommentLanguage):
-    extensions = [".coffee"]
-    name = "Coffee-Script"
-    inline_delimiter = "#"
-    multistart = "###"
-    multiend = "###"</p>
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-  </div>
-  <div class='section'>
-    <a id="section-35" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-35'>#</a>
-          </div>
-          <p>class Perl(InlineCommentLanguage):
-    extensions = [".pl"]
-    inline_delimiter = "#"</p>
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-  </div>
-  <div class='section'>
-    <a id="section-36" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-36'>#</a>
-          </div>
-          <p>class SQL(InlineCommentLanguage):
-    extensions = [".sql"]
-    inline_delimiter = "--"</p>
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-  </div>
-  <div class='section'>
     <a id="section-37" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
             <a class='octothorpe' href='#section-37'>#</a>
           </div>
-          <p>class Scheme(InlineCommentLanguage, MultilineCommentLanguage):
-    extensions = [".scm"]
-    inline_delimiter = ";;"
-    multistart = "#|"
-    multiend = "|#"</p>
+          <h2><span class="header" href="languages-in-development"> Languages in development </span><a id="languages-in-development" class="header-anchor"></a></h2>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">CoffeScript</span><span class="p">(</span><span class="n">InlineCommentLanguage</span><span class="p">,</span> <span class="n">MultilineCommentLanguage</span><span class="p">):</span>
+    <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;.coffee&quot;</span><span class="p">]</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Coffee-Script&quot;</span>
+    <span class="n">inline_delimiter</span> <span class="o">=</span> <span class="s">&quot;#&quot;</span>
+    <span class="n">multistart</span> <span class="o">=</span> <span class="s">&quot;###&quot;</span>
+    <span class="n">multiend</span> <span class="o">=</span> <span class="s">&quot;###&quot;</span>
+
+<span class="k">class</span> <span class="nc">Perl</span><span class="p">(</span><span class="n">InlineCommentLanguage</span><span class="p">):</span>
+    <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;.pl&quot;</span><span class="p">]</span>
+    <span class="n">inline_delimiter</span> <span class="o">=</span> <span class="s">&quot;#&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">SQL</span><span class="p">(</span><span class="n">InlineCommentLanguage</span><span class="p">):</span>
+    <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;.sql&quot;</span><span class="p">]</span>
+    <span class="n">inline_delimiter</span> <span class="o">=</span> <span class="s">&quot;--&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">Scheme</span><span class="p">(</span><span class="n">InlineCommentLanguage</span><span class="p">,</span> <span class="n">MultilineCommentLanguage</span><span class="p">):</span>
+    <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;.scm&quot;</span><span class="p">]</span>
+    <span class="n">inline_delimiter</span> <span class="o">=</span> <span class="s">&quot;;;&quot;</span>
+    <span class="n">multistart</span> <span class="o">=</span> <span class="s">&quot;#|&quot;</span>
+    <span class="n">multiend</span> <span class="o">=</span> <span class="s">&quot;|#&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">Lua</span><span class="p">(</span><span class="n">InlineCommentLanguage</span><span class="p">,</span> <span class="n">MultilineCommentLanguage</span><span class="p">):</span>
+    <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;.lua&quot;</span><span class="p">]</span>
+    <span class="n">inline_delimiter</span> <span class="o">=</span> <span class="s">&quot;--&quot;</span>
+    <span class="n">multistart</span> <span class="o">=</span> <span class="s">&quot;--[[&quot;</span>
+    <span class="n">multiend</span> <span class="o">=</span> <span class="s">&quot;--]]&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">Erlang</span><span class="p">(</span><span class="n">InlineCommentLanguage</span><span class="p">):</span>
+    <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;.erl&quot;</span><span class="p">]</span>
+    <span class="n">inline_delimiter</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%%</span><span class="s">&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">Tcl</span><span class="p">(</span><span class="n">InlineCommentLanguage</span><span class="p">):</span>
+    <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;.tcl&quot;</span><span class="p">]</span>
+    <span class="n">inline_delimiter</span> <span class="o">=</span> <span class="s">&quot;#&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">Haskell</span><span class="p">(</span><span class="n">InlineCommentLanguage</span><span class="p">,</span> <span class="n">MultilineCommentLanguage</span><span class="p">):</span>
+    <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;.hs&quot;</span><span class="p">]</span>
+    <span class="n">inline_delimiter</span> <span class="o">=</span> <span class="s">&quot;--&quot;</span>
+    <span class="n">multistart</span> <span class="o">=</span> <span class="s">&quot;{-&quot;</span>
+    <span class="n">multiend</span> <span class="o">=</span> <span class="s">&quot;-}&quot;</span>
+</pre></div>
         </div>
         <div class='code'>
-          <div class="highlight"><pre></pre></div>
+          <div class="highlight"><pre><span class="n">extensions_mapping</span> <span class="o">=</span> <span class="p">{}</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -873,78 +911,6 @@ but into the next.</p>
         <div class='docs'>
           <div class='octowrap'>
             <a class='octothorpe' href='#section-38'>#</a>
-          </div>
-          <p>class Lua(InlineCommentLanguage, MultilineCommentLanguage):
-    extensions = [".lua"]
-    inline_delimiter = "--"
-    multistart = "--[["
-    multiend = "--]]"</p>
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-  </div>
-  <div class='section'>
-    <a id="section-39" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-39'>#</a>
-          </div>
-          <p>class Erlang(InlineCommentLanguage):
-    extensions = [".erl"]
-    inline_delimiter = "%%"</p>
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-  </div>
-  <div class='section'>
-    <a id="section-40" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-40'>#</a>
-          </div>
-          <p>class Tcl(InlineCommentLanguage):
-    extensions = [".tcl"]
-    inline_delimiter = "#"</p>
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-  </div>
-  <div class='section'>
-    <a id="section-41" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-41'>#</a>
-          </div>
-          <p>class Haskell(InlineCommentLanguage, MultilineCommentLanguage):
-    extensions = [".hs"]
-    inline_delimiter = "--"
-    multistart = "{-"
-    multiend = "-}"</p>
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre><span class="n">extensions_mapping</span> <span class="o">=</span> <span class="p">{}</span></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-  </div>
-  <div class='section'>
-    <a id="section-42" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-42'>#</a>
           </div>
           <p>languages = [CoffeScript, Perl, SQL, C, PHP,  JavaScript, Ruby, Python, Scheme,
 Lua, Erlang, Tcl, Haskell]</p>
@@ -961,11 +927,11 @@ Lua, Erlang, Tcl, Haskell]</p>
     </section>
   </div>
   <div class='section'>
-    <a id="section-43" class="section-anchor"></a>
+    <a id="section-39" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-43'>#</a>
+            <a class='octothorpe' href='#section-39'>#</a>
           </div>
           <p>Get the current language we're documenting, based on the extension.</p>
         </div>
