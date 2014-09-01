@@ -117,6 +117,7 @@ class Pyccoon:
                 self.language = get_language(source, code, language=language)
                 if not self.language:
                     process = False
+                    self.sources[source] = (dest, process)
 
                 try:
                     ensure_directory(os.path.split(dest)[0])
@@ -145,12 +146,12 @@ class Pyccoon:
             if not any([os.path.join(self.outdir, index) == dest
                         for _, (dest, _) in self.sources.items()]):
                 source = os.path.join(folder, 'index.html')
-                self.sources[source] = (index, False)
+                self.sources[source] = (os.path.join(self.outdir, index), False)
 
                 with open(os.path.join(self.outdir, index), 'w') as f:
                     self.language = Language()
                     f.write(self.generate_html(source, []))
-                    print("Generated -> {:s} {:s}".format(source))
+                    print("Generated -> {:s}".format(source))
 
     def template(self, source):
         return lambda context: pystache.render(source, context)
