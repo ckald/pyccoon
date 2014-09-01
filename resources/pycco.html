@@ -7,9 +7,13 @@
 </head>
 <body>
 <div id='container'>
+  <a id="top"></a>
   <div id="background"></div>
-  {{#contents?}}
-  <div id="jump_to">
+  <div id="footer">
+    <a class="btn" id="project-name" href="{{ root_path }}/index.html">{{{ project_name }}}</a>
+    <a class="btn" class="source source-1" href="#top">Back to top</a>
+    {{#contents?}}
+    <div id="jump_to" class="btn">
     Contents
     <div id="jump_wrapper">
       <div id="jump_page">
@@ -18,8 +22,12 @@
         {{/contents}}
       </div>
     </div>
+    </div>
+    {{/contents?}}
+    <div class="generation-time">
+        Generated at <img id="pyccoon-icon" src="{{ root_path }}/pyccoon_icon.svg"><code>{{ generation_time }}</code>/ by a diligent <a target="_blank" href="http://ckald.github.io/pyccoon/">pyccoon</a>
+    </div>
   </div>
-  {{/contents?}}
   <div class='section'>
     <div class='docs'>
       <h1 id="breadcrumbs">{{#breadcrumbs}}/ <a href="{{ path }}">{{ title }}</a> {{/breadcrumbs}}</h1>
