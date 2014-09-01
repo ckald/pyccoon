@@ -51,7 +51,6 @@ class Pyccoon:
         self.outdir = os.path.abspath(self.outdir)
         self.sourcedir = os.path.abspath(self.sourcedir)
 
-        self.sources = []
         # Try to get `.pyccoon` config file
         self.config_file = os.path.join(self.sourcedir, '.pyccoon')
         self.config = defaultdict(lambda: [])
@@ -66,11 +65,21 @@ class Pyccoon:
         self.project_name = self.config['project_name'] \
             or (os.path.split(self.sourcedir)[1] + " documentation")
 
+        self.sources = {}
         for dirpath, dirnames, files in os.walk(self.sourcedir):
             for name in files:
-                if name not in dirnames:
-                    self.sources.append(os.path.relpath(os.path.join(dirpath, name),
-                                                        self.sourcedir))
+                if not any([regex.search(name) for regex in self.config['skip_files']]) \
+                        and name not in dirnames:
+                    source = os.path.relpath(os.path.join(dirpath, name), self.sourcedir)
+                    process = True
+                    if any([regex.search(name) for regex in self.config['copy_files']]):
+                        process = False
+
+                    with open(os.path.join(self.sourcedir, source), "r") as sourcefile:
+                        code = sourcefile.read()
+
+                    self.language = get_language(source, code)
+                    self.sources[source] = (self.destination(source), process)
 
         # Create the template that we will use to generate the Pyccoon HTML page.
         self.page_template = self.template(resources.html)
@@ -82,7 +91,7 @@ class Pyccoon:
         # be able to tell which files exist and will much simplify the cross-referencing and stuff
 
         if not sources:
-            sources = sorted(self.sources)
+            sources = self.sources
 
         if not sources:
             return
@@ -92,31 +101,34 @@ class Pyccoon:
             css_file.write(resources.css)
 
         # Proceed to generating the documentation.
-        while sources:
-            source = sources.pop(0)
+        for source, (dest, process) in sources.items():
 
-            with open(os.path.join(self.sourcedir, source), "r") as sourcefile:
-                code = sourcefile.read()
+            if process:
+                with open(os.path.join(self.sourcedir, source), "r") as sourcefile:
+                    code = sourcefile.read()
 
-            self.language = get_language(source, code, language=language)
-            if not self.language:
-                print("{:s} -> Skipped".format(source))
-                continue
+                self.language = get_language(source, code, language=language)
+                if not self.language:
+                    print("{:s} -> Skipped".format(source))
+                    continue
 
-            dest = self.destination(source)
+                try:
+                    ensure_directory(os.path.split(dest)[0])
+                except OSError:
+                    pass
 
-            try:
-                ensure_directory(os.path.split(dest)[0])
-            except OSError:
-                pass
+                if os.path.exists(os.path.join(self.sourcedir, source)):
+                    with open(dest, "w") as f:
+                        f.write(self.generate_documentation(source, code, language=self.language))
 
-            if os.path.exists(os.path.join(self.sourcedir, source)):
-                with open(dest, "w") as f:
-                    f.write(self.generate_documentation(source, code, language=self.language))
+                    print("{:s} -> {:s}".format(source, os.path.relpath(dest, self.outdir)))
+                else:
+                    print("File does not exist: {:s}".format(source))
 
-                print("{:s} -> {:s}".format(source, os.path.relpath(dest, self.outdir)))
             else:
-                print("File does not exist: {:s}".format(source))
+                ensure_directory(os.path.split(dest)[0])
+                shutil.copyfile(os.path.join(self.sourcedir, source), dest)
+                print("{:s} -> Copied".format(source))
 
         # Ensure there is always an index file in the output folder
         for root, dirs, files in os.walk(self.outdir):
@@ -276,25 +288,32 @@ class Pyccoon:
 
         children = []
         folder = os.path.split(os.path.join(self.sourcedir, source))[0]
+        relfolder = os.path.relpath(folder, self.sourcedir)
         for filename in os.listdir(folder):
-            isdir = False
-            filepath = None
+            if not any([regex.search(filename) for regex in self.config['skip_files']]):
+                isdir = False
+                filepath = None
 
-            if os.path.isdir(os.path.join(folder, filename)):
-                isdir = True
-                filepath = os.path.join(filename, "index.html")
-            else:
-                if filename in index_names:
-                    filepath = "index.html"
+                if os.path.isdir(os.path.join(folder, filename)):
+                    isdir = True
+                    filepath = os.path.join(filename, "index.html")
                 else:
-                    filepath = filename + ".html"
+                    if filename in index_names:
+                        filepath = "index.html"
+                    elif os.path.join(relfolder, filename).lstrip("./") in self.sources:
 
-            if filepath:
-                children.append({
-                    "title": filename,
-                    "path": filepath,
-                    "isdir": isdir
-                })
+                        filepath = filename
+                        if self.sources[os.path.join(relfolder, filename).lstrip("./")][1]:
+                            filepath = filepath + ".html"
+                    else:
+                        continue
+
+                if filepath:
+                    children.append({
+                        "title": filename,
+                        "path": filepath,
+                        "isdir": isdir
+                    })
 
         return sorted(children, key=lambda x: not x['isdir'])
 
@@ -358,7 +377,10 @@ class Pyccoon:
         """
 
         dirname, filename = os.path.split(filepath)
-        name = self.language.transform_filename(filename)
+        if self.language:
+            name = self.language.transform_filename(filename)
+        else:
+            name = filename
         return os.path.normpath(os.path.join(self.outdir, os.path.join(dirname, name)))
 
 
