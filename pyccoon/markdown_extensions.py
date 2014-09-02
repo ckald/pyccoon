@@ -5,9 +5,6 @@ from markdown.inlinepatterns import Pattern
 from markdown.preprocessors import Preprocessor
 from markdown.extensions import Extension
 
-import pygments
-from pygments import lexers, formatters
-
 
 class Todo(Extension):
     class Prep(Preprocessor):
@@ -18,14 +15,14 @@ class Todo(Extension):
         """
 
         matched_strings = ["TODO", "FIXME", "WARNING", "CAUTION"]
-        regex = re.compile("(#|^)\s*(" + "|".join(matched_strings) + ":?)(.*)", flags=re.I)
+        regex = re.compile("^\s*(" + "|".join(matched_strings) + ":?)(.*)", flags=re.I)
 
         def template(self, match):
             """
             Intended markup for TODO strings. The type of the string is used as a class.
             """
-            return "{:s}<span class={:s}><strong>{:s}</strong>{:s}</span>"\
-                .format(match.group(1), match.group(2).lower(), match.group(2), match.group(3))
+            return "<span class={:s}><strong>{:s}</strong>{:s}</span>"\
+                .format(match.group(1).lower(), match.group(1), match.group(2))
 
         def run(self, lines):
             """

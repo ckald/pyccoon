@@ -103,12 +103,15 @@ class Language(object):
 
     @iterate_sections(start=0)
     def set_sections_levels(self, sections, i):
-        indent = re.match(r"^([ \t]*)", sections[i]["code_text"]).group(1)
-        sections[i]["level"] = len(indent)
+        if sections[i]["code_text"]:
+            indent = re.match(r"^([ \t]*)", sections[i]["code_text"]).group(1)
+            sections[i]["level"] = len(indent)
+        elif i > 0:
+            sections[i]["level"] = sections[i-1]['level']
 
     @iterate_sections(start=0)
     def strip_docs_indentation(self, sections, i):
-        indent = re.match(r"^([ \t]*)", sections[i]["docs_text"]).group(1)
+        indent = re.match(r"^([ \t]*)", sections[i]["docs_text"], re.M).group(1)
 
         sections[i]["docs_text"] = re.sub(r"^{}".format(indent), "",
                                           sections[i]["docs_text"], flags=re.M)
@@ -133,17 +136,15 @@ class Language(object):
         if not sections[i-1].has_code() and sections[i-1].has_docs()\
                 and not sections[i].has_docs() and sections[i].has_code():
             sections[i-1]["code_text"] = sections[i]["code_text"]
-            sections[i-1]["scope"] = sections[i]["scope"]
+            sections[i-1]["scope"] = sections[i]["scope"] or sections[i-1]["scope"]
             sections[i:i+1] = []
 
     @iterate_sections()
     def absorb(self, sections, i):
         """ Absorb next code-only section if it lies deeper than the current one (that has docs)"""
-
         if not sections[i].has_docs() and sections[i]['level'] > sections[i-1]['level']:
-            sections[i-1]['code_text'] += '\n' + sections[i]['code_text'].strip("\n")
+            sections[i-1]['code_text'] += '\n\n' + sections[i]['code_text'].strip("\n")
             sections[i:i+1] = []
-            return i
 
 
 class InlineCommentLanguage(Language):
@@ -219,16 +220,16 @@ class MultilineCommentLanguage(Language):
     @iterate_sections(start=0)
     def parse_multiline(self, sections, i):
         sections[i:i+1] = split_section_by_regex(sections[i], self.multiline_re)
-        sections[i]["docs_text"] = re.sub(r"^(\s*){}".format(self.multistart), r"\1",
-                                          sections[i]["docs_text"]).strip("\n")
+        sections[i]["docs_text"] = re.sub(r"^\n*(\s*){}".format(self.multistart),
+                                          r"\1",
+                                          sections[i]["docs_text"])
 
 
 class IndentBasedLanguage(Language):
-
     """
     == Mixins for indent-based languages (Python, Ruby, etc.) ==
 
-    In indent-based languages it is quite easy to find a proper place to split the code section:\
+    In indent-based languages it is quite easy to find a proper place to split the code section: \
     basically, whenever an indent of the line becomes smaller, than the indent of the first line \
     of the section - split up.
 
@@ -256,6 +257,7 @@ class IndentBasedLanguage(Language):
         match = regex.search(sections[i]["code_text"])
 
         if match and match.start() == 0:
+            sections[i]['scope'] = match.group(1).strip()
             match = regex.search(sections[i]["code_text"], pos=match.start() + 1)
 
         if match:
@@ -339,7 +341,7 @@ class C(BraceBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
 
     @iterate_sections(start=0)
     def strip_commenting_design(self, sections, i):
-        sections[i]["docs_text"] = re.sub(r"^\s*(\/+|\*+)(.*)$", r"\2",
+        sections[i]["docs_text"] = re.sub(r"^[ \t]*(\/+|\*+)(.*)$", r"\2",
                                           sections[i]["docs_text"], flags=re.M)
 
     def strategy(self):
@@ -409,11 +411,11 @@ class Python(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguag
         Whenever a decorator section occurs, it should be merged not into the previous sections,
         but into the next.
         """
-        if '@' in sections[i-1]['scope']:
-            sections[i]['code_text'] = sections[i-1]['code_text'].strip("\n") \
-                + '\n' + sections[i]['code_text'].strip("\n")
 
+        if '@' in sections[i-1]['scope']:
+            sections[i]['code_text'] = sections[i-1]['code_text'] + sections[i]['code_text']
             sections[i-1:i+1] = [sections[i]]
+            return i
 
 
 class Ruby(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
