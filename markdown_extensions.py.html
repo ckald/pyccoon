@@ -16,7 +16,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-02 01:13:12.241198</code>/
+        <code>2014-09-02 02:40:58.905277</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -239,12 +239,14 @@
             <a class='octothorpe' href='#section-12'>#</a>
           </div>
           <p>Searches for a line starting with a literal followed by a colon and multiple spaces:</p>
-<pre><code>some arbitrary parameter name
-:   and its definition separated by `:\s\s+`
+<div class="codehilite"><pre><span class="n">some</span> <span class="n">arbitrary</span> <span class="n">parameter</span> <span class="n">name</span>
+<span class="o">:</span>   <span class="n">and</span> <span class="n">its</span> <span class="n">definition</span> <span class="n">separated</span> <span class="n">by</span> <span class="err">`</span><span class="o">:</span><span class="err">\</span><span class="n">s</span><span class="err">\</span><span class="n">s</span><span class="o">+</span><span class="err">`</span>
 
-`parameter name` might contain everything except a [colon](//en.wikipedia.org/wiki/Colon_(punctuation)) and be multiline
-:   it still works
-</code></pre>
+<span class="err">`</span><span class="n">parameter</span> <span class="n">name</span><span class="err">`</span> <span class="n">might</span> <span class="n">contain</span> <span class="n">everything</span> <span class="n">except</span> <span class="n">a</span> <span class="p">[</span><span class="n">colon</span><span class="p">](</span><span class="c1">//en.wikipedia.org/wiki/Colon_(punctuation)) and be multiline</span>
+<span class="o">:</span>   <span class="n">it</span> <span class="n">still</span> <span class="n">works</span>
+</pre></div>
+
+
 <p>And turns it into:</p>
 <dl>
 <dt>some arbitrary parameter name</dt>
@@ -481,72 +483,7 @@
             <span class="s">&#39;extra_autolink&#39;</span><span class="p">,</span>
             <span class="n">AutoLinkExtension</span><span class="o">.</span><span class="n">pattern</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">EXTRA_AUTOLINK_RE</span><span class="p">,</span> <span class="bp">self</span><span class="p">),</span>
             <span class="s">&#39;&gt;autolink&#39;</span>
-        <span class="p">)</span></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-  </div>
-  <div class='section'>
-    <a id="section-25" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-25'>#</a>
-          </div>
-          
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre><span class="k">class</span> <span class="nc">FencedCodeExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-  </div>
-  <div class='section'>
-    <a id="section-26" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-26'>#</a>
-          </div>
-          <p>Preprocessor used to parse fenced code blocks (Github syntax) highlight and format them.</p>
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Prep</span><span class="p">(</span><span class="n">Preprocessor</span><span class="p">):</span>
-        <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;```(\w*)$\n^([\s\S]*)$\n^\s*```&#39;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-                <span class="n">code</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-                <span class="n">language</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">lexer</span> <span class="o">=</span> <span class="n">lexers</span><span class="o">.</span><span class="n">get_lexer_by_name</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
-                <span class="k">except</span><span class="p">:</span>
-                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Pygments lexer `{}` not found, guessing&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">language</span><span class="p">))</span>
-                    <span class="n">lexer</span> <span class="o">=</span> <span class="n">lexers</span><span class="o">.</span><span class="n">guess_lexer</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
-
-                <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">()]</span>\
-                    <span class="o">+</span> <span class="n">pygments</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span>
-                        <span class="n">code</span><span class="p">,</span> <span class="n">lexer</span><span class="p">,</span>
-                        <span class="n">formatters</span><span class="o">.</span><span class="n">get_formatter_by_name</span><span class="p">(</span><span class="s">&#39;html&#39;</span><span class="p">))</span>\
-                    <span class="o">+</span> <span class="n">text</span><span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">():]</span>
-            <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-  </div>
-  <div class='section'>
-    <a id="section-27" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-27'>#</a>
-          </div>
-          
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">extendMarkdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">md_globals</span><span class="p">):</span>
-        <span class="n">md</span><span class="o">.</span><span class="n">preprocessors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;fenced_code_highlight&#39;</span><span class="p">,</span> <span class="n">FencedCodeExtension</span><span class="o">.</span><span class="n">Prep</span><span class="p">(</span><span class="n">md</span><span class="p">),</span> <span class="s">&#39;&lt;html_block&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
 
 </pre></div>
         </div>

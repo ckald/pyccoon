@@ -34,7 +34,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="../pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-02 01:13:12.394885</code>/
+        <code>2014-09-02 02:40:59.087883</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -93,8 +93,7 @@
         <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">Todo</span><span class="p">(),</span>
         <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">Pydoc</span><span class="p">(),</span>
         <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">AutoLinkExtension</span><span class="p">(),</span>
-        <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">FencedCodeExtension</span><span class="p">(),</span>
-        <span class="s">&quot;def_list&quot;</span>  <span class="c"># , &quot;fenced_code&quot;</span>
+        <span class="s">&quot;def_list&quot;</span><span class="p">,</span> <span class="s">&quot;fenced_code&quot;</span><span class="p">,</span> <span class="s">&#39;codehilite&#39;</span>
     <span class="p">]</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -384,9 +383,9 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-16'>#</a>
           </div>
-          <pre><code>^\s*{}\s*(.+$)
-(^[ \t]*{}(.*)$)+
-</code></pre>
+          <div class="codehilite"><pre><span class="o">^</span><span class="err">\</span><span class="n">s</span><span class="o">*</span><span class="p">{}</span><span class="err">\</span><span class="n">s</span><span class="o">*</span><span class="p">(.</span><span class="o">+</span><span class="err">$</span><span class="p">)</span>
+<span class="p">(</span><span class="o">^</span><span class="p">[</span> <span class="err">\</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="p">{}(.</span><span class="o">*</span><span class="p">)</span><span class="err">$</span><span class="p">)</span><span class="o">+</span>
+</pre></div>
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="nd">@cached_property</span>
@@ -616,7 +615,7 @@
           <h3><span class="header" href="c/c++"> C/C++ </span><a id="c/c++" class="header-anchor"></a></h3>
 <p>Styling of the C/C++ code is largely historical and oriented on reading hopelessly long codes on the old terminal screens.</p>
 <p><span class=todo><strong>TODO</strong>: detect whole style docs blocks, for example, boxes:</span></p>
-<div class="highlight"><pre>    <span class="c1">////////////////////////////</span>
+<div class="codehilite"><pre>    <span class="c1">////////////////////////////</span>
     <span class="c1">////// Nice comment! ///////</span>
     <span class="c1">////////////////////////////</span>
 
@@ -647,13 +646,14 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-27'>#</a>
           </div>
-          <p><span class=fixme><strong>FIXME</strong>: this redefinition brakes the whole extension</span>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf"><strong>init</strong></span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o"><em></span><span class="n">args</span><span class="p">,</span> <span class="o"><strong></span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="nb">super</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n"><strong>init</strong></span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o"></strong></span><span class="n">kwargs</span><span class="p">)</span>
+          <p><span class=fixme><strong>FIXME</strong>: this redefinition brakes the whole extension</span></p>
+<div class="codehilite"><pre><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ext</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">markdown_extensions</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">LineConnector</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">markdown_extensions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">LineConnector</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s">r&quot;([\w.])[ \t]</em>\n[ \t]*(\w)&quot;</span><span class="p">)</span>
-</pre></div></p>
+            <span class="bp">self</span><span class="o">.</span><span class="n">markdown_extensions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> \
+                <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">LineConnector</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s">r&quot;([\w\.])[ \t]*\n[ \t]*(\w)&quot;</span><span class="p">)</span>
+</pre></div>
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="nd">@iterate_sections</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></pre></div>
@@ -707,7 +707,7 @@
           <h3><span class="header" href="javascript"> JavaScript </span><a id="javascript" class="header-anchor"></a></h3>
 <p>JavaScript is largely identical to C/C++, although it has far less scope keywords and far more flexibility in defining functions and objects.</p>
 <p><span class=todo><strong>TODO</strong>: test function-defining scopes</span></p>
-<div class="highlight"><pre>    <span class="kd">function</span> <span class="nx">name</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<div class="codehilite"><pre>    <span class="kd">function</span> <span class="nx">name</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
     <span class="nx">name</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
 </pre></div>
         </div>
@@ -851,12 +851,13 @@ but into the next.</p>
             <a class='octothorpe' href='#section-37'>#</a>
           </div>
           <h2><span class="header" href="languages-in-development"> Languages in development </span><a id="languages-in-development" class="header-anchor"></a></h2>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">CoffeScript</span><span class="p">(</span><span class="n">InlineCommentLanguage</span><span class="p">,</span> <span class="n">MultilineCommentLanguage</span><span class="p">):</span>
+<div class="codehilite"><pre><span class="k">class</span> <span class="nc">CoffeScript</span><span class="p">(</span><span class="n">InlineCommentLanguage</span><span class="p">,</span> <span class="n">MultilineCommentLanguage</span><span class="p">):</span>
     <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;.coffee&quot;</span><span class="p">]</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Coffee-Script&quot;</span>
     <span class="n">inline_delimiter</span> <span class="o">=</span> <span class="s">&quot;#&quot;</span>
     <span class="n">multistart</span> <span class="o">=</span> <span class="s">&quot;###&quot;</span>
     <span class="n">multiend</span> <span class="o">=</span> <span class="s">&quot;###&quot;</span>
+
 
 <span class="k">class</span> <span class="nc">Perl</span><span class="p">(</span><span class="n">InlineCommentLanguage</span><span class="p">):</span>
     <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;.pl&quot;</span><span class="p">]</span>

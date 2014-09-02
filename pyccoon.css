@@ -212,11 +212,15 @@ div.code {
   .code pre, .docs p code {
     font-size: 12px;
   }
-  .docs .highlight {
+  .docs .codehilite {
     font-size: 12px;
     opacity: 0.7;
+    overflow: auto;
   }
-  .docs .highlight:hover {
+  .docs .codehilite pre {
+    white-space: pre;
+  }
+  .docs:hover .codehilite {
     opacity: 1;
   }
     pre, tt, code {
