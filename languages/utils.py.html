@@ -16,7 +16,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="../pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-02 02:40:58.820976</code>/
+        <code>2014-09-02 03:54:25.079752</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -39,6 +39,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">class</span> <span class="nc">Section</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></pre></div>
         </div>
@@ -56,6 +57,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">has_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s">&quot;code_text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span></pre></div>
         </div>
         <div class='clearall'></div>
@@ -72,6 +74,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">has_docs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s">&quot;docs_text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span></pre></div>
         </div>
         <div class='clearall'></div>
@@ -88,6 +91,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__missing__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+
         <span class="k">return</span> <span class="s">&#39;&#39;</span></pre></div>
         </div>
         <div class='clearall'></div>
@@ -135,6 +139,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+
         <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span></pre></div>
         </div>
@@ -152,6 +157,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+
         <span class="n">index</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">__name__</span> <span class="o">==</span> <span class="n">name</span><span class="p">),</span> <span class="bp">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">index</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Step &#39;{}&#39;&#39; not found in the strategy: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span>
@@ -172,6 +178,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">insert_before</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">method</span><span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
@@ -188,6 +195,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">insert_after</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
@@ -204,6 +212,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">key</span><span class="p">))</span></pre></div>
         </div>
         <div class='clearall'></div>
@@ -222,17 +231,8 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">def</span> <span class="nf">iterate_sections</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">increment</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">wrapped_f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sections</span><span class="p">):</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="n">start</span>
-            <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">sections</span><span class="p">)</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                <span class="n">new_i</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sections</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-                <span class="n">i</span> <span class="o">=</span> <span class="n">new_i</span> <span class="k">if</span> <span class="n">new_i</span> <span class="k">else</span> <span class="n">i</span> <span class="o">+</span> <span class="n">increment</span>
 
-            <span class="k">return</span> <span class="n">sections</span>
-
-        <span class="n">wrapped_f</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">__name__</span>
-        <span class="k">return</span> <span class="n">wrapped_f</span></pre></div>
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">f</span><span class="p">):</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -247,7 +247,16 @@
           
         </div>
         <div class='code'>
-          <div class="highlight"><pre>    <span class="k">return</span> <span class="n">wrap</span></pre></div>
+          <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">wrapped_f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sections</span><span class="p">):</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">start</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">sections</span><span class="p">)</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">new_i</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sections</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">new_i</span> <span class="k">if</span> <span class="n">new_i</span> <span class="k">else</span> <span class="n">i</span> <span class="o">+</span> <span class="n">increment</span>
+
+            <span class="k">return</span> <span class="n">sections</span>
+
+        <span class="n">wrapped_f</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="k">return</span> <span class="n">wrapped_f</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -259,10 +268,26 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-13'>#</a>
           </div>
+          
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>    <span class="k">return</span> <span class="n">wrap</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+  </div>
+  <div class='section'>
+    <a id="section-14" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-14'>#</a>
+          </div>
           <p>Helper method that splits a section into parts using the <code>regex</code> matching against the section code </p>
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">def</span> <span class="nf">split_section_by_regex</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">section</span><span class="o">.</span><span class="n">has_code</span><span class="p">():</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">section</span><span class="p">]</span>
 
@@ -285,11 +310,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-14" class="section-anchor"></a>
+    <a id="section-15" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-14'>#</a>
+            <a class='octothorpe' href='#section-15'>#</a>
           </div>
           
         </div>

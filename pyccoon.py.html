@@ -27,7 +27,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-02 02:40:59.252887</code>/
+        <code>2014-09-02 03:54:25.484885</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -383,6 +383,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">generate_documentation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
         <span class="n">sections</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">add_lineno</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">add_lineno</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sections</span><span class="p">,</span> <span class="n">language</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_html</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sections</span><span class="p">)</span></pre></div>
@@ -432,6 +433,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">slugify</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+
             <span class="k">return</span> <span class="s">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">))</span></pre></div>
         </div>
         <div class='clearall'></div>
@@ -514,9 +516,6 @@
                 <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
             <span class="p">})</span>
 
-        <span class="n">comment</span> <span class="o">=</span> <span class="n">comment</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&lt;&#39;</span><span class="p">,</span> <span class="s">&#39;&amp;lt;&#39;</span><span class="p">)</span>
-        <span class="n">comment</span> <span class="o">=</span> <span class="n">comment</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s">&#39;&amp;gt;&#39;</span><span class="p">)</span>
-
         <span class="n">comment</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;^\s*#?\s*([=]+)([^=</span><span class="se">\n</span><span class="s">]+)([=]+)&#39;</span><span class="p">,</span> <span class="n">replace_section_name</span><span class="p">,</span> <span class="n">comment</span><span class="p">,</span>
                          <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
         <span class="n">comment</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;\[\[([^\|]+\|)?(.+?)\]\]&#39;</span><span class="p">,</span> <span class="n">replace_crossref</span><span class="p">,</span> <span class="n">comment</span><span class="p">)</span>
@@ -553,6 +552,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">highlight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">sections</span><span class="p">,</span> <span class="n">language</span><span class="p">):</span>
+
         <span class="n">output</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span>
             <span class="n">language</span><span class="o">.</span><span class="n">divider_text</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">section</span><span class="p">[</span><span class="s">&quot;code_text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span> <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">sections</span><span class="p">)</span>
         <span class="p">)</span>
@@ -596,6 +596,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">generate_breadcrumbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+
         <span class="n">breadcrumbs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">crumbpath</span> <span class="o">=</span> <span class="bp">None</span>
 
@@ -635,6 +636,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">generate_navigation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+
         <span class="n">index_names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;__init__.py&#39;</span><span class="p">,</span> <span class="s">&#39;index.html&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">index_names</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
@@ -684,6 +686,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">generate_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sections</span><span class="p">):</span>
+
         <span class="n">contents</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">sections</span><span class="p">:</span>
@@ -714,6 +717,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">generate_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">sections</span><span class="p">):</span>
+
         <span class="n">dest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
         <span class="n">title</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">)</span>
         <span class="n">page_title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span> <span class="o">+</span> <span class="s">&quot;: &quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s">&#39;./&#39;</span><span class="p">)</span>
@@ -754,6 +758,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">destination</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+
         <span class="n">dirname</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="o">.</span><span class="n">transform_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -775,6 +780,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
     <span class="n">parser</span> <span class="o">=</span> <span class="n">optparse</span><span class="o">.</span><span class="n">OptionParser</span><span class="p">()</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;-s&#39;</span><span class="p">,</span> <span class="s">&#39;--source&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">,</span>
                       <span class="n">dest</span><span class="o">=</span><span class="s">&#39;sourcedir&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;.&#39;</span><span class="p">,</span>

@@ -16,7 +16,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-02 02:40:59.280972</code>/
+        <code>2014-09-02 03:54:25.512071</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -66,10 +66,11 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-2'>#</a>
           </div>
-          <p>&lt;factory&gt; is called such: factory(instance) to build the attribute.</p>
+          <p><factory> is called such: factory(instance) to build the attribute.</p>
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factory</span><span class="p">):</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_attr_name</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">__name__</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_factory</span> <span class="o">=</span> <span class="n">factory</span></pre></div>
         </div>
@@ -87,6 +88,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+
         <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_factory</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
@@ -121,6 +123,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
+
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
@@ -140,6 +143,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">def</span> <span class="nf">ensure_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span></pre></div>
         </div>
