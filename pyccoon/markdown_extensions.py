@@ -167,36 +167,3 @@ class AutoLinkExtension(Extension):
             AutoLinkExtension.pattern(self.EXTRA_AUTOLINK_RE, self),
             '>autolink'
         )
-
-
-class FencedCodeExtension(Extension):
-
-    class Prep(Preprocessor):
-
-        """
-        Preprocessor used to parse fenced code blocks (Github syntax) highlight and format them.
-        """
-
-        regex = re.compile(r'```(\w*)$\n^([\s\S]*)$\n^\s*```', flags=re.M)
-
-        def run(self, lines):
-            text = "\n".join(lines)
-            for match in self.regex.finditer(text):
-                code = match.group(2)
-                language = match.group(1)
-
-                try:
-                    lexer = lexers.get_lexer_by_name(language)
-                except:
-                    print("Pygments lexer `{}` not found, guessing".format(language))
-                    lexer = lexers.guess_lexer(code)
-
-                text = text[:match.start()]\
-                    + pygments.highlight(
-                        code, lexer,
-                        formatters.get_formatter_by_name('html'))\
-                    + text[match.end():]
-            return text.split('\n')
-
-    def extendMarkdown(self, md, md_globals):
-        md.preprocessors.add('fenced_code_highlight', FencedCodeExtension.Prep(md), '<html_block')
