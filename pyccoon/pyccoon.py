@@ -228,9 +228,6 @@ class Pyccoon:
                 "name": match.group(2)
             })
 
-        comment = comment.replace('<', '&lt;')
-        comment = comment.replace('>', '&gt;')
-
         comment = re.sub('^\s*#?\s*([=]+)([^=\n]+)([=]+)', replace_section_name, comment,
                          flags=re.M)
         comment = re.sub('\[\[([^\|]+\|)?(.+?)\]\]', replace_crossref, comment)
