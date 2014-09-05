@@ -34,6 +34,7 @@ Side-to-side documentation generator. Fork of the [Pycco](http://fitzgen.github.
       - [ ] Haskell
       - [ ] CSS, LESS, SASS
   - [ ] Fix bugs:
+      - [ ] Fix `--watch` option
       - [ ] Broken cross-referencing (wikilinks)
       - [ ] ?
   - [ ] Additional features:
@@ -41,5 +42,6 @@ Side-to-side documentation generator. Fork of the [Pycco](http://fitzgen.github.
       - [ ] Search
       - [ ] Extended docblocks parsing (capturing shortcuts and aliases for cross-linking)
       - [ ] Mixed documents parsing: HTML/JS/CSS, HTML/PHP, etc.
+      - [ ] `TODO:` statements, linting and coverage reports
 
 Raccoon designed by <a href="http://www.thenounproject.com/cnpresler">Christy Presler</a> from the <a href="http://www.thenounproject.com">Noun Project</a>
