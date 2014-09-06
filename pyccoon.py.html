@@ -18,9 +18,9 @@
       <div id="jump_page">
           <a class="source source-2" href="#section-3"> Main documentation generation class </a>
           <a class="source source-2" href="#section-7"> Pyccoon initialization </a>
-          <a class="source source-2" href="#section-17"> Preprocessing the comments </a>
-          <a class="source source-2" href="#section-27"> Highlighting the source code </a>
-          <a class="source source-2" href="#section-29"> HTML Code generation </a>
+          <a class="source source-2" href="#section-18"> Preprocessing the comments </a>
+          <a class="source source-2" href="#section-28"> Highlighting the source code </a>
+          <a class="source source-2" href="#section-30"> HTML Code generation </a>
       </div>
     </div>
     </div>
@@ -28,7 +28,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-06 15:49:20.267767</code>/
+        <code>2014-09-06 20:34:02.376694</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -74,7 +74,7 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">codecs</span> <span class="kn">import</span> <span class="nb">open</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="nb">open</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span></pre></div>
         </div>
@@ -163,7 +163,8 @@
     <span class="p">})</span>
 
     <span class="n">config_file</span> <span class="o">=</span> <span class="s">&#39;.pyccoon&#39;</span>
-    <span class="n">watch</span> <span class="o">=</span> <span class="bp">False</span></pre></div>
+    <span class="n">watch</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">verbosity</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -189,12 +190,15 @@
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">opts</span><span class="p">,</span> <span class="n">process</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
 
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;/&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="o">*</span><span class="mi">24</span> <span class="o">+</span> <span class="s">&quot;Pyccoon {} by {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">__version__</span><span class="p">,</span> <span class="n">__author__</span><span class="p">))</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;/&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
-
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">opts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;Pyccoon {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">__version__</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;-------------&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_config</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;verbosity&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Missing the required &#39;outdir&#39; argument.&quot;</span><span class="p">)</span>
@@ -202,11 +206,9 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Missing the required &#39;sourcedir&#39; argument.&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Source folder: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;Source folder: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Output folder: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">init_config</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;Output folder: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">collect_sources</span><span class="p">()</span></pre></div>
         </div>
@@ -261,6 +263,23 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-10'>#</a>
           </div>
+          
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+  </div>
+  <div class='section'>
+    <a id="section-11" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-11'>#</a>
+          </div>
           <p>Try to get <code>.pyccoon</code> config file or use the default values </p>
         </div>
         <div class='code'>
@@ -268,9 +287,9 @@
 
         <span class="n">config_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_file</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">config_file</span><span class="p">):</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Using config {:s}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config_file</span><span class="p">))</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&#39;Using config {:s}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config_file</span><span class="p">))</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;skip_files&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;skip_files&#39;</span><span class="p">]]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;copy_files&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;copy_files&#39;</span><span class="p">]]</span>
@@ -282,11 +301,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-11" class="section-anchor"></a>
+    <a id="section-12" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-11'>#</a>
+            <a class='octothorpe' href='#section-12'>#</a>
           </div>
           <p>Collect names of all files to be copied or processed </p>
         </div>
@@ -311,11 +330,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-12" class="section-anchor"></a>
+    <a id="section-13" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-12'>#</a>
+            <a class='octothorpe' href='#section-13'>#</a>
           </div>
           <p>Process source files.</p>
 <p><span class="pydoc pydoc-param"><span>param</span> <code>sources</code></span> <code>list</code> of source files to process
@@ -324,9 +343,9 @@
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="s">&#39;-&#39;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;[{}] Generating documentation for {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">))</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="o">*</span><span class="mi">80</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="s">&#39;-&#39;</span><span class="o">*</span><span class="mi">80</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;[{}] Generating documentation for {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="o">*</span><span class="mi">80</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">sources</span><span class="p">:</span>
             <span class="n">sources</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">}</span>
@@ -334,7 +353,7 @@
             <span class="n">sources</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources</span>
 
         <span class="n">ensure_directory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="s">&quot;pyccoon.css&quot;</span><span class="p">),</span> <span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">css_file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="s">&quot;pyccoon.css&quot;</span><span class="p">),</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">css_file</span><span class="p">:</span>
             <span class="n">css_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">css</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">resources</span><span class="o">.</span><span class="n">static_files</span><span class="p">:</span>
@@ -347,11 +366,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-13" class="section-anchor"></a>
+    <a id="section-14" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-13'>#</a>
+            <a class='octothorpe' href='#section-14'>#</a>
           </div>
           <p>Proceed to generating the documentation.</p>
         </div>
@@ -359,8 +378,8 @@
           <div class="highlight"><pre>        <span class="k">for</span> <span class="n">source</span><span class="p">,</span> <span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="n">process</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sources</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
 
             <span class="k">if</span> <span class="n">process</span><span class="p">:</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">source</span><span class="p">),</span> <span class="s">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sourcefile</span><span class="p">:</span>
-                    <span class="n">code</span> <span class="o">=</span> <span class="n">sourcefile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">source</span><span class="p">),</span> <span class="s">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sourcefile</span><span class="p">:</span>
+                    <span class="n">code</span> <span class="o">=</span> <span class="n">sourcefile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">get_language</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">:</span>
@@ -374,28 +393,28 @@
 
             <span class="k">if</span> <span class="n">process</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">source</span><span class="p">)):</span>
-                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generate_documentation</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">))</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generate_documentation</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">))</span>
 
-                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">Processed:</span><span class="se">\t</span><span class="s">{:s} -&gt; {:s}&quot;</span>
-                          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">)))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">Processed:</span><span class="se">\t</span><span class="s">{:s} -&gt; {:s}&quot;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">)))</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;File does not exist: {:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;File does not exist: {:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">ensure_directory</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">dest</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">source</span><span class="p">),</span> <span class="n">dest</span><span class="p">)</span>
-                <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">Copied:   </span><span class="se">\t</span><span class="s">{:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">))</span></pre></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">Copied:   </span><span class="se">\t</span><span class="s">{:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">))</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
   </div>
   <div class='section'>
-    <a id="section-14" class="section-anchor"></a>
+    <a id="section-15" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-14'>#</a>
+            <a class='octothorpe' href='#section-15'>#</a>
           </div>
           <p>Ensure there is always an index file in the output folder</p>
         </div>
@@ -412,17 +431,17 @@
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="n">index</span><span class="p">),</span> <span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">Language</span><span class="p">()</span>
                     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generate_html</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="p">[]))</span>
-                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">Generated:</span><span class="se">\t</span><span class="s">{:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">))</span></pre></div>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">Generated:</span><span class="se">\t</span><span class="s">{:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">source</span><span class="p">))</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
   </div>
   <div class='section'>
-    <a id="section-15" class="section-anchor"></a>
+    <a id="section-16" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-15'>#</a>
+            <a class='octothorpe' href='#section-16'>#</a>
           </div>
           
         </div>
@@ -434,11 +453,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-16" class="section-anchor"></a>
+    <a id="section-17" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-16'>#</a>
+            <a class='octothorpe' href='#section-17'>#</a>
           </div>
           <p>Generate the documentation for a source file by reading it in, splitting it up into comment/code sections, highlighting them for the appropriate language, and merging them into an HTML template.</p>
         </div>
@@ -453,11 +472,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-17" class="section-anchor"></a>
+    <a id="section-18" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-17'>#</a>
+            <a class='octothorpe' href='#section-18'>#</a>
           </div>
           <h2><span class="header" href="preprocessing-the-comments"> Preprocessing the comments </span><a id="preprocessing-the-comments" class="header-anchor"></a></h2>
         </div>
@@ -468,11 +487,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-18" class="section-anchor"></a>
+    <a id="section-19" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-18'>#</a>
+            <a class='octothorpe' href='#section-19'>#</a>
           </div>
           <p>Add cross-references before having the text processed by markdown.  It's possible to reference another file, like this : <code>[utils.py](utils.py.html)</code> which renders <a href="utils.py.html">utils.py</a>. You can also reference a specific section of another file, like this: <code>[utils.py#ensure-directory](utils.py.html#ensure-directory)</code> which renders as <a href="utils.py.html#ensure-directory">utils.py#ensure-directory</a>. Sections have to be manually declared; they are written on a single line, and surrounded by equals signs: <code>=== like this ===</code></p>
         </div>
@@ -483,11 +502,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-19" class="section-anchor"></a>
+    <a id="section-20" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-19'>#</a>
+            <a class='octothorpe' href='#section-20'>#</a>
           </div>
           <p>Return URL-friendly section name representation </p>
         </div>
@@ -500,11 +519,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-20" class="section-anchor"></a>
+    <a id="section-21" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-20'>#</a>
+            <a class='octothorpe' href='#section-21'>#</a>
           </div>
           
         </div>
@@ -522,11 +541,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-21" class="section-anchor"></a>
+    <a id="section-22" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-21'>#</a>
+            <a class='octothorpe' href='#section-22'>#</a>
           </div>
           <p>Check if the match contains an anchor</p>
         </div>
@@ -548,11 +567,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-22" class="section-anchor"></a>
+    <a id="section-23" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-22'>#</a>
+            <a class='octothorpe' href='#section-23'>#</a>
           </div>
           <p>Absolute reference</p>
         </div>
@@ -566,11 +585,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-23" class="section-anchor"></a>
+    <a id="section-24" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-23'>#</a>
+            <a class='octothorpe' href='#section-24'>#</a>
           </div>
           
         </div>
@@ -581,11 +600,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-24" class="section-anchor"></a>
+    <a id="section-25" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-24'>#</a>
+            <a class='octothorpe' href='#section-25'>#</a>
           </div>
           <p>Relative reference</p>
         </div>
@@ -598,11 +617,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-25" class="section-anchor"></a>
+    <a id="section-26" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-25'>#</a>
+            <a class='octothorpe' href='#section-26'>#</a>
           </div>
           
         </div>
@@ -613,11 +632,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-26" class="section-anchor"></a>
+    <a id="section-27" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-26'>#</a>
+            <a class='octothorpe' href='#section-27'>#</a>
           </div>
           
         </div>
@@ -642,11 +661,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-27" class="section-anchor"></a>
+    <a id="section-28" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-27'>#</a>
+            <a class='octothorpe' href='#section-28'>#</a>
           </div>
           <h2><span class="header" href="highlighting-the-source-code"> Highlighting the source code </span><a id="highlighting-the-source-code" class="header-anchor"></a></h2>
         </div>
@@ -657,11 +676,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-28" class="section-anchor"></a>
+    <a id="section-29" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-28'>#</a>
+            <a class='octothorpe' href='#section-29'>#</a>
           </div>
           <p>Highlights a single chunk of code using the <strong>Pygments</strong> module, and runs the text of its corresponding comment through <strong>Markdown</strong>.</p>
 <p>We process the entire file in a single call to Pygments by inserting little marker comments between each section and then splitting the result string wherever our markers occur.</p>
@@ -687,11 +706,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-29" class="section-anchor"></a>
+    <a id="section-30" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-29'>#</a>
+            <a class='octothorpe' href='#section-30'>#</a>
           </div>
           <h2><span class="header" href="html-code-generation"> HTML Code generation </span><a id="html-code-generation" class="header-anchor"></a></h2>
         </div>
@@ -702,11 +721,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-30" class="section-anchor"></a>
+    <a id="section-31" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-30'>#</a>
+            <a class='octothorpe' href='#section-31'>#</a>
           </div>
           <p>Based on the source file path, generate linked breadcrumbs of the documentation.</p>
         </div>
@@ -741,11 +760,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-31" class="section-anchor"></a>
+    <a id="section-32" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-31'>#</a>
+            <a class='octothorpe' href='#section-32'>#</a>
           </div>
           <p>For <code>index.html</code> files, generate a menu of folder contents.</p>
 <p><span class=todo><strong>TODO</strong>: remove language dependency</span></p>
@@ -792,11 +811,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-32" class="section-anchor"></a>
+    <a id="section-33" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-32'>#</a>
+            <a class='octothorpe' href='#section-33'>#</a>
           </div>
           <p>Gather the names of the documentation sections for "jump-to"-like navigation on the page.</p>
         </div>
@@ -822,11 +841,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-33" class="section-anchor"></a>
+    <a id="section-34" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-33'>#</a>
+            <a class='octothorpe' href='#section-34'>#</a>
           </div>
           <p>Once all of the code is finished highlighting, we can generate the HTML file and write out the documentation. Pass the completed sections into the template found in <code>resources/pyccoon.html</code>.</p>
 <p>Pystache will attempt to recursively render context variables, so we must replace any occurences of <code>{{</code>, which is valid in some languages, with a "unique enough" identifier before rendering, and then post-process the rendered template and change the identifier back to <code>{{</code>.</p>
@@ -865,11 +884,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-34" class="section-anchor"></a>
+    <a id="section-35" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-34'>#</a>
+            <a class='octothorpe' href='#section-35'>#</a>
           </div>
           <p>Compute the destination HTML path for an input source file path. If the source is <code>lib/example.py</code>, the HTML will be at <code>docs/lib/example.html</code></p>
         </div>
@@ -889,11 +908,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-35" class="section-anchor"></a>
+    <a id="section-36" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-35'>#</a>
+            <a class='octothorpe' href='#section-36'>#</a>
           </div>
           <p>Determine language of the file </p>
         </div>
@@ -903,8 +922,8 @@
         <span class="n">language</span> <span class="o">=</span> <span class="bp">None</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">source</span><span class="p">),</span> <span class="s">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sourcefile</span><span class="p">:</span>
-                <span class="n">code</span> <span class="o">=</span> <span class="n">sourcefile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">source</span><span class="p">),</span> <span class="s">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sourcefile</span><span class="p">:</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="n">sourcefile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
 
             <span class="n">language</span> <span class="o">=</span> <span class="n">get_language</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">code</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
@@ -916,11 +935,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-36" class="section-anchor"></a>
+    <a id="section-37" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-36'>#</a>
+            <a class='octothorpe' href='#section-37'>#</a>
           </div>
           <p>Hook spot for the console script.</p>
         </div>
@@ -943,6 +962,10 @@
                       <span class="n">default</span><span class="o">=</span><span class="s">&#39;.pyccoon&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">,</span>
                       <span class="n">help</span><span class="o">=</span><span class="s">&#39;Config file to use (default: `</span><span class="si">%d</span><span class="s">efault`)&#39;</span><span class="p">)</span>
 
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;-v&#39;</span><span class="p">,</span> <span class="s">&#39;--verbosity&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;store&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&#39;verbosity&#39;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;int&#39;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&#39;Terminal output verbosity (0 to 1; default: </span><span class="si">%d</span><span class="s">efault)&#39;</span><span class="p">)</span>
+
     <span class="n">opts</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
     <span class="n">opts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="nb">vars</span><span class="p">(</span><span class="n">opts</span><span class="p">))</span>
 
@@ -952,11 +975,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-37" class="section-anchor"></a>
+    <a id="section-38" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-37'>#</a>
+            <a class='octothorpe' href='#section-38'>#</a>
           </div>
           <p>Run the script.</p>
         </div>
