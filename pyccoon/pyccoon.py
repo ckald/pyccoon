@@ -481,21 +481,7 @@ def main():
     opts, _ = parser.parse_args()
     opts = defaultdict(lambda: None, vars(opts))
 
-    pyccoon = Pyccoon(opts)
-    pyccoon.process()
-
-    # If the -w / --watch option was present, monitor the source directories \
-    # for changes and re-generate documentation for source files whenever they \
-    # are modified.
-    if pyccoon.watch:
-        try:
-            import watchdog.events
-            import watchdog.observers
-        except ImportError:
-            sys.exit('The -w/--watch option requires the watchdog package.')
-
-        from .utils import monitor
-        monitor(pyccoon)
+    Pyccoon(opts)
 
 # Run the script.
 if __name__ == "__main__":

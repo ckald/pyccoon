@@ -42,7 +42,7 @@ def ensure_directory(directory):
         os.makedirs(directory)
 
 
-def monitor(pyccoon):
+def monitor(path, func):
     """Monitor each source file and re-generate documentation on change."""
 
     # The watchdog modules are imported in `main()` but we need to re-import\
@@ -57,13 +57,13 @@ def monitor(pyccoon):
             # Re-generate documentation from a source file if it was listed on\
             # the command line. Watchdog monitors whole directories, so other\
             # files may cause notifications as well.
-            pyccoon.process()
+            func()
 
     # Set up an observer which monitors all directories for files given on\
     # the command line and notifies the handler defined above.
     event_handler = RegenerateHandler()
     observer = watchdog.observers.Observer()
-    observer.schedule(event_handler, path=pyccoon.sourcedir, recursive=True)
+    observer.schedule(event_handler, path=path, recursive=True)
 
     # Run the file change monitoring loop until the user hits Ctrl-C.
     observer.start()
