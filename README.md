@@ -10,6 +10,43 @@ Side-to-side documentation generator. Fork of the [Pycco](http://fitzgen.github.
 
 [See how it works](http://ckald.github.io/pyccoon/)
 
+# Installation
+
+At the moment the release on the PyPi is being prepared. In the meanwhile, to use the Pyccoon
+
+```bash
+git clone https://github.com/ckald/pyccoon.git
+cd pyccoon
+python setup.py install
+```
+    
+And you're done. Pyccoon is compatible with Python 2.6, 2.7, 3.3, 3.4 and PyPy. Latest test results can be seen on the [Travis CI project page](https://travis-ci.org/ckald/pyccoon).
+
+# Usage 
+
+To generate the project documentation
+
+```bash
+pyccoon -s <source folder> -d <documentation folder>
+```
+
+For additional CLI options, see `pyccoon --help`
+
+At the moment Pyccoon supports Python, Ruby, Javascript, PHP and C/C++ source files. Other project files will be simply copied to the documentation folder. For additional configuration, create a config file of the kind:
+
+```js
+{
+    // Documentation title
+    "project_name": "pyccoon v0.1.0 documentation",
+    // Skip files matching any of the list of regular expressions
+    "skip_files": [".+\\.pyc", "__pycache__", "\\.travis.yml", "\\.git", "\\.DS_Store"],
+    // Copy files without processing (useful if you have some binary files)
+    "copy_files": ["pyccoon.svg", "pyccoon_icon.svg", ".+\\.html", ".+\\.css", "\\.pyccoon"],
+    // MathJax (http://mathjax.org) support - sometimes we want nice formulas
+    "mathjax": false
+}
+```
+
 # Development roadmap
 
   - [x] Initial version
@@ -39,9 +76,10 @@ Side-to-side documentation generator. Fork of the [Pycco](http://fitzgen.github.
       - [x] Fix `--watch` option
       - [x] Broken cross-referencing (wikilinks)
       - [x] Fix multiple Python versions compatibility
-      - [ ] Replace Python Markdown with Mistune (because we need nice extensions http://mistune.readthedocs.org/en/latest/)
+      - [ ] Replace Python Markdown with [Mistune](http://mistune.readthedocs.org/en/latest/) (because we want nice extensions)
           - [ ] Restrict extensions to specific block types
           - [ ] Create LaTeX codeblocks (to avoid unnecessary `\begin{equation}...\end{equation}` in the docs and restrict MathJax parsing only to specific elements on the page)
+      - [ ] Use `glob`: replace config file regular expressions with more natural wildcards (also support matching against the whole path, not only filename)
       - [ ] Add (actually, fix) line numbers feature (tricky)
       - [ ] Test against multilanguage projects (i.e., what happens if there are `index.html` and `__init__.py` in one folder?)
       - [ ] Link index files instead of renaming (`__init__.py` -> `index.html`)
@@ -53,4 +91,10 @@ Side-to-side documentation generator. Fork of the [Pycco](http://fitzgen.github.
       - [ ] Mixed documents parsing: HTML/JS/CSS, HTML/PHP, etc.
       - [ ] `TODO:` statements, linting and coverage reports
 
-Raccoon designed by <a href="http://www.thenounproject.com/cnpresler">Christy Presler</a> from the <a href="http://www.thenounproject.com">Noun Project</a>
+-------
+
+# Acknowledgements
+
+  * [Nick Fitzgerald](http://github.com/fitzgen) as an author of [Pycco](https://github.com/fitzgen/pycco) that was a starting point of the development
+  * [Jeremy Ashkenas](https://github.com/jashkenas) as an author of original idea - [Docco](https://github.com/jashkenas/docco)
+  * Raccoon designed by [Christy Presler](http://www.thenounproject.com/cnpresler) from the [Noun Project](http://www.thenounproject.com/)
