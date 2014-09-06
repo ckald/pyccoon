@@ -435,7 +435,7 @@ class Pyccoon:
             "destination":      dest,
             "generation_time":  datetime.now(),
             "root_path":        os.path.relpath(".", os.path.split(source)[0]),
-            "project_name":     self.project_name
+            "project_name":     self.project_name,
             "mathjax?":          self.config['mathjax']
         })
 
@@ -448,20 +448,27 @@ class Pyccoon:
         """
 
         dirname, filename = os.path.split(source)
-        if not language:
-            try:
-                with open(os.path.join(self.sourcedir, source), "r") as sourcefile:
-                    code = sourcefile.read()
-
-                language = get_language(source, code)
-            except:
-                pass
+        language = language or self.get_language(source)
 
         if language:
             name = language.transform_filename(filename)
         else:
             name = filename
         return os.path.normpath(os.path.join(self.outdir, os.path.join(dirname, name)))
+
+    def get_language(self, source):
+        """ Determine language of the file """
+        language = None
+
+        try:
+            with open(os.path.join(self.sourcedir, source), "r") as sourcefile:
+                code = sourcefile.read()
+
+            language = get_language(source, code)
+        except:
+            pass
+
+        return language
 
 
 def main():
