@@ -18,7 +18,7 @@ class Section(dict):
         return ''
 
     def copy(self):
-        return Section(**{k: v for k, v in self.items()})
+        return Section(**dict((k, v) for (k, v) in self.items()))
 
 
 # == Parsing strategy ==

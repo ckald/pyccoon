@@ -150,7 +150,7 @@ class Pyccoon:
         self.log('-'*80 + '\n')
 
         if sources:
-            sources = {k: v for k, v in self.sources.items() if k in sources}
+            sources = dict([(k, v) for (k, v) in self.sources.items() if k in sources])
         else:
             sources = self.sources
 
