@@ -47,13 +47,14 @@ class Language(object):
     def highlight(self, code, formatter="html"):
         """ Use pygments to highlight the `code` """
         return pygments.highlight(
-            code,
+            # looks like Pygments are working with ASCII only
+            code.decode('utf8'),
             self.lexer,
             formatters.get_formatter_by_name(formatter)
         )
 
     def markdown(self, docs):
-        return markdown(docs, extensions=self.markdown_extensions)
+        return markdown(docs.decode('utf8'), extensions=self.markdown_extensions)
 
     def transform_filename(self, filename):
         """
@@ -143,7 +144,8 @@ class Language(object):
     def absorb(self, sections, i):
         """ Absorb next code-only section if it lies deeper than the current one (that has docs)"""
         if not sections[i].has_docs() and sections[i]['level'] > sections[i-1]['level']:
-            sections[i-1]['code_text'] += '\n\n' + sections[i]['code_text'].strip("\n")
+            sections[i-1]['code_text'] = sections[i-1]['code_text'].rstrip('\n') \
+                + '\n\n' + sections[i]['code_text'].lstrip('\n')
             sections[i:i+1] = []
 
 
