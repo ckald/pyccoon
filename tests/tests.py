@@ -4,48 +4,41 @@ import unittest
 from pyccoon import Pyccoon
 
 
-class DummyFileTest(unittest.TestCase):
+class FileTest(unittest.TestCase):
 
     """
-    `TestCase` specially designed for Pycco testing. Subclasses of it override `input` param\
-    and `check` method, while everything else takes care of creating and removing temp input and\
-    output files for Pycco.
+    Test case that takes care of initializing Pyccoon and cleaning up after it.
     """
 
-    input = ""
+    input_name = "tests.py"
+    output_name = "tests.py.html"
 
     def setUp(self):
-        """ Initialize Pycco in the same folder as `__file__`, create a temporary input file\
-            and force Pycco to run only over it."""
-        folder = os.path.split(__file__)[0]
+        """ Initialize Pyccoon in the same folder as `__file__` and force Pyccoon to run only over\
+            specified input file."""
 
-        self.input_name = os.path.join(folder, "__test_input__.py")
-        self.output_name = os.path.join(folder, "__test_input__.py.html")
+        self.folder = os.path.split(__file__)[0]
+
+        self.input_name = os.path.join(self.folder, self.input_name)
+        self.output_name = os.path.join(self.folder, self.output_name)
 
         self.pyccoon = Pyccoon({
-            'sourcedir':    folder,
-            'outdir':       folder,
+            'sourcedir':    self.folder,
+            'outdir':       self.folder,
             'verbosity':    0,
         }, process=False)
-        with open(self.input_name, "w") as temp:
-            temp.write(self.input)
-
         self.pyccoon.sources = {os.path.split(self.input_name)[1]: (self.output_name, True)}
 
     def tearDown(self):
-        """ Remove created temporary files and check if they do not exist """
-        os.unlink(self.input_name)
+        """ Remove created files and verify they do not exist """
         os.unlink(self.output_name)
-        assert not os.path.exists(self.input_name), "Dummy input file exists after test"
         assert not os.path.exists(self.output_name), "Dummy output file exists after test"
 
     def check(self, output):
-        """ Check that dummy file exist at this point. This method should be overridden """
-        assert os.path.exists(self.input_name), "Dummy input file does not exist before test"
-        assert os.path.exists(self.output_name), "Dummy output file does not exist before test"
+        pass
 
     def test(self):
-        """ The test itself. Starts pycco processing and invokes the `check` method """
+        """ The test itself. Starts pyccoon processing and invokes the `check` method """
         self.pyccoon.process()
         with open(self.output_name, "r") as temp:
             output = temp.read()
@@ -53,6 +46,38 @@ class DummyFileTest(unittest.TestCase):
 
     def shortDescription(self):
         return self.check.__doc__
+
+
+class DummyFileTest(FileTest):
+
+    """
+    Test case specially designed for convenient Pyccoon testing. Subclasses of it override `input`\
+    param and `check` method, while everything else takes care of creating and removing temp input\
+    and output files for Pyccoon.
+    """
+
+    input = ""
+    input_name = "__test_input__.py"
+    output_name = "__test_input__.py.html"
+
+    def setUp(self):
+        """ Additionally to `FileTest.setUp`, fill the input file with `input` data """
+        super(DummyFileTest, self).setUp()
+
+        with open(self.input_name, "w") as temp:
+            temp.write(self.input)
+
+    def tearDown(self):
+        """ Remove created temporary files and verify they do not exist """
+        super(DummyFileTest, self).tearDown()
+
+        os.unlink(self.input_name)
+        assert not os.path.exists(self.input_name), "Dummy input file exists after test"
+
+    def check(self, output):
+        """ DummyFileTest: Check that files exist. This method should be overridden """
+        assert os.path.exists(self.input_name), "Dummy input file does not exist before test"
+        assert os.path.exists(self.output_name), "Dummy output file does not exist before test"
 
 
 class PyDocSubstitutions(DummyFileTest):
