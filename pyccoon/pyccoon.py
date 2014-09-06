@@ -111,7 +111,7 @@ class Pyccoon:
         """ Try to get `.pyccoon` config file or use the default values """
         config_file = os.path.join(self.sourcedir, self.config_file)
         if os.path.exists(config_file):
-            self.log('Using config {:s}'.format(config_file))
+            self.log('Using config {0:s}'.format(config_file))
             with open(config_file, 'rb') as f:
                 self.config.update(json.loads(f.read().decode('utf8')))
 
@@ -187,15 +187,15 @@ class Pyccoon:
                         f.write(self.generate_documentation(source, code, language=self.language)
                                 .encode('utf8'))
 
-                    self.log("\tProcessed:\t{:s} -> {:s}"
+                    self.log("\tProcessed:\t{0:s} -> {1:s}"
                              .format(source, os.path.relpath(dest, self.outdir)))
                 else:
-                    self.log("File does not exist: {:s}".format(source))
+                    self.log("File does not exist: {0:s}".format(source))
 
             else:
                 ensure_directory(os.path.split(dest)[0])
                 shutil.copyfile(os.path.join(self.sourcedir, source), dest)
-                self.log("\tCopied:   \t{:s}".format(source))
+                self.log("\tCopied:   \t{0:s}".format(source))
 
         # Ensure there is always an index file in the output folder
         for _, (dest, _) in list(self.sources.items()):
@@ -210,7 +210,7 @@ class Pyccoon:
                 with open(os.path.join(self.outdir, index), 'w', encoding='utf8') as f:
                     self.language = Language()
                     f.write(self.generate_html(source, []))
-                    self.log("\tGenerated:\t{:s}".format(source))
+                    self.log("\tGenerated:\t{0:s}".format(source))
 
     def template(self, source):
         return lambda context: pystache.render(source, context)
@@ -276,7 +276,7 @@ class Pyccoon:
                     os.path.join(os.path.split(os.path.relpath(source, self.sourcedir))[0], path)
                 )
 
-            return "[{:s}]({:s}{:s})".format(name, path, anchor)
+            return "[{0:s}]({1:s}{2:s})".format(name, path, anchor)
 
         def replace_section_name(match):
             return (

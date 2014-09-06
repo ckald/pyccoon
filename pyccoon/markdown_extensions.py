@@ -22,7 +22,7 @@ class Todo(Extension):
 
         def template(self, match):
             """ Intended markup for TODO strings. The type of the string is used as a class. """
-            return "<span class={:s}><strong>{:s}</strong>{:s}</span>"\
+            return "<span class={0:s}><strong>{1:s}</strong>{2:s}</span>"\
                 .format(match.group(1).lower(), match.group(1), match.group(2))
 
         def run(self, lines):
