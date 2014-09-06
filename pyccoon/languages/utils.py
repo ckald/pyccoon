@@ -21,6 +21,9 @@ class Section(dict):
         return Section(**{k: v for k, v in self.items()})
 
 
+# == Parsing strategy ==
+
+
 class ParsingStrategy(list):
 
     """ Helper class that handles a list of methods and allows to insert item before or after \

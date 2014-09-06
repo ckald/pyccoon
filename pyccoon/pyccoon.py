@@ -25,7 +25,7 @@ from .languages import get_language, Language
 from .utils import shift, ensure_directory
 
 
-# === Main Documentation Generation Functions ===
+# == Main documentation generation class ==
 
 class Pyccoon:
 
@@ -220,15 +220,15 @@ class Pyccoon:
         self.highlight(source, sections, language)
         return self.generate_html(source, sections)
 
-    # === Preprocessing the comments ===
+    # == Preprocessing the comments ==
 
     def preprocess(self, comment, section_nr, source):
         """
         Add cross-references before having the text processed by markdown.  It's\
-        possible to reference another file, like this : `[[main.py]]` which renders\
-        [[main.py]]. You can also reference a specific section of another file, like\
-        this: `[[main.py#highlighting-the-source-code]]` which renders as\
-        [[main.py#highlighting-the-source-code]]. Sections have to be manually\
+        possible to reference another file, like this : `[[utils.py]]` which renders\
+        [[utils.py]]. You can also reference a specific section of another file, like\
+        this: `[[utils.py#ensure-directory]]` which renders as\
+        [[utils.py#ensure-directory]]. Sections have to be manually\
         declared; they are written on a single line, and surrounded by equals signs:\
         `=== like this ===`
 
@@ -249,27 +249,30 @@ class Pyccoon:
                 return
 
             # Check if the match contains an anchor
+            anchor = None
             if '#' in path:
-                link, anchor = path.split('#')
-                if not name:
-                    name = link
-                    if anchor:
-                        name = name + '#' + anchor
-                return "[{:s}]({:s}#{:s})"\
-                    .format(name,
-                            os.path.relpath(self.destination(link),
-                                            self.destination(source)),
-                            anchor)
+                path, anchor = path.split('#')
 
+            if not name:
+                name = os.path.basename(path)
+                if anchor:
+                    name = name + '#' + anchor
+
+            anchor = '#' + anchor if anchor else ''
+
+            if not path.startswith('.'):
+                # Absolute reference
+                path = os.path.relpath(
+                    self.destination(path),
+                    os.path.split(self.sources[os.path.relpath(source, self.sourcedir)][0])[0]
+                )
             else:
-                if not name:
-                    name = os.path.basename(path)
+                # Relative reference
+                path = self.destination(
+                    os.path.join(os.path.split(os.path.relpath(source, self.sourcedir))[0], path)
+                )
 
-                dest = self.destination(path)
-                if not dest:
-                    return
-                return "[{:s}]({:s})"\
-                    .format(name, os.path.relpath(dest, os.path.dirname(source)))
+            return "[{:s}]({:s}{:s})".format(name, path, anchor)
 
         def replace_section_name(match):
             return (
@@ -287,7 +290,7 @@ class Pyccoon:
 
         return comment
 
-    # === Highlighting the source code ===
+    # == Highlighting the source code ==
 
     def highlight(self, source, sections, language):
         """
@@ -312,7 +315,7 @@ class Pyccoon:
             )
             section["num"] = i
 
-    # === HTML Code generation ===
+    # == HTML Code generation ==
 
     def generate_breadcrumbs(self, dest, title):
         """
@@ -477,6 +480,10 @@ def main():
 
     parser.add_option('-w', '--watch', action='store_true',
                       help='Watch original files and regenerate documentation on changes')
+
+    parser.add_option('-c', '--config', action='store', dest='config_file',
+                      default='.pyccoon', type='string',
+                      help='Config file to use (default: `%default`)')
 
     opts, _ = parser.parse_args()
     opts = defaultdict(lambda: None, vars(opts))

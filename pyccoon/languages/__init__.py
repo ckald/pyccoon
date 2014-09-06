@@ -20,7 +20,7 @@ class Language(object):
 
     This class governs all source file parsing routines. Due to differences in programming \
     languages, an extensible parsing `strategy` is required \
-    (see [[pyccoon/languages/utils.py#ParsingStrategy]])
+    (see [[./utils.py#parsing-strategy]])
     """
 
     extensions = []

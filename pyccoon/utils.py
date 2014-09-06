@@ -36,7 +36,8 @@ def shift(list, default):
 
 
 def ensure_directory(directory):
-    """Ensure that the destination directory exists."""
+    """ === Ensure directory ===
+        Ensure that the destination directory exists."""
 
     if not os.path.isdir(directory):
         os.makedirs(directory)
