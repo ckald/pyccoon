@@ -19,7 +19,7 @@ from datetime import datetime
 from collections import defaultdict
 
 # This module contains all of our static resources.
-from . import resources
+from . import resources, __version__, __author__
 from .languages import get_language, Language
 
 from .utils import shift, ensure_directory
@@ -405,17 +405,17 @@ class Pyccoon:
 def main():
     """Hook spot for the console script."""
 
-    parser = optparse.OptionParser()
+    parser = optparse.OptionParser(version='Pyccoon {}'.format(__version__))
     parser.add_option('-s', '--source', action='store', type='string',
                       dest='sourcedir', default='.',
-                      help='The source files directory.')
+                      help='Source files directory (default: `%default`)')
 
-    parser.add_option('-d', '--directory', action='store', type='string',
+    parser.add_option('-d', '--destination', action='store', type='string',
                       dest='outdir', default='docs',
-                      help='The output directory that the rendered files should go to.')
+                      help='Output directory (default: `%default`)')
 
     parser.add_option('-w', '--watch', action='store_true',
-                      help='Watch original files and re-generate documentation on changes')
+                      help='Watch original files and regenerate documentation on changes')
 
     opts, _ = parser.parse_args()
     opts = defaultdict(lambda: None, vars(opts))
