@@ -139,7 +139,7 @@ class Pyccoon:
 
     def process(self, sources=None, language=None):
         """
-        Process source files.
+        == Source files processing ==
 
         :param sources: `list` of source files to process
         :param language: Force programming language
@@ -217,6 +217,7 @@ class Pyccoon:
 
     def generate_documentation(self, source, code, language=None):
         """
+        == Generating documentation ==
         Generate the documentation for a source file by reading it in, splitting it\
         up into comment/code sections, highlighting them for the appropriate\
         language, and merging them into an HTML template.
@@ -226,10 +227,38 @@ class Pyccoon:
         self.highlight(source, self.sections, language)
         return self.generate_html(source, self.sections)
 
-    # == Preprocessing the comments ==
+    def highlight(self, source, sections, language):
+        """
+        === Highlighting the source code ===
+
+        Highlights a single chunk of code using the **Pygments** module, and runs\
+        the text of its corresponding comment through **Markdown**.
+
+        We process the entire file in a single call to Pygments by inserting little\
+        marker comments between each section and then splitting the result string\
+        wherever our markers occur.
+        """
+        output = language.highlight(
+            language.divider_text.join(section["code_text"].rstrip() for section in sections)
+        )
+
+        output = output.replace(self.highlight_start, "").replace(self.highlight_end, "")
+        fragments = re.split(language.divider_html, output)
+        for i, section in enumerate(sections):
+            section["code_html"] = shift(fragments, "")
+            if section["code_html"]:
+                section["code_html"] = \
+                    self.highlight_start + section["code_html"] + self.highlight_end
+            docs_text = section["docs_text"]
+            section["docs_html"] = language.markdown(
+                self.preprocess(docs_text, i, source=os.path.join(self.sourcedir, source))
+            )
+            section["num"] = i
 
     def preprocess(self, comment, section_nr, source):
         """
+        === Preprocessing the comments ===
+
         Add cross-references before having the text processed by markdown.  It's\
         possible to reference another file, like this : `[[utils.py]]` which renders\
         [[utils.py]]. You can also reference a specific section of another file, like\
@@ -294,38 +323,50 @@ class Pyccoon:
 
         return comment
 
-    # == Highlighting the source code ==
-
-    def highlight(self, source, sections, language):
-        """
-        Highlights a single chunk of code using the **Pygments** module, and runs\
-        the text of its corresponding comment through **Markdown**.
-
-        We process the entire file in a single call to Pygments by inserting little\
-        marker comments between each section and then splitting the result string\
-        wherever our markers occur.
-        """
-        output = language.highlight(
-            language.divider_text.join(section["code_text"].rstrip() for section in sections)
-        )
-
-        output = output.replace(self.highlight_start, "").replace(self.highlight_end, "")
-        fragments = re.split(language.divider_html, output)
-        for i, section in enumerate(sections):
-            section["code_html"] = shift(fragments, "")
-            if section["code_html"]:
-                section["code_html"] = \
-                    self.highlight_start + section["code_html"] + self.highlight_end
-            docs_text = section["docs_text"]
-            section["docs_html"] = language.markdown(
-                self.preprocess(docs_text, i, source=os.path.join(self.sourcedir, source))
-            )
-            section["num"] = i
-
     # == HTML Code generation ==
+
+    def generate_html(self, source, sections):
+        """
+        Once all of the code is finished highlighting, we can generate the HTML file\
+        and write out the documentation. Pass the completed sections into the\
+        template found in `resources/pyccoon.html`.
+
+        Pystache will attempt to recursively render context variables, so we must\
+        replace any occurences of `{{`, which is valid in some languages, with a\
+        "unique enough" identifier before rendering, and then post-process the\
+        rendered template and change the identifier back to `{{`.
+        """
+
+        dest = self.destination(source)
+        title = os.path.relpath(source, self.sourcedir)
+        page_title = self.project_name + ": " + os.path.relpath(source, self.sourcedir).lstrip('./')
+        csspath = os.path.relpath(os.path.join(self.outdir, "pyccoon.css"), os.path.split(dest)[0])
+
+        breadcrumbs = self.generate_breadcrumbs(dest, title)
+        children = self.generate_navigation(source)
+        contents = self.generate_contents(sections)
+
+        rendered = self.page_template({
+            "title":            page_title,
+            "breadcrumbs":      breadcrumbs,
+            "children":         children,
+            "stylesheet":       csspath,
+            "sections":         sections,
+            "source":           source,
+            "contents":         contents,
+            "contents?":        bool(contents),
+            "destination":      dest,
+            "generation_time":  datetime.now(),
+            "root_path":        os.path.relpath(".", os.path.split(source)[0]),
+            "project_name":     self.project_name,
+            "mathjax?":          self.config['mathjax']
+        })
+
+        return rendered.replace("__DOUBLE_OPEN_STACHE__", "{{")
 
     def generate_breadcrumbs(self, dest, title):
         """
+        === Generating breadcrumbs ===
         Based on the source file path, generate linked breadcrumbs of the documentation.
         """
         breadcrumbs = []
@@ -354,6 +395,7 @@ class Pyccoon:
 
     def generate_navigation(self, source):
         """
+        === Generating navigation ===
         For `index.html` files, generate a menu of folder contents.
 
         TODO: remove language dependency
@@ -395,6 +437,7 @@ class Pyccoon:
 
     def generate_contents(self, sections):
         """
+        === Generating page contents ===
         Gather the names of the documentation sections for "jump-to"-like navigation on the page.
         """
         contents = []
@@ -412,44 +455,7 @@ class Pyccoon:
                 })
         return contents
 
-    def generate_html(self, source, sections):
-        """
-        Once all of the code is finished highlighting, we can generate the HTML file\
-        and write out the documentation. Pass the completed sections into the\
-        template found in `resources/pyccoon.html`.
-
-        Pystache will attempt to recursively render context variables, so we must\
-        replace any occurences of `{{`, which is valid in some languages, with a\
-        "unique enough" identifier before rendering, and then post-process the\
-        rendered template and change the identifier back to `{{`.
-        """
-
-        dest = self.destination(source)
-        title = os.path.relpath(source, self.sourcedir)
-        page_title = self.project_name + ": " + os.path.relpath(source, self.sourcedir).lstrip('./')
-        csspath = os.path.relpath(os.path.join(self.outdir, "pyccoon.css"), os.path.split(dest)[0])
-
-        breadcrumbs = self.generate_breadcrumbs(dest, title)
-        children = self.generate_navigation(source)
-        contents = self.generate_contents(sections)
-
-        rendered = self.page_template({
-            "title":            page_title,
-            "breadcrumbs":      breadcrumbs,
-            "children":         children,
-            "stylesheet":       csspath,
-            "sections":         sections,
-            "source":           source,
-            "contents":         contents,
-            "contents?":        bool(contents),
-            "destination":      dest,
-            "generation_time":  datetime.now(),
-            "root_path":        os.path.relpath(".", os.path.split(source)[0]),
-            "project_name":     self.project_name,
-            "mathjax?":          self.config['mathjax']
-        })
-
-        return rendered.replace("__DOUBLE_OPEN_STACHE__", "{{")
+    # == Utilities ==
 
     def destination(self, source, language=None):
         """
