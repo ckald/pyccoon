@@ -4,6 +4,12 @@
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <title>pyccoon v0.1.0 documentation: languages/utils.py</title>
   <link rel="stylesheet" href="../pyccoon.css">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <div id='container'>
@@ -12,11 +18,19 @@
   <div id="footer">
     <a class="btn" id="project-name" href="../index.html">pyccoon v0.1.0 documentation</a>
     <a class="btn" class="source source-1" href="#top">Back to top</a>
+    <div id="jump_to" class="btn">
+    Contents
+    <div id="jump_wrapper">
+      <div id="jump_page">
+          <a class="source source-2" href="#section-5"> Parsing strategy </a>
+      </div>
+    </div>
+    </div>
     <div class="generation-time">
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="../pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-02 03:54:25.079752</code>/
+        <code>2014-09-06 02:36:21.197486</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -120,10 +134,10 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-5'>#</a>
           </div>
-          <p>Helper class that handles a list of methods and allows to insert item before or after some specific item. </p>
+          <h2><span class="header" href="parsing-strategy"> Parsing strategy </span><a id="parsing-strategy" class="header-anchor"></a></h2>
         </div>
         <div class='code'>
-          <div class="highlight"><pre><span class="k">class</span> <span class="nc">ParsingStrategy</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span></pre></div>
+          <div class="highlight"><pre></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -134,6 +148,21 @@
         <div class='docs'>
           <div class='octowrap'>
             <a class='octothorpe' href='#section-6'>#</a>
+          </div>
+          <p>Helper class that handles a list of methods and allows to insert item before or after some specific item. </p>
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre><span class="k">class</span> <span class="nc">ParsingStrategy</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+  </div>
+  <div class='section'>
+    <a id="section-7" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-7'>#</a>
           </div>
           <p>Initialize from an arbitrary sequence of arguments </p>
         </div>
@@ -147,11 +176,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-7" class="section-anchor"></a>
+    <a id="section-8" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-7'>#</a>
+            <a class='octothorpe' href='#section-8'>#</a>
           </div>
           <p>Return the index of a method which name is <code>name</code> or raise an exception. </p>
         </div>
@@ -168,11 +197,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-8" class="section-anchor"></a>
+    <a id="section-9" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-8'>#</a>
+            <a class='octothorpe' href='#section-9'>#</a>
           </div>
           <p>Insert a <code>method</code> before an item with a name <code>key</code> </p>
         </div>
@@ -185,11 +214,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-9" class="section-anchor"></a>
+    <a id="section-10" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-9'>#</a>
+            <a class='octothorpe' href='#section-10'>#</a>
           </div>
           <p>Insert a <code>method</code> after an item with a name <code>key</code> </p>
         </div>
@@ -202,11 +231,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-10" class="section-anchor"></a>
+    <a id="section-11" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-10'>#</a>
+            <a class='octothorpe' href='#section-11'>#</a>
           </div>
           <p>Remove the item with a name <code>key</code> </p>
         </div>
@@ -219,11 +248,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-11" class="section-anchor"></a>
+    <a id="section-12" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-11'>#</a>
+            <a class='octothorpe' href='#section-12'>#</a>
           </div>
           <p>Helper decorator to iterate through the <code>sections</code> while altering them.</p>
 <p><span class="pydoc pydoc-param"><span>param</span> <code>start</code></span> Section index to start with.
@@ -238,11 +267,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-12" class="section-anchor"></a>
+    <a id="section-13" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-12'>#</a>
+            <a class='octothorpe' href='#section-13'>#</a>
           </div>
           
         </div>
@@ -262,11 +291,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-13" class="section-anchor"></a>
+    <a id="section-14" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-13'>#</a>
+            <a class='octothorpe' href='#section-14'>#</a>
           </div>
           
         </div>
@@ -277,11 +306,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-14" class="section-anchor"></a>
+    <a id="section-15" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-14'>#</a>
+            <a class='octothorpe' href='#section-15'>#</a>
           </div>
           <p>Helper method that splits a section into parts using the <code>regex</code> matching against the section code </p>
         </div>
@@ -310,11 +339,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-15" class="section-anchor"></a>
+    <a id="section-16" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-15'>#</a>
+            <a class='octothorpe' href='#section-16'>#</a>
           </div>
           
         </div>

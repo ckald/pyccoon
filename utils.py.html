@@ -4,6 +4,12 @@
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <title>pyccoon v0.1.0 documentation: utils.py</title>
   <link rel="stylesheet" href="./pyccoon.css">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <div id='container'>
@@ -12,11 +18,19 @@
   <div id="footer">
     <a class="btn" id="project-name" href="./index.html">pyccoon v0.1.0 documentation</a>
     <a class="btn" class="source source-1" href="#top">Back to top</a>
+    <div id="jump_to" class="btn">
+    Contents
+    <div id="jump_wrapper">
+      <div id="jump_page">
+          <a class="source source-3" href="#section-6"> Ensure directory </a>
+      </div>
+    </div>
+    </div>
     <div class="generation-time">
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-02 03:54:25.512071</code>/
+        <code>2014-09-06 02:36:21.431094</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -139,7 +153,8 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-6'>#</a>
           </div>
-          <p>Ensure that the destination directory exists.</p>
+          <h3><span class="header" href="ensure-directory"> Ensure directory </span><a id="ensure-directory" class="header-anchor"></a></h3>
+<p>Ensure that the destination directory exists.</p>
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">def</span> <span class="nf">ensure_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
@@ -160,7 +175,7 @@
           <p>Monitor each source file and re-generate documentation on change.</p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre><span class="k">def</span> <span class="nf">monitor</span><span class="p">(</span><span class="n">pyccoon</span><span class="p">):</span></pre></div>
+          <div class="highlight"><pre><span class="k">def</span> <span class="nf">monitor</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -221,7 +236,7 @@
           <p>Re-generate documentation from a source file if it was listed on the command line. Watchdog monitors whole directories, so other files may cause notifications as well.</p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre>            <span class="n">pyccoon</span><span class="o">.</span><span class="n">process</span><span class="p">()</span></pre></div>
+          <div class="highlight"><pre>            <span class="n">func</span><span class="p">()</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -238,7 +253,7 @@
         <div class='code'>
           <div class="highlight"><pre>    <span class="n">event_handler</span> <span class="o">=</span> <span class="n">RegenerateHandler</span><span class="p">()</span>
     <span class="n">observer</span> <span class="o">=</span> <span class="n">watchdog</span><span class="o">.</span><span class="n">observers</span><span class="o">.</span><span class="n">Observer</span><span class="p">()</span>
-    <span class="n">observer</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">event_handler</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">pyccoon</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></pre></div>
+    <span class="n">observer</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="n">event_handler</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
