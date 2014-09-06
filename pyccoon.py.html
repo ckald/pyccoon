@@ -4,12 +4,6 @@
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <title>pyccoon v0.1.0 documentation: pyccoon.py</title>
   <link rel="stylesheet" href="./pyccoon.css">
-  <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-  });
-  </script>
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <div id='container'>
@@ -34,7 +28,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-06 14:20:05.498421</code>/
+        <code>2014-09-06 15:49:20.267767</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -861,7 +855,8 @@
             <span class="s">&quot;destination&quot;</span><span class="p">:</span>      <span class="n">dest</span><span class="p">,</span>
             <span class="s">&quot;generation_time&quot;</span><span class="p">:</span>  <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
             <span class="s">&quot;root_path&quot;</span><span class="p">:</span>        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">source</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span>
-            <span class="s">&quot;project_name&quot;</span><span class="p">:</span>     <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span>
+            <span class="s">&quot;project_name&quot;</span><span class="p">:</span>     <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span>
+            <span class="s">&quot;mathjax?&quot;</span><span class="p">:</span>          <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;mathjax&#39;</span><span class="p">]</span>
         <span class="p">})</span>
 
         <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r&quot;{{&quot;</span><span class="p">,</span> <span class="s">&quot;{{&quot;</span><span class="p">,</span> <span class="n">rendered</span><span class="p">)</span></pre></div>
@@ -882,14 +877,7 @@
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">destination</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 
         <span class="n">dirname</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">language</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">source</span><span class="p">),</span> <span class="s">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sourcefile</span><span class="p">:</span>
-                    <span class="n">code</span> <span class="o">=</span> <span class="n">sourcefile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-                <span class="n">language</span> <span class="o">=</span> <span class="n">get_language</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">code</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="k">pass</span>
+        <span class="n">language</span> <span class="o">=</span> <span class="n">language</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_language</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">language</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">transform_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -906,6 +894,33 @@
         <div class='docs'>
           <div class='octowrap'>
             <a class='octothorpe' href='#section-35'>#</a>
+          </div>
+          <p>Determine language of the file </p>
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">get_language</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+
+        <span class="n">language</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">source</span><span class="p">),</span> <span class="s">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sourcefile</span><span class="p">:</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="n">sourcefile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+            <span class="n">language</span> <span class="o">=</span> <span class="n">get_language</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">code</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">return</span> <span class="n">language</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+  </div>
+  <div class='section'>
+    <a id="section-36" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-36'>#</a>
           </div>
           <p>Hook spot for the console script.</p>
         </div>
@@ -937,11 +952,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-36" class="section-anchor"></a>
+    <a id="section-37" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-36'>#</a>
+            <a class='octothorpe' href='#section-37'>#</a>
           </div>
           <p>Run the script.</p>
         </div>
