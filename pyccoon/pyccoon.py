@@ -312,7 +312,10 @@ class Pyccoon:
         output = output.replace(self.highlight_start, "").replace(self.highlight_end, "")
         fragments = re.split(language.divider_html, output)
         for i, section in enumerate(sections):
-            section["code_html"] = self.highlight_start + shift(fragments, "") + self.highlight_end
+            section["code_html"] = shift(fragments, "")
+            if section["code_html"]:
+                section["code_html"] = \
+                    self.highlight_start + section["code_html"] + self.highlight_end
             docs_text = section["docs_text"]
             section["docs_html"] = language.markdown(
                 self.preprocess(docs_text, i, source=os.path.join(self.sourcedir, source))
