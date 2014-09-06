@@ -286,7 +286,7 @@ class Pyccoon:
 
         comment = re.sub('^\s*#?\s*([=]+)([^=]+)([=]+)\s*$', replace_section_name, comment,
                          flags=re.M)
-        comment = re.sub('\[\[([^\|]+\|)?(.+?)\]\]', replace_crossref, comment)
+        comment = re.sub('\[\[([^\|\n]+\|)?(.+?)\]\]', replace_crossref, comment)
 
         return comment
 
