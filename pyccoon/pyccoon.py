@@ -184,7 +184,8 @@ class Pyccoon:
             if process:
                 if os.path.exists(os.path.join(self.sourcedir, source)):
                     with open(dest, "wb") as f:
-                        f.write(self.generate_documentation(source, code, language=self.language).encode('utf8'))
+                        f.write(self.generate_documentation(source, code, language=self.language)
+                                .encode('utf8'))
 
                     self.log("\tProcessed:\t{:s} -> {:s}"
                              .format(source, os.path.relpath(dest, self.outdir)))
@@ -197,7 +198,7 @@ class Pyccoon:
                 self.log("\tCopied:   \t{:s}".format(source))
 
         # Ensure there is always an index file in the output folder
-        for _, (dest, _) in self.sources.items():
+        for _, (dest, _) in list(self.sources.items()):
             folder = os.path.relpath(os.path.split(dest)[0], self.outdir).lstrip('./')
             index = os.path.join(folder, "index.html")
 
