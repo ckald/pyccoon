@@ -40,25 +40,73 @@ class Pyccoon:
     # The end of each Pygments highlight block.
     highlight_end = "</pre></div>"
 
-    def __init__(self, opts):
+    config = defaultdict(lambda: [], {
+        "skip_files": [".+\\.pyc", "__pycache__", "\\.travis.yml", "\\.git", "\\.DS_Store"]
+    })
+
+    config_file = '.pyccoon'
+    watch = False
+
+    def __init__(self, opts, process=True):
+        """
+        == Pyccoon initialization ==
+        :param opts: `dict` of parameters.
+        :param process: Whether to generate documentation immediately
+
+        Available parameters:
+
+          * `sourcedir` - project source directory
+          * `outdir` - output directory
+          * `config_file` - pyccoon project settings
+          * `watch` - whether to regenerate the docs automatically
+        """
+
+        print("/" * 80)
+        print(" "*24 + "Pyccoon {} by {}".format(__version__, __author__))
+        print("/" * 80)
+
         for key, value in opts.items():
             setattr(self, key, value)
 
         if not self.outdir:
-            raise TypeError("Missing the required 'outdir' keyword argument.")
-
+            raise TypeError("Missing the required 'outdir' argument.")
         if not self.sourcedir:
-            raise TypeError("Missing the required 'sourcedir' keyword argument.")
+            raise TypeError("Missing the required 'sourcedir' argument.")
 
-        self.outdir = os.path.abspath(self.outdir)
         self.sourcedir = os.path.abspath(self.sourcedir)
+        print("Source folder: " + self.sourcedir)
+        self.outdir = os.path.abspath(self.outdir)
+        print("Output folder: " + self.outdir)
 
-        # Try to get `.pyccoon` config file
-        self.config_file = os.path.join(self.sourcedir, '.pyccoon')
-        self.config = defaultdict(lambda: [])
-        if os.path.exists(self.config_file):
-            print('Using config {:s}'.format(self.config_file))
-            with open(self.config_file, 'r') as f:
+        self.init_config()
+
+        self.collect_sources()
+
+        # Create the template that we will use to generate the Pyccoon HTML page.
+        self.page_template = self.template(resources.html)
+
+        if process:
+            self.process()
+
+        # If the -w / --watch option was present, monitor the source directories \
+        # for changes and re-generate documentation for source files whenever they \
+        # are modified.
+        if self.watch:
+            try:
+                import watchdog.events
+                import watchdog.observers
+            except ImportError:
+                sys.exit('The `watch` option requires the watchdog package.')
+
+            from .utils import monitor
+            monitor(path=self.sourcedir, func=lambda: self.process())
+
+    def init_config(self):
+        """ Try to get `.pyccoon` config file or use the default values """
+        config_file = os.path.join(self.sourcedir, self.config_file)
+        if os.path.exists(config_file):
+            print('Using config {:s}'.format(config_file))
+            with open(config_file, 'r') as f:
                 self.config.update(json.loads(f.read()))
 
         self.config['skip_files'] = [re.compile(p) for p in self.config['skip_files']]
@@ -67,8 +115,12 @@ class Pyccoon:
         self.project_name = self.config['project_name'] \
             or (os.path.split(self.sourcedir)[1] + " documentation")
 
+    def collect_sources(self):
+        """ Collect names of all files to be copied or processed """
         self.sources = {}
         for dirpath, dirnames, files in os.walk(self.sourcedir):
+            if any([regex.search(dirpath) for regex in self.config['skip_files']]):
+                continue
             for name in files:
                 if not any([regex.search(name) for regex in self.config['skip_files']]) \
                         and name not in dirnames:
@@ -79,16 +131,19 @@ class Pyccoon:
 
                     self.sources[source] = (self.destination(source), process)
 
-        # Create the template that we will use to generate the Pyccoon HTML page.
-        self.page_template = self.template(resources.html)
-
     def process(self, sources=None, language=None):
         """For each source file passed as argument, generate the documentation."""
 
         # TODO: this is all wrong. First, generate a filepaths mappings dict - this way you will \
         # be able to tell which files exist and will much simplify the cross-referencing and stuff
 
-        if not sources:
+        print('\n' + '-'*80)
+        print("[{}] Generating documentation for {}".format(datetime.now(), self.project_name))
+        print('-'*80 + '\n')
+
+        if sources:
+            sources = {k: v for k, v in self.sources.items() if k in sources}
+        else:
             sources = self.sources
 
         if not sources:
@@ -105,7 +160,7 @@ class Pyccoon:
             )
 
         # Proceed to generating the documentation.
-        for source, (dest, process) in sources.items():
+        for source, (dest, process) in sorted(sources.items(), key=lambda x: x[0]):
 
             if process:
                 with open(os.path.join(self.sourcedir, source), "r") as sourcefile:
@@ -126,14 +181,15 @@ class Pyccoon:
                     with open(dest, "w", encoding='utf8') as f:
                         f.write(self.generate_documentation(source, code, language=self.language))
 
-                    print("{:s} -> {:s}".format(source, os.path.relpath(dest, self.outdir)))
+                    print("\tProcessed:\t{:s} -> {:s}"
+                          .format(source, os.path.relpath(dest, self.outdir)))
                 else:
                     print("File does not exist: {:s}".format(source))
 
             else:
                 ensure_directory(os.path.split(dest)[0])
                 shutil.copyfile(os.path.join(self.sourcedir, source), dest)
-                print("{:s} -> Copied".format(source))
+                print("\tCopied:   \t{:s}".format(source))
 
         # Ensure there is always an index file in the output folder
         for _, (dest, _) in self.sources.items():
@@ -148,7 +204,7 @@ class Pyccoon:
                 with open(os.path.join(self.outdir, index), 'w', encoding='utf8') as f:
                     self.language = Language()
                     f.write(self.generate_html(source, []))
-                    print("Generated -> {:s}".format(source))
+                    print("\tGenerated:\t{:s}".format(source))
 
     def template(self, source):
         return lambda context: pystache.render(source, context)
