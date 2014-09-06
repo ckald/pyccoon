@@ -28,7 +28,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-06 20:34:02.257696</code>/
+        <code>2014-09-07 01:24:37.273521</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -105,7 +105,7 @@
         <div class='code'>
           <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
 
-            <span class="k">return</span> <span class="s">&quot;&lt;span class={:s}&gt;&lt;strong&gt;{:s}&lt;/strong&gt;{:s}&lt;/span&gt;&quot;</span>\
+            <span class="k">return</span> <span class="s">&quot;&lt;span class={0:s}&gt;&lt;strong&gt;{1:s}&lt;/strong&gt;{2:s}&lt;/span&gt;&quot;</span>\
                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span></pre></div>
         </div>
         <div class='clearall'></div>
@@ -123,7 +123,7 @@
         <div class='code'>
           <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
 
-            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span></pre></div>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -375,10 +375,11 @@
           <p>Regex that matches <code>@param name</code></p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre>                <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
-                    <span class="s">r&#39;^(\s?)@(\w+)\s+([&quot;</span><span class="se">\&#39;</span><span class="s">\`].+[&quot;</span><span class="se">\&#39;</span><span class="s">\`]|\S+)\s*&#39;</span><span class="p">,</span>
+          <div class="highlight"><pre>                <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+                    <span class="s">r&#39;^(\s?)@(\w+)\s+([&quot;</span><span class="se">\&#39;</span><span class="s">\`].+[&quot;</span><span class="se">\&#39;</span><span class="s">\`]|\S+)\s*&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
                     <span class="s">r&#39;\1&lt;span class=&quot;pydoc pydoc-\2&quot;&gt;&lt;span&gt;\2&lt;/span&gt; &lt;code&gt;\3&lt;/code&gt;&lt;/span&gt; &#39;</span><span class="p">,</span>
-                    <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span></pre></div>
+                    <span class="n">text</span><span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -393,10 +394,11 @@
           <p>Regex that matches <code>@var</code></p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre>                <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
-                    <span class="s">r&#39;^(\s?)@(\w+)&#39;</span><span class="p">,</span>
+          <div class="highlight"><pre>                <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+                    <span class="s">r&#39;^(\s?)@(\w+)&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
                     <span class="s">r&#39;\1&lt;span class=&quot;pydoc pydoc-\2&quot;&gt;&lt;span&gt;\2&lt;/span&gt;&lt;/span&gt;&#39;</span><span class="p">,</span>
-                    <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span></pre></div>
+                    <span class="n">text</span><span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -411,10 +413,11 @@
           <p>Regex that matches <code>:param name:</code></p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre>                <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
-                    <span class="s">r&#39;^(\s?):([^: ]+) +([^:]+):&#39;</span><span class="p">,</span>
+          <div class="highlight"><pre>                <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+                    <span class="s">r&#39;^(\s?):([^: ]+) +([^:]+):&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
                     <span class="s">r&#39;\1&lt;span class=&quot;pydoc pydoc-\2&quot;&gt;&lt;span&gt;\2&lt;/span&gt; &lt;code&gt;\3&lt;/code&gt;&lt;/span&gt;&#39;</span><span class="p">,</span>
-                    <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span></pre></div>
+                    <span class="n">text</span><span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -429,10 +432,11 @@
           <p>Regex that matches single-word comments: <code>:return:</code></p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre>                <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
-                    <span class="s">r&#39;^(\s?):([^: ]+):&#39;</span><span class="p">,</span>
+          <div class="highlight"><pre>                <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+                    <span class="s">r&#39;^(\s?):([^: ]+):&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
                     <span class="s">r&#39;\1&lt;span class=&quot;pydoc pydoc-\2&quot;&gt;&lt;span&gt;\2&lt;/span&gt;&lt;/span&gt;&#39;</span><span class="p">,</span>
-                    <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+                    <span class="n">text</span><span class="p">)</span>
 
                 <span class="n">new_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></pre></div>
         </div>
