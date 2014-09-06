@@ -25,6 +25,7 @@ class DummyFileTest(unittest.TestCase):
         self.pyccoon = Pyccoon({
             'sourcedir':    folder,
             'outdir':       folder,
+            'verbosity':    0,
         }, process=False)
         with open(self.input_name, "w") as temp:
             temp.write(self.input)

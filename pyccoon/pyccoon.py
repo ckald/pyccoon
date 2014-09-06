@@ -46,6 +46,7 @@ class Pyccoon:
 
     config_file = '.pyccoon'
     watch = False
+    verbosity = -1
 
     def __init__(self, opts, process=True):
         """
@@ -61,12 +62,15 @@ class Pyccoon:
           * `watch` - whether to regenerate the docs automatically
         """
 
-        print("/" * 80)
-        print(" "*24 + "Pyccoon {} by {}".format(__version__, __author__))
-        print("/" * 80)
-
         for key, value in opts.items():
             setattr(self, key, value)
+
+        self.log("Pyccoon {}".format(__version__))
+        self.log("-------------")
+
+        self.init_config()
+
+        self.verbosity = self.config['verbosity'] or 1 if self.verbosity == -1 else self.verbosity
 
         if not self.outdir:
             raise TypeError("Missing the required 'outdir' argument.")
@@ -74,11 +78,9 @@ class Pyccoon:
             raise TypeError("Missing the required 'sourcedir' argument.")
 
         self.sourcedir = os.path.abspath(self.sourcedir)
-        print("Source folder: " + self.sourcedir)
+        self.log("Source folder: " + self.sourcedir)
         self.outdir = os.path.abspath(self.outdir)
-        print("Output folder: " + self.outdir)
-
-        self.init_config()
+        self.log("Output folder: " + self.outdir)
 
         self.collect_sources()
 
@@ -101,11 +103,15 @@ class Pyccoon:
             from .utils import monitor
             monitor(path=self.sourcedir, func=lambda: self.process())
 
+    def log(self, message):
+        if self.verbosity:
+            print(message)
+
     def init_config(self):
         """ Try to get `.pyccoon` config file or use the default values """
         config_file = os.path.join(self.sourcedir, self.config_file)
         if os.path.exists(config_file):
-            print('Using config {:s}'.format(config_file))
+            self.log('Using config {:s}'.format(config_file))
             with open(config_file, 'rb') as f:
                 self.config.update(json.loads(f.read().decode('utf8')))
 
@@ -139,9 +145,9 @@ class Pyccoon:
         :param language: Force programming language
         """
 
-        print('\n' + '-'*80)
-        print("[{}] Generating documentation for {}".format(datetime.now(), self.project_name))
-        print('-'*80 + '\n')
+        self.log('\n' + '-'*80)
+        self.log("[{}] Generating documentation for {}".format(datetime.now(), self.project_name))
+        self.log('-'*80 + '\n')
 
         if sources:
             sources = {k: v for k, v in self.sources.items() if k in sources}
@@ -180,15 +186,15 @@ class Pyccoon:
                     with open(dest, "wb") as f:
                         f.write(self.generate_documentation(source, code, language=self.language).encode('utf8'))
 
-                    print("\tProcessed:\t{:s} -> {:s}"
-                          .format(source, os.path.relpath(dest, self.outdir)))
+                    self.log("\tProcessed:\t{:s} -> {:s}"
+                             .format(source, os.path.relpath(dest, self.outdir)))
                 else:
-                    print("File does not exist: {:s}".format(source))
+                    self.log("File does not exist: {:s}".format(source))
 
             else:
                 ensure_directory(os.path.split(dest)[0])
                 shutil.copyfile(os.path.join(self.sourcedir, source), dest)
-                print("\tCopied:   \t{:s}".format(source))
+                self.log("\tCopied:   \t{:s}".format(source))
 
         # Ensure there is always an index file in the output folder
         for _, (dest, _) in self.sources.items():
@@ -203,7 +209,7 @@ class Pyccoon:
                 with open(os.path.join(self.outdir, index), 'w', encoding='utf8') as f:
                     self.language = Language()
                     f.write(self.generate_html(source, []))
-                    print("\tGenerated:\t{:s}".format(source))
+                    self.log("\tGenerated:\t{:s}".format(source))
 
     def template(self, source):
         return lambda context: pystache.render(source, context)
@@ -489,6 +495,10 @@ def main():
     parser.add_option('-c', '--config', action='store', dest='config_file',
                       default='.pyccoon', type='string',
                       help='Config file to use (default: `%default`)')
+
+    parser.add_option('-v', '--verbosity', action='store', dest='verbosity',
+                      default=-1, type='int',
+                      help='Terminal output verbosity (0 to 1; default: %default)')
 
     opts, _ = parser.parse_args()
     opts = defaultdict(lambda: None, vars(opts))
