@@ -358,7 +358,7 @@ class Pyccoon:
 
         TODO: remove language dependency
         """
-        index_names = ['__init__.py', 'index.html']
+        index_names = ['__init__.py', 'index.html', 'index.php']
         if os.path.basename(source) not in index_names:
             return []
 
