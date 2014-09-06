@@ -14,7 +14,7 @@ import pystache
 import re
 import sys
 import json
-from codecs import open
+from io import open
 from datetime import datetime
 from collections import defaultdict
 
@@ -106,8 +106,8 @@ class Pyccoon:
         config_file = os.path.join(self.sourcedir, self.config_file)
         if os.path.exists(config_file):
             print('Using config {:s}'.format(config_file))
-            with open(config_file, 'r') as f:
-                self.config.update(json.loads(f.read()))
+            with open(config_file, 'rb') as f:
+                self.config.update(json.loads(f.read().decode('utf8')))
 
         self.config['skip_files'] = [re.compile(p) for p in self.config['skip_files']]
         self.config['copy_files'] = [re.compile(p) for p in self.config['copy_files']]
@@ -149,7 +149,7 @@ class Pyccoon:
             sources = self.sources
 
         ensure_directory(self.outdir)
-        with open(os.path.join(self.outdir, "pyccoon.css"), 'w', encoding='utf8') as css_file:
+        with open(os.path.join(self.outdir, "pyccoon.css"), 'wb') as css_file:
             css_file.write(resources.css)
 
         for file in resources.static_files:
@@ -162,8 +162,8 @@ class Pyccoon:
         for source, (dest, process) in sorted(sources.items(), key=lambda x: x[0]):
 
             if process:
-                with open(os.path.join(self.sourcedir, source), "r") as sourcefile:
-                    code = sourcefile.read()
+                with open(os.path.join(self.sourcedir, source), "rb") as sourcefile:
+                    code = sourcefile.read().decode('utf8')
 
                 self.language = get_language(source, code, language=language)
                 if not self.language:
@@ -177,8 +177,8 @@ class Pyccoon:
 
             if process:
                 if os.path.exists(os.path.join(self.sourcedir, source)):
-                    with open(dest, "w", encoding='utf8') as f:
-                        f.write(self.generate_documentation(source, code, language=self.language))
+                    with open(dest, "wb") as f:
+                        f.write(self.generate_documentation(source, code, language=self.language).encode('utf8'))
 
                     print("\tProcessed:\t{:s} -> {:s}"
                           .format(source, os.path.relpath(dest, self.outdir)))
@@ -461,8 +461,8 @@ class Pyccoon:
         language = None
 
         try:
-            with open(os.path.join(self.sourcedir, source), "r") as sourcefile:
-                code = sourcefile.read()
+            with open(os.path.join(self.sourcedir, source), "rb") as sourcefile:
+                code = sourcefile.read().decode('utf8')
 
             language = get_language(source, code)
         except:

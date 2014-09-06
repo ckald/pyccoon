@@ -48,13 +48,13 @@ class Language(object):
         """ Use pygments to highlight the `code` """
         return pygments.highlight(
             # looks like Pygments are working with ASCII only
-            code.decode('utf8'),
+            code,
             self.lexer,
             formatters.get_formatter_by_name(formatter)
         )
 
     def markdown(self, docs):
-        return markdown(docs.decode('utf8'), extensions=self.markdown_extensions)
+        return markdown(docs, extensions=self.markdown_extensions)
 
     def transform_filename(self, filename):
         """
