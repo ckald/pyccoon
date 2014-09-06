@@ -95,7 +95,7 @@ class Pyccoon:
             return
 
         ensure_directory(self.outdir)
-        with open(os.path.join(self.outdir, "pyccoon.css"), 'w') as css_file:
+        with open(os.path.join(self.outdir, "pyccoon.css"), 'w', encoding='utf8') as css_file:
             css_file.write(resources.css)
 
         for file in resources.static_files:
@@ -145,7 +145,7 @@ class Pyccoon:
                 source = os.path.join(folder, 'index.html')
                 self.sources[source] = (os.path.join(self.outdir, index), False)
 
-                with open(os.path.join(self.outdir, index), 'w') as f:
+                with open(os.path.join(self.outdir, index), 'w', encoding='utf8') as f:
                     self.language = Language()
                     f.write(self.generate_html(source, []))
                     print("Generated -> {:s}".format(source))
