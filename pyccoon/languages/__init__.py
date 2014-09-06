@@ -114,8 +114,8 @@ class Language(object):
     def strip_docs_indentation(self, sections, i):
         indent = re.match(r"^([ \t]*)", sections[i]["docs_text"], re.M).group(1)
 
-        sections[i]["docs_text"] = re.sub(r"^{0}".format(indent), "",
-                                          sections[i]["docs_text"], flags=re.M)
+        sections[i]["docs_text"] = re.compile(r"^{0}".format(indent), re.M)\
+            .sub("", sections[i]["docs_text"], flags=re.M)
 
     @iterate_sections()
     def merge_up(self, sections, i):
@@ -187,8 +187,9 @@ class InlineCommentLanguage(Language):
     def parse_inline(self, sections, i):
         new_sections = split_section_by_regex(sections[i], self.inline_re)
         for j, section in enumerate(new_sections):
-            new_sections[j]["docs_text"] = re.sub(r"^[ \t]*{0}".format(self.inline_delimiter), "",
-                                                  new_sections[j]["docs_text"], flags=re.M)
+            new_sections[j]["docs_text"] = re.compile(
+                r"^[ \t]*{0}".format(self.inline_delimiter), re.M
+            ).sub("", new_sections[j]["docs_text"], flags=re.M)
 
         sections[i:i+1] = new_sections
 
@@ -341,8 +342,8 @@ class C(BraceBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
 
     @iterate_sections(start=0)
     def strip_commenting_design(self, sections, i):
-        sections[i]["docs_text"] = re.sub(r"^[ \t]*(\/+|\*+)(.*)$", r"\2",
-                                          sections[i]["docs_text"], flags=re.M)
+        sections[i]["docs_text"] = re.compile(r"^[ \t]*(\/+|\*+)(.*)$", re.M)\
+            .sub(r"\2", sections[i]["docs_text"], flags=re.M)
 
     def strategy(self):
         base_strategy = super(C, self).strategy()

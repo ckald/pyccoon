@@ -27,7 +27,7 @@ class Todo(Extension):
 
         def run(self, lines):
             """ String matching is case insensitive """
-            return [self.regex.sub(self.template, line, re.I) for line in lines]
+            return [self.regex.sub(self.template, line) for line in lines]
 
     def extendMarkdown(self, md, md_globals):
         md.preprocessors.add('todo', Todo.Prep(md), '_end')
@@ -116,25 +116,29 @@ class Pydoc(Extension):
             new_lines = []
             for text in lines:
                 # Regex that matches `@param name`
-                text = re.sub(
-                    r'^(\s?)@(\w+)\s+(["\'\`].+["\'\`]|\S+)\s*',
+                text = re.compile(
+                    r'^(\s?)@(\w+)\s+(["\'\`].+["\'\`]|\S+)\s*', re.M
+                ).sub(
                     r'\1<span class="pydoc pydoc-\2"><span>\2</span> <code>\3</code></span> ',
-                    text, re.M)
+                    text)
                 # Regex that matches `@var`
-                text = re.sub(
-                    r'^(\s?)@(\w+)',
+                text = re.compile(
+                    r'^(\s?)@(\w+)', re.M
+                ).sub(
                     r'\1<span class="pydoc pydoc-\2"><span>\2</span></span>',
-                    text, re.M)
+                    text)
                 # Regex that matches `:param name:`
-                text = re.sub(
-                    r'^(\s?):([^: ]+) +([^:]+):',
+                text = re.compile(
+                    r'^(\s?):([^: ]+) +([^:]+):', re.M
+                ).sub(
                     r'\1<span class="pydoc pydoc-\2"><span>\2</span> <code>\3</code></span>',
-                    text, re.M)
+                    text)
                 # Regex that matches single-word comments: `:return:`
-                text = re.sub(
-                    r'^(\s?):([^: ]+):',
+                text = re.compile(
+                    r'^(\s?):([^: ]+):', re.M
+                ).sub(
                     r'\1<span class="pydoc pydoc-\2"><span>\2</span></span>',
-                    text, re.M)
+                    text)
 
                 new_lines.append(text)
             return new_lines

@@ -283,14 +283,14 @@ class Pyccoon:
                 '\n{lvl} <span class="header" href="{id}">{name}</span>'
                 '<a id="{id}" class="header-anchor"></a>'
             ).format(**{
-                "lvl":  re.sub('=', '#', match.group(1)),
+                "lvl":  match.group(1).replace('=', '#'),
                 "id":   slugify(match.group(2)),
                 "name": match.group(2)
             })
 
-        comment = re.sub('^\s*#?\s*([=]+)([^=]+)([=]+)\s*$', replace_section_name, comment,
-                         flags=re.M)
-        comment = re.sub('\[\[([^\|\n]+\|)?(.+?)\]\]', replace_crossref, comment)
+        comment = re.compile(r'^\s*#?\s*([=]+)([^=]+)([=]+)\s*$', re.M)\
+            .sub(replace_section_name, comment)
+        comment = re.sub(r'\[\[([^\|\n]+\|)?(.+?)\]\]', replace_crossref, comment)
 
         return comment
 
@@ -397,14 +397,14 @@ class Pyccoon:
         contents = []
 
         for section in sections:
-            section["code_html"] = re.sub(r"\{\{", r"__DOUBLE_OPEN_STACHE__", section["code_html"])
+            section["code_html"] = section["code_html"].replace("{{", "__DOUBLE_OPEN_STACHE__")
 
             match = re.search(r'<h(\d)>(.+)</h(\d)>', section["docs_html"], flags=re.M)
 
             if match:
                 contents.append({
                     "url": "#section-{0}".format(section["num"]),
-                    "basename": re.sub('<[^<]+?>', '', match.group(2)),
+                    "basename": re.sub(r'<[^<]+?>', '', match.group(2)),
                     "level": match.group(1)
                 })
         return contents
@@ -446,7 +446,7 @@ class Pyccoon:
             "mathjax?":          self.config['mathjax']
         })
 
-        return re.sub(r"__DOUBLE_OPEN_STACHE__", "{{", rendered)
+        return rendered.replace("__DOUBLE_OPEN_STACHE__", "{{")
 
     def destination(self, source, language=None):
         """
