@@ -27,7 +27,7 @@ class Language(object):
     scope_keywords = []
     filename_substitutes = {}
     markdown_extensions = [
-        markdown_extensions.LineConnector(),
+        markdown_extensions.LinesConnector(),
         markdown_extensions.SaneDefList(),
         markdown_extensions.Todo(),
         markdown_extensions.Pydoc(),

@@ -7,34 +7,35 @@ from markdown.extensions import Extension
 
 
 class Todo(Extension):
+
+    """ == TODO, FIXME, WARNING, CAUTION marks == """
+
     class Prep(Preprocessor):
 
         """
         Markdown preprocessor that matches all TODO and FIXME strings occurring at the beginning\
-        of the line or after the `#` symbol and highlights them in the documentation.
+        of the line or after the inline comment delimiter and highlights them in the documentation.
         """
 
         matched_strings = ["TODO", "FIXME", "WARNING", "CAUTION"]
         regex = re.compile("^\s*(" + "|".join(matched_strings) + ":?)(.*)", flags=re.I)
 
         def template(self, match):
-            """
-            Intended markup for TODO strings. The type of the string is used as a class.
-            """
+            """ Intended markup for TODO strings. The type of the string is used as a class. """
             return "<span class={:s}><strong>{:s}</strong>{:s}</span>"\
                 .format(match.group(1).lower(), match.group(1), match.group(2))
 
         def run(self, lines):
-            """
-            String matching is case insensitive
-            """
+            """ String matching is case insensitive """
             return [self.regex.sub(self.template, line, re.I) for line in lines]
 
     def extendMarkdown(self, md, md_globals):
         md.preprocessors.add('todo', Todo.Prep(md), '_end')
 
 
-class LineConnector(Extension):
+class LinesConnector(Extension):
+
+    """ == Lines connector extension == """
 
     def __init__(self, regex=r"(\S)\s*\\\s*\n\s*(\S)", sub=r"\1 \2", *args, **kwargs):
 
@@ -48,13 +49,16 @@ class LineConnector(Extension):
 
         self.Prep = Prep()
 
-        super(LineConnector, self).__init__(*args, **kwargs)
+        super(LinesConnector, self).__init__(*args, **kwargs)
 
     def extendMarkdown(self, md, md_globals):
-        md.preprocessors.add('line-connector', self.Prep, '_end')
+        md.preprocessors.add('lines-connector', self.Prep, '_end')
 
 
 class SaneDefList(Extension):
+
+    """ == Better definition lists == """
+
     class Prep(Preprocessor):
 
         """
@@ -97,11 +101,12 @@ class SaneDefList(Extension):
 
 
 class Pydoc(Extension):
+
+    """ == Docblocks meta marks processor == """
+
     class Prep(Preprocessor):
 
-        """
-        Preprocessor used to parse PyDoc-style comments like `:param name:` and format them.
-        """
+        """ Preprocessor used to parse PyDoc-style comments like `:param name:` and format them. """
 
         def run(self, lines):
             """
@@ -139,10 +144,10 @@ class Pydoc(Extension):
 
 
 class AutoLinkExtension(Extension):
-    """
-    There's already an inline pattern called autolink which handles
-    <http://www.google.com> type links. So lets call this extra_autolink
-    """
+
+    """ == Autolink extension ==
+        There's already an inline pattern called autolink which handles\
+        <http://www.google.com> type links. """
 
     EXTRA_AUTOLINK_RE = r'(?<!"|>)((https?://|www)[-\w./#?%=&]+)'
 
