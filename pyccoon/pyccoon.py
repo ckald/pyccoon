@@ -4,7 +4,7 @@
 """
 ![Pyccoon](pyccoon.svg)
 
-"**Pyccoon**" is a side-to-side documentation generating system.
+"**Pyccoon**" is a side-to-side documentation generator.
 """
 
 import optparse
