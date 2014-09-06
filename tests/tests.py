@@ -137,3 +137,48 @@ class Crossref(DummyFileTest):
         ]
         for item in validation_list:
             self.assertIn(item[0], output, item[1])
+
+
+class PythonLanguage(FileTest):
+    input_name = "python_test_sample.py"
+    output_name = input_name + ".html"
+
+    def check(self, output):
+        sections = self.pyccoon.sections
+
+        self.assertNotIn('for Pyccoon', sections[0]['docs_text'],
+                         "Multiline and inline comment were glued")
+        self.assertFalse(sections[0]['code_html'], "There should be no code in the section")
+
+        self.assertNotIn('indent-based language', sections[1]['docs_text'],
+                         "Inline comments separated by an empty line were glued")
+        self.assertFalse(sections[1]['code_html'], "There should be no code in the section")
+
+        self.assertNotIn('indent-based language', sections[3]['docs_text'],
+                         "Preceding comment attributed to the following function")
+        self.assertIn('def purpose', sections[3]['code_text'],
+                      "There should be code in the section")
+
+        self.assertIn('different features', sections[3]['code_text'],
+                      "Multiline string was mistaken for comment")
+        self.assertIn("The purpose of this test", sections[3]['docs_text'], "Wrong splitting")
+
+        self.assertIn('@one_of', sections[4]['code_text'])
+        self.assertIn('def are_decorators', sections[4]['code_text'],
+                      "Decorator separated from function")
+        self.assertIn('and also the convention', sections[4]['docs_text'], "Lost docs")
+
+        self.assertIn('class a_useful_heuristic', sections[5]['code_text'])
+        self.assertIn('for sections splitting', sections[5]['docs_text'], "Class lost his docs")
+
+        self.assertIn('def basically', sections[6]['code_text'])
+        self.assertIn('a documentation block', sections[6]['docs_text'], "Function lost its docs")
+
+        self.assertIn('if its_indentation', sections[7]['code_text'])
+        self.assertIn('belongs to', sections[7]['docs_text'], "If lost its docs")
+
+        self.assertIn('correspondence_of_the', sections[8]['code_text'])
+        self.assertIn('naturally gives', sections[8]['docs_text'], "If interior lost his docs")
+        self.assertNotIn('and_documentation', sections[8]['code_text'], "Indent splitting broken")
+
+        self.assertFalse(sections[9]['docs_text'], "There are no docs in the last section")
