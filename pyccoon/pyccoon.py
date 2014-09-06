@@ -77,10 +77,6 @@ class Pyccoon:
                     if any([regex.search(name) for regex in self.config['copy_files']]):
                         process = False
 
-                    with open(os.path.join(self.sourcedir, source), "r") as sourcefile:
-                        code = sourcefile.read()
-
-                    self.language = get_language(source, code)
                     self.sources[source] = (self.destination(source), process)
 
         # Create the template that we will use to generate the Pyccoon HTML page.
@@ -388,15 +384,24 @@ class Pyccoon:
 
         return re.sub(r"__DOUBLE_OPEN_STACHE__", "{{", rendered)
 
-    def destination(self, filepath):
+    def destination(self, source, language=None):
         """
         Compute the destination HTML path for an input source file path. If the \
         source is `lib/example.py`, the HTML will be at `docs/lib/example.html`
         """
 
-        dirname, filename = os.path.split(filepath)
-        if self.language:
-            name = self.language.transform_filename(filename)
+        dirname, filename = os.path.split(source)
+        if not language:
+            try:
+                with open(os.path.join(self.sourcedir, source), "r") as sourcefile:
+                    code = sourcefile.read()
+
+                language = get_language(source, code)
+            except:
+                pass
+
+        if language:
+            name = language.transform_filename(filename)
         else:
             name = filename
         return os.path.normpath(os.path.join(self.outdir, os.path.join(dirname, name)))
