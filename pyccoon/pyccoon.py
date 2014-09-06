@@ -436,6 +436,7 @@ class Pyccoon:
             "generation_time":  datetime.now(),
             "root_path":        os.path.relpath(".", os.path.split(source)[0]),
             "project_name":     self.project_name
+            "mathjax?":          self.config['mathjax']
         })
 
         return re.sub(r"__DOUBLE_OPEN_STACHE__", "{{", rendered)
