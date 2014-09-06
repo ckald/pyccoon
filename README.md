@@ -4,6 +4,8 @@
 </a>
 </p>
 
+[![Build Status](https://travis-ci.org/ckald/pyccoon.svg?branch=master)](https://travis-ci.org/ckald/pyccoon)
+
 Side-to-side documentation generator. Fork of the [Pycco](http://fitzgen.github.io/pycco/), grandfork of the [Docco](http://jashkenas.github.com/docco/). And an object-oriented one.
 
 [See how it works](http://ckald.github.io/pyccoon/)
