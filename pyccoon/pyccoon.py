@@ -14,6 +14,7 @@ import pystache
 import re
 import sys
 import json
+from codecs import open
 from datetime import datetime
 from collections import defaultdict
 
@@ -126,7 +127,7 @@ class Pyccoon:
 
             if process:
                 if os.path.exists(os.path.join(self.sourcedir, source)):
-                    with open(dest, "w") as f:
+                    with open(dest, "w", encoding='utf8') as f:
                         f.write(self.generate_documentation(source, code, language=self.language))
 
                     print("{:s} -> {:s}".format(source, os.path.relpath(dest, self.outdir)))
