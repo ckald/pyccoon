@@ -40,7 +40,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="../pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-06 02:39:08.109004</code>/
+        <code>2014-09-06 14:20:05.252006</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -95,7 +95,7 @@
     <span class="n">scope_keywords</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">filename_substitutes</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">markdown_extensions</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">LineConnector</span><span class="p">(),</span>
+        <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">LinesConnector</span><span class="p">(),</span>
         <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">SaneDefList</span><span class="p">(),</span>
         <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">Todo</span><span class="p">(),</span>
         <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">Pydoc</span><span class="p">(),</span>
@@ -673,7 +673,6 @@
           <h2><span class="header" href="mixins-for-indent-based-languages-(python,-ruby,-etc.)"> Mixins for indent-based languages (Python, Ruby, etc.) </span><a id="mixins-for-indent-based-languages-(python,-ruby,-etc.)" class="header-anchor"></a></h2>
 <p>In indent-based languages it is quite easy to find a proper place to split the code section: basically, whenever an indent of the line becomes smaller, than the indent of the first line of the section - split up.</p>
 <p><span class=todo><strong>TODO</strong>: Consider using some preprocessor instead of literal matching of the indentation. For example, <a href="https://github.com/sirthias/parboiled/wiki/Indentation-Based-Grammars">https://github.com/sirthias/parboiled/wiki/Indentation-Based-Grammars</a>, <a href="https://github.com/Cirru/cirru-parser">https://github.com/Cirru/cirru-parser</a></span></p>
-<p><span class=todo><strong>TODO</strong>: this docs block is parsed incorrectly - the problem is somewhere in the newline after the class definition (which is now in code style convention for Python 3)</span></p>
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">class</span> <span class="nc">IndentBasedLanguage</span><span class="p">(</span><span class="n">Language</span><span class="p">):</span>

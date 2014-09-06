@@ -18,11 +18,23 @@
   <div id="footer">
     <a class="btn" id="project-name" href="./index.html">pyccoon v0.1.0 documentation</a>
     <a class="btn" class="source source-1" href="#top">Back to top</a>
+    <div id="jump_to" class="btn">
+    Contents
+    <div id="jump_wrapper">
+      <div id="jump_page">
+          <a class="source source-2" href="#section-1"> TODO, FIXME, WARNING, CAUTION marks </a>
+          <a class="source source-2" href="#section-6"> Lines connector extension </a>
+          <a class="source source-2" href="#section-11"> Better definition lists </a>
+          <a class="source source-2" href="#section-15"> Docblocks meta marks processor </a>
+          <a class="source source-2" href="#section-24"> Autolink extension </a>
+      </div>
+    </div>
+    </div>
     <div class="generation-time">
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-06 02:39:08.223015</code>/
+        <code>2014-09-06 14:20:05.377313</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -61,7 +73,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-1'>#</a>
           </div>
-          
+          <h2><span class="header" href="todo,-fixme,-warning,-caution-marks"> TODO, FIXME, WARNING, CAUTION marks </span><a id="todo,-fixme,-warning,-caution-marks" class="header-anchor"></a></h2>
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">class</span> <span class="nc">Todo</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span></pre></div>
@@ -76,7 +88,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-2'>#</a>
           </div>
-          <p>Markdown preprocessor that matches all TODO and FIXME strings occurring at the beginning of the line or after the <code>#</code> symbol and highlights them in the documentation.</p>
+          <p>Markdown preprocessor that matches all TODO and FIXME strings occurring at the beginning of the line or after the inline comment delimiter and highlights them in the documentation.</p>
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Prep</span><span class="p">(</span><span class="n">Preprocessor</span><span class="p">):</span>
@@ -94,7 +106,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-3'>#</a>
           </div>
-          <p>Intended markup for TODO strings. The type of the string is used as a class.</p>
+          <p>Intended markup for TODO strings. The type of the string is used as a class. </p>
         </div>
         <div class='code'>
           <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
@@ -112,7 +124,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-4'>#</a>
           </div>
-          <p>String matching is case insensitive</p>
+          <p>String matching is case insensitive </p>
         </div>
         <div class='code'>
           <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
@@ -145,10 +157,10 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-6'>#</a>
           </div>
-          
+          <h2><span class="header" href="lines-connector-extension"> Lines connector extension </span><a id="lines-connector-extension" class="header-anchor"></a></h2>
         </div>
         <div class='code'>
-          <div class="highlight"><pre><span class="k">class</span> <span class="nc">LineConnector</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
+          <div class="highlight"><pre><span class="k">class</span> <span class="nc">LinesConnector</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="s">r&quot;(\S)\s*</span><span class="se">\\</span><span class="s">\s*\n\s*(\S)&quot;</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="s">r&quot;\1 \2&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
@@ -201,7 +213,7 @@
         <div class='code'>
           <div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">Prep</span> <span class="o">=</span> <span class="n">Prep</span><span class="p">()</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">LineConnector</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></pre></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LinesConnector</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -217,7 +229,7 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">extendMarkdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">md_globals</span><span class="p">):</span>
-        <span class="n">md</span><span class="o">.</span><span class="n">preprocessors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;line-connector&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Prep</span><span class="p">,</span> <span class="s">&#39;_end&#39;</span><span class="p">)</span></pre></div>
+        <span class="n">md</span><span class="o">.</span><span class="n">preprocessors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;lines-connector&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Prep</span><span class="p">,</span> <span class="s">&#39;_end&#39;</span><span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -229,7 +241,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-11'>#</a>
           </div>
-          
+          <h2><span class="header" href="better-definition-lists"> Better definition lists </span><a id="better-definition-lists" class="header-anchor"></a></h2>
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">class</span> <span class="nc">SaneDefList</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span></pre></div>
@@ -317,7 +329,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-15'>#</a>
           </div>
-          
+          <h2><span class="header" href="docblocks-meta-marks-processor"> Docblocks meta marks processor </span><a id="docblocks-meta-marks-processor" class="header-anchor"></a></h2>
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">class</span> <span class="nc">Pydoc</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span></pre></div>
@@ -332,7 +344,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-16'>#</a>
           </div>
-          <p>Preprocessor used to parse PyDoc-style comments like <code>:param name:</code> and format them.</p>
+          <p>Preprocessor used to parse PyDoc-style comments like <code>:param name:</code> and format them. </p>
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Prep</span><span class="p">(</span><span class="n">Preprocessor</span><span class="p">):</span></pre></div>
@@ -471,8 +483,8 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-24'>#</a>
           </div>
-          <p>There's already an inline pattern called autolink which handles
-<a href="http://www.google.com">http://www.google.com</a> type links. So lets call this extra_autolink</p>
+          <h2><span class="header" href="autolink-extension"> Autolink extension </span><a id="autolink-extension" class="header-anchor"></a></h2>
+<p>There's already an inline pattern called autolink which handles <a href="http://www.google.com">http://www.google.com</a> type links. </p>
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">class</span> <span class="nc">AutoLinkExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
