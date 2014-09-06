@@ -132,10 +132,12 @@ class Pyccoon:
                     self.sources[source] = (self.destination(source), process)
 
     def process(self, sources=None, language=None):
-        """For each source file passed as argument, generate the documentation."""
+        """
+        Process source files.
 
-        # TODO: this is all wrong. First, generate a filepaths mappings dict - this way you will \
-        # be able to tell which files exist and will much simplify the cross-referencing and stuff
+        :param sources: `list` of source files to process
+        :param language: Force programming language
+        """
 
         print('\n' + '-'*80)
         print("[{}] Generating documentation for {}".format(datetime.now(), self.project_name))
@@ -145,9 +147,6 @@ class Pyccoon:
             sources = {k: v for k, v in self.sources.items() if k in sources}
         else:
             sources = self.sources
-
-        if not sources:
-            return
 
         ensure_directory(self.outdir)
         with open(os.path.join(self.outdir, "pyccoon.css"), 'w', encoding='utf8') as css_file:
@@ -231,8 +230,6 @@ class Pyccoon:
         [[utils.py#ensure-directory]]. Sections have to be manually\
         declared; they are written on a single line, and surrounded by equals signs:\
         `=== like this ===`
-
-        TODO: currently broken
         """
 
         def slugify(name):

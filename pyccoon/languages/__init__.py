@@ -228,6 +228,7 @@ class MultilineCommentLanguage(Language):
 
 
 class IndentBasedLanguage(Language):
+
     """
     == Mixins for indent-based languages (Python, Ruby, etc.) ==
 
@@ -238,9 +239,6 @@ class IndentBasedLanguage(Language):
     TODO: Consider using some preprocessor instead of literal matching of the indentation. For \
         example, https://github.com/sirthias/parboiled/wiki/Indentation-Based-Grammars, \
         https://github.com/Cirru/cirru-parser
-
-    TODO: this docs block is parsed incorrectly - the problem is somewhere in the newline after\
-        the class definition (which is now in code style convention for Python 3)
     """
 
     @iterate_sections(start=0)
