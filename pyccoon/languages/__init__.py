@@ -115,7 +115,7 @@ class Language(object):
         indent = re.match(r"^([ \t]*)", sections[i]["docs_text"], re.M).group(1)
 
         sections[i]["docs_text"] = re.compile(r"^{0}".format(indent), re.M)\
-            .sub("", sections[i]["docs_text"], flags=re.M)
+            .sub("", sections[i]["docs_text"])
 
     @iterate_sections()
     def merge_up(self, sections, i):
@@ -189,7 +189,7 @@ class InlineCommentLanguage(Language):
         for j, section in enumerate(new_sections):
             new_sections[j]["docs_text"] = re.compile(
                 r"^[ \t]*{0}".format(self.inline_delimiter), re.M
-            ).sub("", new_sections[j]["docs_text"], flags=re.M)
+            ).sub("", new_sections[j]["docs_text"])
 
         sections[i:i+1] = new_sections
 
