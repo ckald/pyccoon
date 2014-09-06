@@ -21,7 +21,7 @@ Side-to-side documentation generator. Fork of the [Pycco](http://fitzgen.github.
   - [x] Better page layout
   - [x] Documentation website
   - [ ] Write test suites and extend supported languages list:
-      - [ ] Python
+      - [x] Python
       - [ ] Ruby
       - [ ] PHP
       - [ ] JavaScript
@@ -36,9 +36,16 @@ Side-to-side documentation generator. Fork of the [Pycco](http://fitzgen.github.
       - [ ] Haskell
       - [ ] CSS, LESS, SASS
   - [ ] Fix bugs:
-      - [ ] Fix `--watch` option
-      - [ ] Broken cross-referencing (wikilinks)
-      - [ ] ?
+      - [x] Fix `--watch` option
+      - [x] Broken cross-referencing (wikilinks)
+      - [x] Fix multiple Python versions compatibility
+      - [ ] Replace Python Markdown with Mistune (because we need nice extensions http://mistune.readthedocs.org/en/latest/)
+          - [ ] Restrict extensions to specific block types
+          - [ ] Create LaTeX codeblocks (to avoid unnecessary `\begin{equation}...\end{equation}` in the docs and restrict MathJax parsing only to specific elements on the page)
+      - [ ] Add (actually, fix) line numbers feature (tricky)
+      - [ ] Test against multilanguage projects (i.e., what happens if there are `index.html` and `__init__.py` in one folder?)
+      - [ ] Link index files instead of renaming (`__init__.py` -> `index.html`)
+  - [ ] Release on PyPi
   - [ ] Additional features:
       - [ ] Object retrieval and cross-linking ("jump to definition" for classes, functions)
       - [ ] Search
