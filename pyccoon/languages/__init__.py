@@ -114,7 +114,7 @@ class Language(object):
     def strip_docs_indentation(self, sections, i):
         indent = re.match(r"^([ \t]*)", sections[i]["docs_text"], re.M).group(1)
 
-        sections[i]["docs_text"] = re.sub(r"^{}".format(indent), "",
+        sections[i]["docs_text"] = re.sub(r"^{0}".format(indent), "",
                                           sections[i]["docs_text"], flags=re.M)
 
     @iterate_sections()
@@ -166,28 +166,28 @@ class InlineCommentLanguage(Language):
     @cached_property
     def inline_re(self):
         """
-            ^\s*{}\s*(.+$)
-            (^[ \t]*{}(.*)$)+
+            ^\s*{0}\s*(.+$)
+            (^[ \t]*{0}(.*)$)+
         """
-        return re.compile(r"((^[ \t]*{}.*\n)+)".format(self.inline_delimiter), flags=re.M)
+        return re.compile(r"((^[ \t]*{0}.*\n)+)".format(self.inline_delimiter), flags=re.M)
 
     @property
     def divider_text(self):
         # The dividing token we feed into Pygments, to delimit the boundaries between sections.
-        return "\n{}DIVIDER\n".format(self.inline_delimiter)
+        return "\n{0}DIVIDER\n".format(self.inline_delimiter)
 
     @property
     def divider_html(self):
         # The mirror of `divider_text` that we expect Pygments to return. We can split \
         # on this to recover the original sections.
-        return re.compile(r'\n*<span class="c[1]?">{}DIVIDER</span>\n*'
+        return re.compile(r'\n*<span class="c[1]?">{0}DIVIDER</span>\n*'
                           .format(self.inline_delimiter))
 
     @iterate_sections(start=0)
     def parse_inline(self, sections, i):
         new_sections = split_section_by_regex(sections[i], self.inline_re)
         for j, section in enumerate(new_sections):
-            new_sections[j]["docs_text"] = re.sub(r"^[ \t]*{}".format(self.inline_delimiter), "",
+            new_sections[j]["docs_text"] = re.sub(r"^[ \t]*{0}".format(self.inline_delimiter), "",
                                                   new_sections[j]["docs_text"], flags=re.M)
 
         sections[i:i+1] = new_sections
@@ -222,7 +222,7 @@ class MultilineCommentLanguage(Language):
     @iterate_sections(start=0)
     def parse_multiline(self, sections, i):
         sections[i:i+1] = split_section_by_regex(sections[i], self.multiline_re)
-        sections[i]["docs_text"] = re.sub(r"^\n*(\s*){}".format(self.multistart),
+        sections[i]["docs_text"] = re.sub(r"^\n*(\s*){0}".format(self.multistart),
                                           r"\1",
                                           sections[i]["docs_text"])
 
@@ -245,7 +245,7 @@ class IndentBasedLanguage(Language):
     def split_by_scopes(self, sections, i):
         indent = re.match(r"^(\s*)", sections[i]["code_text"].strip("\n")).group(1)
 
-        regex = re.compile(r"^(\s{{0,{}}}\S)".format(len(indent) - 1), flags=re.M)
+        regex = re.compile(r"^(\s{{0,{0}}}\S)".format(len(indent) - 1), flags=re.M)
         match = regex.search(sections[i]["code_text"], pos=len(indent) + 1)
 
         if match:
@@ -253,7 +253,7 @@ class IndentBasedLanguage(Language):
             sections[i]['level'] = len(indent)
             sections[i+1]['level'] = len(match.group(1).strip("\n"))
 
-        regex = re.compile(r"({})".format("|".join(self.scope_keywords)), flags=re.M)
+        regex = re.compile(r"({0})".format("|".join(self.scope_keywords)), flags=re.M)
         match = regex.search(sections[i]["code_text"])
 
         if match and match.start() == 0:
@@ -280,7 +280,7 @@ class BraceBasedLanguage(Language):
         """ Split the code sections by `scope_keywords` of the language
             TODO: consider splitting also by braces interiors"""
 
-        regex = re.compile(r"^({})".format("|".join(self.scope_keywords)), flags=re.M)
+        regex = re.compile(r"^({0})".format("|".join(self.scope_keywords)), flags=re.M)
         match = regex.search(sections[i]["code_text"])
 
         if match and match.start() == 0:
@@ -324,7 +324,7 @@ class C(BraceBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
     multistart = r"/\*+"
     multiend = r"\*+/"
 
-    scope_keywords = [r"\s*({}) \w+".format(word) for word in
+    scope_keywords = [r"\s*({0}) \w+".format(word) for word in
                       ["class", "function", "namespace",
                        "public", "private", "protected", "abstract", "inline", "virtual",
                        "void", "int", "double", "bool",  "float"]]

@@ -65,7 +65,7 @@ class Pyccoon:
         for key, value in opts.items():
             setattr(self, key, value)
 
-        self.log("Pyccoon {}".format(__version__))
+        self.log("Pyccoon {0}".format(__version__))
         self.log("-------------")
 
         self.init_config()
@@ -146,7 +146,7 @@ class Pyccoon:
         """
 
         self.log('\n' + '-'*80)
-        self.log("[{}] Generating documentation for {}".format(datetime.now(), self.project_name))
+        self.log("[{0}] Generating documentation for {1}".format(datetime.now(), self.project_name))
         self.log('-'*80 + '\n')
 
         if sources:
@@ -403,7 +403,7 @@ class Pyccoon:
 
             if match:
                 contents.append({
-                    "url": "#section-{}".format(section["num"]),
+                    "url": "#section-{0}".format(section["num"]),
                     "basename": re.sub('<[^<]+?>', '', match.group(2)),
                     "level": match.group(1)
                 })
@@ -481,7 +481,7 @@ class Pyccoon:
 def main():
     """Hook spot for the console script."""
 
-    parser = optparse.OptionParser(version='Pyccoon {}'.format(__version__))
+    parser = optparse.OptionParser(version='Pyccoon {0}'.format(__version__))
     parser.add_option('-s', '--source', action='store', type='string',
                       dest='sourcedir', default='.',
                       help='Source files directory (default: `%default`)')

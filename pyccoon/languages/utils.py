@@ -38,7 +38,7 @@ class ParsingStrategy(list):
         """ Return the index of a method which name is `name` or raise an exception. """
         index = next((i for i, x in enumerate(self) if x.__name__ == name), None)
         if not index:
-            raise Exception("Step '{}'' not found in the strategy: {}".format(name, self))
+            raise Exception("Step '{0}' not found in the strategy: {1}".format(name, self))
 
         return index
 
