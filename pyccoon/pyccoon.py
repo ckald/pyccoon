@@ -222,9 +222,9 @@ class Pyccoon:
         language, and merging them into an HTML template.
         """
 
-        sections = language.parse(code, add_lineno=self.add_lineno)
-        self.highlight(source, sections, language)
-        return self.generate_html(source, sections)
+        self.sections = language.parse(code, add_lineno=self.add_lineno)
+        self.highlight(source, self.sections, language)
+        return self.generate_html(source, self.sections)
 
     # == Preprocessing the comments ==
 
