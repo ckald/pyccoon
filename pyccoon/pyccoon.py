@@ -31,9 +31,6 @@ class Pyccoon:
 
     add_lineno = True
 
-    # The CSS styles we'd like to apply to the documentation.
-    css = resources.css
-
     # The start of each Pygments highlight block.
     highlight_start = "<div class=\"highlight\"><pre>"
 
@@ -155,13 +152,14 @@ class Pyccoon:
             sources = self.sources
 
         ensure_directory(self.outdir)
-        with open(os.path.join(self.outdir, "pyccoon.css"), 'wb') as css_file:
-            css_file.write(resources.css)
 
-        for file in resources.static_files:
+        for file, dest in resources.static_files:
+            filepath = os.path.join(os.path.split(resources.__file__)[0], file)
+            destpath = os.path.join(self.outdir, dest)
+            self.sources[filepath] = (destpath, False)
             shutil.copyfile(
-                os.path.join(os.path.split(resources.__file__)[0], file),
-                os.path.join(self.outdir, file)
+                filepath,
+                destpath
             )
 
         # Proceed to generating the documentation.

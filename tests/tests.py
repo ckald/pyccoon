@@ -31,7 +31,8 @@ class FileTest(unittest.TestCase):
 
     def tearDown(self):
         """ Remove created files and verify they do not exist """
-        os.unlink(self.output_name)
+        for _, (dest, _) in self.pyccoon.sources.items():
+            os.unlink(dest)
         assert not os.path.exists(self.output_name), "Dummy output file exists after test"
 
     def check(self, output):
@@ -86,8 +87,10 @@ class PyDocSubstitutions(DummyFileTest):
                # `:pre:`"""
 
     def check(self, output):
-        self.assertTrue("pydoc-return" in repr(output), "Single word PyDoc expression not converted")
-        self.assertTrue("pydoc-param" in repr(output), "Multiple words PyDoc expression not converted")
+        self.assertTrue("pydoc-return" in repr(output),
+                        "Single word PyDoc expression not converted")
+        self.assertTrue("pydoc-param" in repr(output),
+                        "Multiple words PyDoc expression not converted")
         self.assertTrue(":pre:" in repr(output), "PyDoc expression in `pre` converted")
 
 
