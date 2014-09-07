@@ -4,6 +4,9 @@ include HISTORY.rst
 include LICENSE
 include README.rst
 
+recursive-include pyccoon *
+recursive-include languages *
+recursive-include resources *
 recursive-include tests *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
