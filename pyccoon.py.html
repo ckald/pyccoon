@@ -17,16 +17,16 @@
     <div id="jump_wrapper">
       <div id="jump_page">
           <a class="source source-2" href="#section-3"> Main documentation generation class </a>
-          <a class="source source-2" href="#section-7"> Pyccoon initialization </a>
-          <a class="source source-2" href="#section-13"> Source files processing </a>
-          <a class="source source-2" href="#section-17"> Generating documentation </a>
-          <a class="source source-3" href="#section-18"> Highlighting the source code </a>
-          <a class="source source-3" href="#section-19"> Preprocessing the comments </a>
-          <a class="source source-2" href="#section-28"> HTML Code generation </a>
-          <a class="source source-3" href="#section-30"> Generating breadcrumbs </a>
-          <a class="source source-3" href="#section-31"> Generating navigation </a>
-          <a class="source source-3" href="#section-32"> Generating page contents </a>
-          <a class="source source-2" href="#section-33"> Utilities </a>
+          <a class="source source-2" href="#section-6"> Pyccoon initialization </a>
+          <a class="source source-2" href="#section-12"> Source files processing </a>
+          <a class="source source-2" href="#section-16"> Generating documentation </a>
+          <a class="source source-3" href="#section-17"> Highlighting the source code </a>
+          <a class="source source-3" href="#section-18"> Preprocessing the comments </a>
+          <a class="source source-2" href="#section-27"> HTML Code generation </a>
+          <a class="source source-3" href="#section-29"> Generating breadcrumbs </a>
+          <a class="source source-3" href="#section-30"> Generating navigation </a>
+          <a class="source source-3" href="#section-31"> Generating page contents </a>
+          <a class="source source-2" href="#section-32"> Utilities </a>
       </div>
     </div>
     </div>
@@ -34,7 +34,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-07 12:15:42.137977</code>/
+        <code>2014-09-07 16:50:42.355408</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -129,10 +129,10 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-4'>#</a>
           </div>
-          <p>The CSS styles we'd like to apply to the documentation.</p>
+          <p>The start of each Pygments highlight block.</p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre>    <span class="n">css</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">css</span></pre></div>
+          <div class="highlight"><pre>    <span class="n">highlight_start</span> <span class="o">=</span> <span class="s">&quot;&lt;div class=</span><span class="se">\&quot;</span><span class="s">highlight</span><span class="se">\&quot;</span><span class="s">&gt;&lt;pre&gt;&quot;</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -143,21 +143,6 @@
         <div class='docs'>
           <div class='octowrap'>
             <a class='octothorpe' href='#section-5'>#</a>
-          </div>
-          <p>The start of each Pygments highlight block.</p>
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre>    <span class="n">highlight_start</span> <span class="o">=</span> <span class="s">&quot;&lt;div class=</span><span class="se">\&quot;</span><span class="s">highlight</span><span class="se">\&quot;</span><span class="s">&gt;&lt;pre&gt;&quot;</span></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-  </div>
-  <div class='section'>
-    <a id="section-6" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-6'>#</a>
           </div>
           <p>The end of each Pygments highlight block.</p>
         </div>
@@ -176,11 +161,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-7" class="section-anchor"></a>
+    <a id="section-6" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-7'>#</a>
+            <a class='octothorpe' href='#section-6'>#</a>
           </div>
           <h2><span class="header" href="pyccoon-initialization"> Pyccoon initialization </span><a id="pyccoon-initialization" class="header-anchor"></a></h2>
 <p><span class="pydoc pydoc-param"><span>param</span> <code>opts</code></span> <code>dict</code> of parameters.
@@ -222,11 +207,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-8" class="section-anchor"></a>
+    <a id="section-7" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-8'>#</a>
+            <a class='octothorpe' href='#section-7'>#</a>
           </div>
           <p>Create the template that we will use to generate the Pyccoon HTML page.</p>
         </div>
@@ -240,11 +225,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-9" class="section-anchor"></a>
+    <a id="section-8" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-9'>#</a>
+            <a class='octothorpe' href='#section-8'>#</a>
           </div>
           <p>If the -w / --watch option was present, monitor the source directories for changes and re-generate documentation for source files whenever they are modified.</p>
         </div>
@@ -263,11 +248,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-10" class="section-anchor"></a>
+    <a id="section-9" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-10'>#</a>
+            <a class='octothorpe' href='#section-9'>#</a>
           </div>
           
         </div>
@@ -280,11 +265,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-11" class="section-anchor"></a>
+    <a id="section-10" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-11'>#</a>
+            <a class='octothorpe' href='#section-10'>#</a>
           </div>
           <p>Try to get <code>.pyccoon</code> config file or use the default values </p>
         </div>
@@ -307,11 +292,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-12" class="section-anchor"></a>
+    <a id="section-11" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-12'>#</a>
+            <a class='octothorpe' href='#section-11'>#</a>
           </div>
           <p>Collect names of all files to be copied or processed </p>
         </div>
@@ -336,11 +321,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-13" class="section-anchor"></a>
+    <a id="section-12" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-13'>#</a>
+            <a class='octothorpe' href='#section-12'>#</a>
           </div>
           <h2><span class="header" href="source-files-processing"> Source files processing </span><a id="source-files-processing" class="header-anchor"></a></h2>
 <p><span class="pydoc pydoc-param"><span>param</span> <code>sources</code></span> <code>list</code> of source files to process
@@ -359,24 +344,25 @@
             <span class="n">sources</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources</span>
 
         <span class="n">ensure_directory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="s">&quot;pyccoon.css&quot;</span><span class="p">),</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">css_file</span><span class="p">:</span>
-            <span class="n">css_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">css</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">resources</span><span class="o">.</span><span class="n">static_files</span><span class="p">:</span>
+        <span class="k">for</span> <span class="nb">file</span><span class="p">,</span> <span class="n">dest</span> <span class="ow">in</span> <span class="n">resources</span><span class="o">.</span><span class="n">static_files</span><span class="p">:</span>
+            <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">__file__</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">file</span><span class="p">)</span>
+            <span class="n">destpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">[</span><span class="n">filepath</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">destpath</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">__file__</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">file</span><span class="p">),</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outdir</span><span class="p">,</span> <span class="nb">file</span><span class="p">)</span>
+                <span class="n">filepath</span><span class="p">,</span>
+                <span class="n">destpath</span>
             <span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
   </div>
   <div class='section'>
-    <a id="section-14" class="section-anchor"></a>
+    <a id="section-13" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-14'>#</a>
+            <a class='octothorpe' href='#section-13'>#</a>
           </div>
           <p>Proceed to generating the documentation.</p>
         </div>
@@ -417,11 +403,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-15" class="section-anchor"></a>
+    <a id="section-14" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-15'>#</a>
+            <a class='octothorpe' href='#section-14'>#</a>
           </div>
           <p>Ensure there is always an index file in the output folder</p>
         </div>
@@ -444,11 +430,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-16" class="section-anchor"></a>
+    <a id="section-15" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-16'>#</a>
+            <a class='octothorpe' href='#section-15'>#</a>
           </div>
           
         </div>
@@ -460,11 +446,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-17" class="section-anchor"></a>
+    <a id="section-16" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-17'>#</a>
+            <a class='octothorpe' href='#section-16'>#</a>
           </div>
           <h2><span class="header" href="generating-documentation"> Generating documentation </span><a id="generating-documentation" class="header-anchor"></a></h2>
 <p>Generate the documentation for a source file by reading it in, splitting it up into comment/code sections, highlighting them for the appropriate language, and merging them into an HTML template.</p>
@@ -480,11 +466,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-18" class="section-anchor"></a>
+    <a id="section-17" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-18'>#</a>
+            <a class='octothorpe' href='#section-17'>#</a>
           </div>
           <h3><span class="header" href="highlighting-the-source-code"> Highlighting the source code </span><a id="highlighting-the-source-code" class="header-anchor"></a></h3>
 <p>Highlights a single chunk of code using the <strong>Pygments</strong> module, and runs the text of its corresponding comment through <strong>Markdown</strong>.</p>
@@ -514,11 +500,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-19" class="section-anchor"></a>
+    <a id="section-18" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-19'>#</a>
+            <a class='octothorpe' href='#section-18'>#</a>
           </div>
           <h3><span class="header" href="preprocessing-the-comments"> Preprocessing the comments </span><a id="preprocessing-the-comments" class="header-anchor"></a></h3>
 <p>Add cross-references before having the text processed by markdown.  It's possible to reference another file, like this : <code>[utils.py](utils.py.html)</code> which renders <a href="utils.py.html">utils.py</a>. You can also reference a specific section of another file, like this: <code>[utils.py#ensure-directory](utils.py.html#ensure-directory)</code> which renders as <a href="utils.py.html#ensure-directory">utils.py#ensure-directory</a>. Sections have to be manually declared; they are written on a single line, and surrounded by equals signs: <code>=== like this ===</code></p>
@@ -530,11 +516,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-20" class="section-anchor"></a>
+    <a id="section-19" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-20'>#</a>
+            <a class='octothorpe' href='#section-19'>#</a>
           </div>
           <p>Return URL-friendly section name representation </p>
         </div>
@@ -547,11 +533,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-21" class="section-anchor"></a>
+    <a id="section-20" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-21'>#</a>
+            <a class='octothorpe' href='#section-20'>#</a>
           </div>
           
         </div>
@@ -569,11 +555,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-22" class="section-anchor"></a>
+    <a id="section-21" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-22'>#</a>
+            <a class='octothorpe' href='#section-21'>#</a>
           </div>
           <p>Check if the match contains an anchor</p>
         </div>
@@ -595,11 +581,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-23" class="section-anchor"></a>
+    <a id="section-22" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-23'>#</a>
+            <a class='octothorpe' href='#section-22'>#</a>
           </div>
           <p>Absolute reference</p>
         </div>
@@ -613,11 +599,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-24" class="section-anchor"></a>
+    <a id="section-23" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-24'>#</a>
+            <a class='octothorpe' href='#section-23'>#</a>
           </div>
           
         </div>
@@ -628,11 +614,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-25" class="section-anchor"></a>
+    <a id="section-24" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-25'>#</a>
+            <a class='octothorpe' href='#section-24'>#</a>
           </div>
           <p>Relative reference</p>
         </div>
@@ -645,11 +631,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-26" class="section-anchor"></a>
+    <a id="section-25" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-26'>#</a>
+            <a class='octothorpe' href='#section-25'>#</a>
           </div>
           
         </div>
@@ -660,11 +646,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-27" class="section-anchor"></a>
+    <a id="section-26" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-27'>#</a>
+            <a class='octothorpe' href='#section-26'>#</a>
           </div>
           
         </div>
@@ -689,11 +675,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-28" class="section-anchor"></a>
+    <a id="section-27" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-28'>#</a>
+            <a class='octothorpe' href='#section-27'>#</a>
           </div>
           <h2><span class="header" href="html-code-generation"> HTML Code generation </span><a id="html-code-generation" class="header-anchor"></a></h2>
         </div>
@@ -704,11 +690,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-29" class="section-anchor"></a>
+    <a id="section-28" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-29'>#</a>
+            <a class='octothorpe' href='#section-28'>#</a>
           </div>
           <p>Once all of the code is finished highlighting, we can generate the HTML file and write out the documentation. Pass the completed sections into the template found in <code>resources/pyccoon.html</code>.</p>
 <p>Pystache will attempt to recursively render context variables, so we must replace any occurences of <code>{{</code>, which is valid in some languages, with a "unique enough" identifier before rendering, and then post-process the rendered template and change the identifier back to <code>{{</code>.</p>
@@ -747,11 +733,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-30" class="section-anchor"></a>
+    <a id="section-29" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-30'>#</a>
+            <a class='octothorpe' href='#section-29'>#</a>
           </div>
           <h3><span class="header" href="generating-breadcrumbs"> Generating breadcrumbs </span><a id="generating-breadcrumbs" class="header-anchor"></a></h3>
 <p>Based on the source file path, generate linked breadcrumbs of the documentation.</p>
@@ -787,11 +773,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-31" class="section-anchor"></a>
+    <a id="section-30" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-31'>#</a>
+            <a class='octothorpe' href='#section-30'>#</a>
           </div>
           <h3><span class="header" href="generating-navigation"> Generating navigation </span><a id="generating-navigation" class="header-anchor"></a></h3>
 <p>For <code>index.html</code> files, generate a menu of folder contents.</p>
@@ -839,11 +825,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-32" class="section-anchor"></a>
+    <a id="section-31" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-32'>#</a>
+            <a class='octothorpe' href='#section-31'>#</a>
           </div>
           <h3><span class="header" href="generating-page-contents"> Generating page contents </span><a id="generating-page-contents" class="header-anchor"></a></h3>
 <p>Gather the names of the documentation sections for "jump-to"-like navigation on the page.</p>
@@ -870,11 +856,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-33" class="section-anchor"></a>
+    <a id="section-32" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-33'>#</a>
+            <a class='octothorpe' href='#section-32'>#</a>
           </div>
           <h2><span class="header" href="utilities"> Utilities </span><a id="utilities" class="header-anchor"></a></h2>
         </div>
@@ -885,11 +871,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-34" class="section-anchor"></a>
+    <a id="section-33" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-34'>#</a>
+            <a class='octothorpe' href='#section-33'>#</a>
           </div>
           <p>Compute the destination HTML path for an input source file path. If the source is <code>lib/example.py</code>, the HTML will be at <code>docs/lib/example.html</code></p>
         </div>
@@ -909,11 +895,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-35" class="section-anchor"></a>
+    <a id="section-34" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-35'>#</a>
+            <a class='octothorpe' href='#section-34'>#</a>
           </div>
           <p>Determine language of the file </p>
         </div>
@@ -936,11 +922,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-36" class="section-anchor"></a>
+    <a id="section-35" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-36'>#</a>
+            <a class='octothorpe' href='#section-35'>#</a>
           </div>
           <p>Hook spot for the console script.</p>
         </div>
@@ -976,11 +962,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-37" class="section-anchor"></a>
+    <a id="section-36" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-37'>#</a>
+            <a class='octothorpe' href='#section-36'>#</a>
           </div>
           <p>Run the script.</p>
         </div>

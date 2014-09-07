@@ -16,7 +16,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="../pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-07 12:15:42.146800</code>/
+        <code>2014-09-07 16:50:42.366889</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -43,10 +43,11 @@
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)),</span> <span class="s">&quot;pycco.html&quot;</span><span class="p">),</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">html</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)),</span> <span class="s">&quot;pycco.css&quot;</span><span class="p">),</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">css</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-<span class="n">static_files</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;pyccoon.svg&#39;</span><span class="p">,</span> <span class="s">&#39;pyccoon_icon.svg&#39;</span><span class="p">]</span>
+<span class="n">static_files</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s">&#39;pyccoon.svg&#39;</span><span class="p">,</span> <span class="s">&#39;pyccoon.svg&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&#39;pyccoon_icon.svg&#39;</span><span class="p">,</span> <span class="s">&#39;pyccoon_icon.svg&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&#39;pycco.css&#39;</span><span class="p">,</span> <span class="s">&#39;pyccoon.css&#39;</span><span class="p">)</span>
+<span class="p">]</span>
 
 </pre></div>
         </div>

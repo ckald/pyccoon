@@ -34,7 +34,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="../pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-07 12:15:41.863418</code>/
+        <code>2014-09-07 16:50:42.116133</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -919,6 +919,7 @@
           </div>
           <h3><span class="header" href="python"> Python </span><a id="python" class="header-anchor"></a></h3>
 <p>Obviously, Python language parsing is a best-developed part of Pyccoon.</p>
+<p><span class=todo><strong>TODO</strong>: support also <code>'''</code> comment delimiters.</span></p>
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">class</span> <span class="nc">Python</span><span class="p">(</span><span class="n">IndentBasedLanguage</span><span class="p">,</span> <span class="n">MultilineCommentLanguage</span><span class="p">,</span> <span class="n">InlineCommentLanguage</span><span class="p">):</span>
@@ -1000,6 +1001,13 @@ but into the next.</p>
           </div>
           <h3><span class="header" href="ruby"> Ruby </span><a id="ruby" class="header-anchor"></a></h3>
 <p>Mostly identical to Python.</p>
+<p><span class=todo><strong>TODO</strong>: Actually, Ruby is crazy and supports unbelievable variety of multiline comment syntaxes:</span></p>
+<div class="codehilite"><pre>    <span class="n">multistart</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;=begin&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;&lt;-DOC&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;__END__&quot;</span><span class="p">]</span>
+    <span class="n">multiend</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;=end&quot;</span><span class="p">,</span> <span class="s">&quot;DOC&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">]</span>
+</pre></div>
+
+
+<p>will have to rethink multiline comments capturing to support them all</p>
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">class</span> <span class="nc">Ruby</span><span class="p">(</span><span class="n">IndentBasedLanguage</span><span class="p">,</span> <span class="n">InlineCommentLanguage</span><span class="p">,</span> <span class="n">MultilineCommentLanguage</span><span class="p">):</span>
@@ -1069,10 +1077,20 @@ but into the next.</p>
     <span class="n">inline_delimiter</span> <span class="o">=</span> <span class="s">&quot;--&quot;</span>
     <span class="n">multistart</span> <span class="o">=</span> <span class="s">&quot;{-&quot;</span>
     <span class="n">multiend</span> <span class="o">=</span> <span class="s">&quot;-}&quot;</span>
+
+<span class="n">languages</span> <span class="o">=</span> <span class="p">[</span><span class="n">CoffeScript</span><span class="p">,</span> <span class="n">Perl</span><span class="p">,</span> <span class="n">SQL</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">PHP</span><span class="p">,</span>  <span class="n">JavaScript</span><span class="p">,</span> <span class="n">Ruby</span><span class="p">,</span> <span class="n">Python</span><span class="p">,</span> <span class="n">Scheme</span><span class="p">,</span>
+             <span class="n">Lua</span><span class="p">,</span> <span class="n">Erlang</span><span class="p">,</span> <span class="n">Tcl</span><span class="p">,</span> <span class="n">Haskell</span><span class="p">]</span>
 </pre></div>
         </div>
         <div class='code'>
-          <div class="highlight"><pre><span class="n">extensions_mapping</span> <span class="o">=</span> <span class="p">{}</span></pre></div>
+          <div class="highlight"><pre><span class="n">extensions_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">languages</span> <span class="o">=</span> <span class="p">[</span><span class="n">Python</span><span class="p">,</span> <span class="n">PHP</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">JavaScript</span><span class="p">,</span> <span class="n">Ruby</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">language</span> <span class="ow">in</span> <span class="n">languages</span><span class="p">:</span>
+    <span class="n">instance</span> <span class="o">=</span> <span class="n">language</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">extensions</span><span class="p">:</span>
+        <span class="n">extensions_mapping</span><span class="p">[</span><span class="n">extension</span><span class="p">]</span> <span class="o">=</span> <span class="n">instance</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -1084,27 +1102,6 @@ but into the next.</p>
           <div class='octowrap'>
             <a class='octothorpe' href='#section-49'>#</a>
           </div>
-          <p>languages = [CoffeScript, Perl, SQL, C, PHP,  JavaScript, Ruby, Python, Scheme,
-Lua, Erlang, Tcl, Haskell]</p>
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre><span class="n">languages</span> <span class="o">=</span> <span class="p">[</span><span class="n">Python</span><span class="p">,</span> <span class="n">PHP</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">JavaScript</span><span class="p">,</span> <span class="n">Ruby</span><span class="p">]</span>
-
-<span class="k">for</span> <span class="n">language</span> <span class="ow">in</span> <span class="n">languages</span><span class="p">:</span>
-    <span class="n">instance</span> <span class="o">=</span> <span class="n">language</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">extensions</span><span class="p">:</span>
-        <span class="n">extensions_mapping</span><span class="p">[</span><span class="n">extension</span><span class="p">]</span> <span class="o">=</span> <span class="n">instance</span></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-  </div>
-  <div class='section'>
-    <a id="section-50" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-50'>#</a>
-          </div>
           <p>Get the current language we're documenting, based on the extension.</p>
         </div>
         <div class='code'>
@@ -1112,7 +1109,7 @@ Lua, Erlang, Tcl, Haskell]</p>
 
     <span class="k">if</span> <span class="n">language</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">extensions_mapping</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">l</span><span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">language</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">language</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">l</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Unknown forced language: &quot;</span> <span class="o">+</span> <span class="n">language</span><span class="p">)</span>
