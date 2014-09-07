@@ -187,3 +187,27 @@ class PythonLanguage(FileTest):
         self.assertFalse('and_documentation' in sections[8]['code_text'], "Indent splitting broken")
 
         self.assertFalse(sections[9]['docs_text'], "There are no docs in the last section")
+
+
+class RubyLanguage(FileTest):
+    input_name = "ruby_test_sample.rb"
+    output_name = input_name + ".html"
+
+    def check(self, output):
+        sections = self.pyccoon.sections
+        # from subprocess import call
+        # call(["open", os.path.join(self.folder, self.output_name)])
+        # print(sections)
+
+        for keyword in ["Title:", "Authors:", "Syntax:", "Example:", "See the documentation"]:
+            self.assertTrue(keyword in sections[1]['docs_text'], "Inline comments were not glued")
+
+        self.assertFalse('module' in sections[1]['code_text'],
+                         "Scope keyword 'module' did not work")
+
+        self.assertTrue('Render any' in sections[4]['docs_text']
+                        and 'def render' in sections[4]['code_text']
+                        and 'site = ' not in sections[4]['code_text'], "Wrong section splitting")
+
+        self.assertTrue(sections[11]['code_text'].count('end') == 1,
+                        "Indentation splitting does not work")
