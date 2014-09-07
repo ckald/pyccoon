@@ -14,7 +14,13 @@ Side-to-side documentation generator. Fork of the [Pycco](http://fitzgen.github.
 
 # Installation
 
-At the moment the release on the PyPi is being prepared. In the meanwhile, to use the Pyccoon
+Pyccoon is [available](https://pypi.python.org/pypi/pyccoon/) on PyPi package index. You can install it using pip:
+
+```bash
+pip install pyccoon
+```
+
+Another way to get the Pyccoon is
 
 ```bash
 git clone https://github.com/ckald/pyccoon.git
