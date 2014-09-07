@@ -4,7 +4,9 @@
 </a>
 </p>
 
+[![PyPi package](https://badge.fury.io/py/pyccoon.png)](http://badge.fury.io/py/pyccoon)
 [![Build Status](https://travis-ci.org/ckald/pyccoon.svg?branch=master)](https://travis-ci.org/ckald/pyccoon)
+[![Downloads](https://pypip.in/d/pyccoon/badge.png)](https://pypi.python.org/pypi/pyccoon)
 
 Side-to-side documentation generator. Fork of the [Pycco](http://fitzgen.github.io/pycco/), grandfork of the [Docco](http://jashkenas.github.com/docco/). And an object-oriented one.
 
@@ -19,10 +21,10 @@ git clone https://github.com/ckald/pyccoon.git
 cd pyccoon
 python setup.py install
 ```
-    
+
 And you're done. Pyccoon is compatible with Python 2.6, 2.7, 3.3, 3.4 and PyPy. Latest test results can be seen on the [Travis CI project page](https://travis-ci.org/ckald/pyccoon).
 
-# Usage 
+# Usage
 
 To generate the project documentation
 
