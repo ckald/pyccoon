@@ -385,6 +385,8 @@ class Python(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguag
     """
     === Python ===
     Obviously, Python language parsing is a best-developed part of Pyccoon.
+
+    TODO: support also `'''` comment delimiters.
     """
     extensions = [".py"]
     inline_delimiter = "#"
@@ -423,6 +425,14 @@ class Ruby(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage)
     """
     === Ruby ===
     Mostly identical to Python.
+
+    TODO: Actually, Ruby is crazy and supports unbelievable variety of multiline comment syntaxes:
+
+    ```python
+        multistart = ["=begin", "<<-DOC", "\"", "__END__"]
+        multiend = ["=end", "DOC", "\"", ""]
+    ```
+    will have to rethink multiline comments capturing to support them all
     """
     extensions = [".rb"]
     inline_delimiter = "#"
@@ -483,12 +493,12 @@ class Haskell(InlineCommentLanguage, MultilineCommentLanguage):
     multistart = "{-"
     multiend = "-}"
 
+languages = [CoffeScript, Perl, SQL, C, PHP,  JavaScript, Ruby, Python, Scheme,
+             Lua, Erlang, Tcl, Haskell]
 ```
 """
 
 extensions_mapping = {}
-# languages = [CoffeScript, Perl, SQL, C, PHP,  JavaScript, Ruby, Python, Scheme,
-             # Lua, Erlang, Tcl, Haskell]
 
 languages = [Python, PHP, C, JavaScript, Ruby]
 
@@ -503,7 +513,7 @@ def get_language(source, code, language=None):
 
     if language is not None:
         for l in extensions_mapping.values():
-            if l["name"] == language:
+            if l.name == language:
                 return l
         else:
             raise ValueError("Unknown forced language: " + language)
