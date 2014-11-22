@@ -17,16 +17,16 @@
     <div id="jump_wrapper">
       <div id="jump_page">
           <a class="source source-2" href="#section-1"> Pyccoon Language definition </a>
-          <a class="source source-2" href="#section-21"> Inline commenting mixins </a>
-          <a class="source source-2" href="#section-27"> Multiline commenting mixins </a>
-          <a class="source source-2" href="#section-32"> Mixins for indent-based languages (Python, Ruby, etc.) </a>
-          <a class="source source-2" href="#section-34"> Mixins for brace-based languages (C/C++, JavaScript, PHP, etc.) </a>
-          <a class="source source-2" href="#section-37"> Specific languages definitions </a>
-          <a class="source source-3" href="#section-38"> C/C++ </a>
-          <a class="source source-3" href="#section-41"> JavaScript </a>
-          <a class="source source-3" href="#section-43"> Python </a>
-          <a class="source source-3" href="#section-47"> Ruby </a>
-          <a class="source source-2" href="#section-48"> Languages in development </a>
+          <a class="source source-2" href="#section-19"> Inline commenting mixins </a>
+          <a class="source source-2" href="#section-25"> Multiline commenting mixins </a>
+          <a class="source source-2" href="#section-30"> Mixins for indent-based languages (Python, Ruby, etc.) </a>
+          <a class="source source-2" href="#section-32"> Mixins for brace-based languages (C/C++, JavaScript, PHP, etc.) </a>
+          <a class="source source-2" href="#section-35"> Specific languages definitions </a>
+          <a class="source source-3" href="#section-36"> C/C++ </a>
+          <a class="source source-3" href="#section-39"> JavaScript </a>
+          <a class="source source-3" href="#section-41"> Python </a>
+          <a class="source source-3" href="#section-45"> Ruby </a>
+          <a class="source source-2" href="#section-46"> Languages in development </a>
       </div>
     </div>
     </div>
@@ -34,7 +34,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="../pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-09-07 16:50:42.116133</code>/
+        <code>2014-11-22 17:40:34.399703</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -147,7 +147,10 @@
         <div class='code'>
           <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">highlight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="s">&quot;html&quot;</span><span class="p">):</span>
 
-        <span class="k">return</span> <span class="n">pygments</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span></pre></div>
+        <span class="k">return</span> <span class="n">pygments</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span>
+            <span class="n">code</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lexer</span><span class="p">,</span>
+            <span class="n">formatters</span><span class="o">.</span><span class="n">get_formatter_by_name</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+        <span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -159,38 +162,6 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-5'>#</a>
           </div>
-          <p>looks like Pygments are working with ASCII only</p>
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre>            <span class="n">code</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lexer</span><span class="p">,</span>
-            <span class="n">formatters</span><span class="o">.</span><span class="n">get_formatter_by_name</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-  </div>
-  <div class='section'>
-    <a id="section-6" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-6'>#</a>
-          </div>
-          
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre>        <span class="p">)</span></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-  </div>
-  <div class='section'>
-    <a id="section-7" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-7'>#</a>
-          </div>
           
         </div>
         <div class='code'>
@@ -201,11 +172,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-8" class="section-anchor"></a>
+    <a id="section-6" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-8'>#</a>
+            <a class='octothorpe' href='#section-6'>#</a>
           </div>
           <p>Filename transformation according to language specifics. If <code>filename_substitutes</code> are defined, the filename can be replaced accordingly. For example, <code>Python</code> module's <code>__init__.py</code> corresponds to the index file of the folder and should be turned into <code>index.html</code></p>
 <p>If no <code>filename_substitutes</code> declared, the filename extension will be replaced by <code>.html</code>.</p>
@@ -226,11 +197,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-9" class="section-anchor"></a>
+    <a id="section-7" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-9'>#</a>
+            <a class='octothorpe' href='#section-7'>#</a>
           </div>
           <p>Language parsing strategy - i.e., a list of methods to be applied to the code to derive a properly formatter set of docs-code sections </p>
         </div>
@@ -246,11 +217,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-10" class="section-anchor"></a>
+    <a id="section-8" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-10'>#</a>
+            <a class='octothorpe' href='#section-8'>#</a>
           </div>
           <p>Apply <code>self.strategy()</code> to the <code>code</code> </p>
         </div>
@@ -266,11 +237,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-11" class="section-anchor"></a>
+    <a id="section-9" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-11'>#</a>
+            <a class='octothorpe' href='#section-9'>#</a>
           </div>
           <p>Strip empty sections</p>
         </div>
@@ -283,11 +254,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-12" class="section-anchor"></a>
+    <a id="section-10" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-12'>#</a>
+            <a class='octothorpe' href='#section-10'>#</a>
           </div>
           
         </div>
@@ -300,11 +271,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-13" class="section-anchor"></a>
+    <a id="section-11" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-13'>#</a>
+            <a class='octothorpe' href='#section-11'>#</a>
           </div>
           
         </div>
@@ -317,11 +288,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-14" class="section-anchor"></a>
+    <a id="section-12" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-14'>#</a>
+            <a class='octothorpe' href='#section-12'>#</a>
           </div>
           
         </div>
@@ -338,11 +309,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-15" class="section-anchor"></a>
+    <a id="section-13" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-15'>#</a>
+            <a class='octothorpe' href='#section-13'>#</a>
           </div>
           
         </div>
@@ -358,11 +329,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-16" class="section-anchor"></a>
+    <a id="section-14" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-16'>#</a>
+            <a class='octothorpe' href='#section-14'>#</a>
           </div>
           <p>Suck up the documentation added right under the scope-defining lines (e.g., class or function definition) </p>
         </div>
@@ -378,11 +349,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-17" class="section-anchor"></a>
+    <a id="section-15" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-17'>#</a>
+            <a class='octothorpe' href='#section-15'>#</a>
           </div>
           <p>If previous line of code contains one of the <code>scope_keywords</code> - merge last 2 sections</p>
         </div>
@@ -395,11 +366,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-18" class="section-anchor"></a>
+    <a id="section-16" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-18'>#</a>
+            <a class='octothorpe' href='#section-16'>#</a>
           </div>
           <p>Merge the documentation placed above the code (just like the next comment) </p>
         </div>
@@ -411,11 +382,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-19" class="section-anchor"></a>
+    <a id="section-17" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-19'>#</a>
+            <a class='octothorpe' href='#section-17'>#</a>
           </div>
           <p>if there was no code, but were docs - merge</p>
         </div>
@@ -430,11 +401,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-20" class="section-anchor"></a>
+    <a id="section-18" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-20'>#</a>
+            <a class='octothorpe' href='#section-18'>#</a>
           </div>
           <p>Absorb next code-only section if it lies deeper than the current one (that has docs)</p>
         </div>
@@ -451,11 +422,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-21" class="section-anchor"></a>
+    <a id="section-19" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-21'>#</a>
+            <a class='octothorpe' href='#section-19'>#</a>
           </div>
           <h2><span class="header" href="inline-commenting-mixins"> Inline commenting mixins </span><a id="inline-commenting-mixins" class="header-anchor"></a></h2>
 <p>Language mixin for separate inline comments and whole stacks of them.</p>
@@ -469,11 +440,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-22" class="section-anchor"></a>
+    <a id="section-20" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-22'>#</a>
+            <a class='octothorpe' href='#section-20'>#</a>
           </div>
           
         </div>
@@ -487,11 +458,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-23" class="section-anchor"></a>
+    <a id="section-21" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-23'>#</a>
+            <a class='octothorpe' href='#section-21'>#</a>
           </div>
           <div class="codehilite"><pre><span class="o">^</span><span class="err">\</span><span class="n">s</span><span class="o">*</span><span class="p">{</span><span class="mi">0</span><span class="p">}</span><span class="err">\</span><span class="n">s</span><span class="o">*</span><span class="p">(.</span><span class="o">+</span><span class="err">$</span><span class="p">)</span>
 <span class="p">(</span><span class="o">^</span><span class="p">[</span> <span class="err">\</span><span class="n">t</span><span class="p">]</span><span class="o">*</span><span class="p">{</span><span class="mi">0</span><span class="p">}(.</span><span class="o">*</span><span class="p">)</span><span class="err">$</span><span class="p">)</span><span class="o">+</span>
@@ -507,11 +478,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-24" class="section-anchor"></a>
+    <a id="section-22" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-24'>#</a>
+            <a class='octothorpe' href='#section-22'>#</a>
           </div>
           <p>The dividing token we feed into Pygments, to delimit the boundaries between sections.</p>
         </div>
@@ -525,11 +496,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-25" class="section-anchor"></a>
+    <a id="section-23" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-25'>#</a>
+            <a class='octothorpe' href='#section-23'>#</a>
           </div>
           <p>The mirror of <code>divider_text</code> that we expect Pygments to return. We can split on this to recover the original sections.</p>
         </div>
@@ -544,11 +515,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-26" class="section-anchor"></a>
+    <a id="section-24" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-26'>#</a>
+            <a class='octothorpe' href='#section-24'>#</a>
           </div>
           
         </div>
@@ -567,11 +538,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-27" class="section-anchor"></a>
+    <a id="section-25" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-27'>#</a>
+            <a class='octothorpe' href='#section-25'>#</a>
           </div>
           <h2><span class="header" href="multiline-commenting-mixins"> Multiline commenting mixins </span><a id="multiline-commenting-mixins" class="header-anchor"></a></h2>
 <p>Language mixin for multiline comments. Some languages also have another syntax entity called "docblocks" - they probably should be treated separately, although they are usually captured along with multiline comments.</p>
@@ -586,11 +557,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-28" class="section-anchor"></a>
+    <a id="section-26" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-28'>#</a>
+            <a class='octothorpe' href='#section-26'>#</a>
           </div>
           
         </div>
@@ -604,11 +575,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-29" class="section-anchor"></a>
+    <a id="section-27" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-29'>#</a>
+            <a class='octothorpe' href='#section-27'>#</a>
           </div>
           
         </div>
@@ -621,11 +592,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-30" class="section-anchor"></a>
+    <a id="section-28" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-30'>#</a>
+            <a class='octothorpe' href='#section-28'>#</a>
           </div>
           
         </div>
@@ -639,11 +610,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-31" class="section-anchor"></a>
+    <a id="section-29" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-31'>#</a>
+            <a class='octothorpe' href='#section-29'>#</a>
           </div>
           
         </div>
@@ -659,11 +630,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-32" class="section-anchor"></a>
+    <a id="section-30" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-32'>#</a>
+            <a class='octothorpe' href='#section-30'>#</a>
           </div>
           <h2><span class="header" href="mixins-for-indent-based-languages-(python,-ruby,-etc.)"> Mixins for indent-based languages (Python, Ruby, etc.) </span><a id="mixins-for-indent-based-languages-(python,-ruby,-etc.)" class="header-anchor"></a></h2>
 <p>In indent-based languages it is quite easy to find a proper place to split the code section: basically, whenever an indent of the line becomes smaller, than the indent of the first line of the section - split up.</p>
@@ -700,11 +671,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-33" class="section-anchor"></a>
+    <a id="section-31" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-33'>#</a>
+            <a class='octothorpe' href='#section-31'>#</a>
           </div>
           
         </div>
@@ -718,11 +689,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-34" class="section-anchor"></a>
+    <a id="section-32" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-34'>#</a>
+            <a class='octothorpe' href='#section-32'>#</a>
           </div>
           <h2><span class="header" href="mixins-for-brace-based-languages-(c/c++,-javascript,-php,-etc.)"> Mixins for brace-based languages (C/C++, JavaScript, PHP, etc.) </span><a id="mixins-for-brace-based-languages-(c/c++,-javascript,-php,-etc.)" class="header-anchor"></a></h2>
         </div>
@@ -733,11 +704,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-35" class="section-anchor"></a>
+    <a id="section-33" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-35'>#</a>
+            <a class='octothorpe' href='#section-33'>#</a>
           </div>
           <p>Split the code sections by <code>scope_keywords</code> of the language
 <span class=todo><strong>TODO</strong>: consider splitting also by braces interiors</span></p>
@@ -761,11 +732,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-36" class="section-anchor"></a>
+    <a id="section-34" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-36'>#</a>
+            <a class='octothorpe' href='#section-34'>#</a>
           </div>
           
         </div>
@@ -779,11 +750,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-37" class="section-anchor"></a>
+    <a id="section-35" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-37'>#</a>
+            <a class='octothorpe' href='#section-35'>#</a>
           </div>
           <h2><span class="header" href="specific-languages-definitions"> Specific languages definitions </span><a id="specific-languages-definitions" class="header-anchor"></a></h2>
         </div>
@@ -794,11 +765,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-38" class="section-anchor"></a>
+    <a id="section-36" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-38'>#</a>
+            <a class='octothorpe' href='#section-36'>#</a>
           </div>
           <h3><span class="header" href="c/c++"> C/C++ </span><a id="c/c++" class="header-anchor"></a></h3>
 <p>Styling of the C/C++ code is largely historical and oriented on reading hopelessly long codes on the old terminal screens.</p>
@@ -829,29 +800,36 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-39" class="section-anchor"></a>
+    <a id="section-37" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-39'>#</a>
+            <a class='octothorpe' href='#section-37'>#</a>
           </div>
-          
+          <p><span class=fixme><strong>FIXME</strong>: this redefinition brakes the whole extension</span></p>
+<div class="codehilite"><pre><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ext</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">markdown_extensions</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">LineConnector</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">markdown_extensions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> \
+                <span class="n">markdown_extensions</span><span class="o">.</span><span class="n">LineConnector</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s">r&quot;([\w\.])[ \t]*\n[ \t]*(\w)&quot;</span><span class="p">)</span>
+</pre></div>
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="nd">@iterate_sections</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">strip_commenting_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sections</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
         <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;docs_text&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&quot;^[ \t]*(\/+|\*+)(.*)$&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>\
-            <span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r&quot;\2&quot;</span><span class="p">,</span> <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;docs_text&quot;</span><span class="p">],</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span></pre></div>
+            <span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r&quot;\2&quot;</span><span class="p">,</span> <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;docs_text&quot;</span><span class="p">])</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
   </div>
   <div class='section'>
-    <a id="section-40" class="section-anchor"></a>
+    <a id="section-38" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-40'>#</a>
+            <a class='octothorpe' href='#section-38'>#</a>
           </div>
           
         </div>
@@ -866,11 +844,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-41" class="section-anchor"></a>
+    <a id="section-39" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-41'>#</a>
+            <a class='octothorpe' href='#section-39'>#</a>
           </div>
           <h3><span class="header" href="javascript"> JavaScript </span><a id="javascript" class="header-anchor"></a></h3>
 <p>JavaScript is largely identical to C/C++, although it has far less scope keywords and far more flexibility in defining functions and objects.</p>
@@ -890,11 +868,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-42" class="section-anchor"></a>
+    <a id="section-40" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-42'>#</a>
+            <a class='octothorpe' href='#section-40'>#</a>
           </div>
           
         </div>
@@ -911,11 +889,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-43" class="section-anchor"></a>
+    <a id="section-41" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-43'>#</a>
+            <a class='octothorpe' href='#section-41'>#</a>
           </div>
           <h3><span class="header" href="python"> Python </span><a id="python" class="header-anchor"></a></h3>
 <p>Obviously, Python language parsing is a best-developed part of Pyccoon.</p>
@@ -924,7 +902,7 @@
         <div class='code'>
           <div class="highlight"><pre><span class="k">class</span> <span class="nc">Python</span><span class="p">(</span><span class="n">IndentBasedLanguage</span><span class="p">,</span> <span class="n">MultilineCommentLanguage</span><span class="p">,</span> <span class="n">InlineCommentLanguage</span><span class="p">):</span>
 
-    <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;.py&quot;</span><span class="p">]</span>
+    <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;.py&quot;</span><span class="p">,</span> <span class="s">&quot;.pyx&quot;</span><span class="p">]</span>
     <span class="n">inline_delimiter</span> <span class="o">=</span> <span class="s">&quot;#&quot;</span>
     <span class="n">multistart</span> <span class="o">=</span> <span class="s">&#39;&quot;&quot;&quot;&#39;</span>
     <span class="n">multiend</span> <span class="o">=</span> <span class="s">&#39;&quot;&quot;&quot;&#39;</span></pre></div>
@@ -933,11 +911,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-44" class="section-anchor"></a>
+    <a id="section-42" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-44'>#</a>
+            <a class='octothorpe' href='#section-42'>#</a>
           </div>
           <p><code>__init__.py</code> files can perfectly serve as modules index files.</p>
         </div>
@@ -952,11 +930,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-45" class="section-anchor"></a>
+    <a id="section-43" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-45'>#</a>
+            <a class='octothorpe' href='#section-43'>#</a>
           </div>
           
         </div>
@@ -970,11 +948,11 @@
     </section>
   </div>
   <div class='section'>
-    <a id="section-46" class="section-anchor"></a>
+    <a id="section-44" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-46'>#</a>
+            <a class='octothorpe' href='#section-44'>#</a>
           </div>
           <p>Python decorators are the tricky part of proper parsing of the source file into sections of docs and code.</p>
 <p>Whenever a decorator section occurs, it should be merged not into the previous sections,
@@ -985,6 +963,7 @@ but into the next.</p>
     <span class="k">def</span> <span class="nf">python_absorb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sections</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="s">&#39;@&#39;</span> <span class="ow">in</span> <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;scope&#39;</span><span class="p">]:</span>
+            <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&#39;docs_text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;docs_text&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&#39;docs_text&#39;</span><span class="p">]</span>
             <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&#39;code_text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;code_text&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&#39;code_text&#39;</span><span class="p">]</span>
             <span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">sections</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
             <span class="k">return</span> <span class="n">i</span></pre></div>
@@ -993,11 +972,11 @@ but into the next.</p>
     </section>
   </div>
   <div class='section'>
-    <a id="section-47" class="section-anchor"></a>
+    <a id="section-45" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-47'>#</a>
+            <a class='octothorpe' href='#section-45'>#</a>
           </div>
           <h3><span class="header" href="ruby"> Ruby </span><a id="ruby" class="header-anchor"></a></h3>
 <p>Mostly identical to Python.</p>
@@ -1023,11 +1002,11 @@ but into the next.</p>
     </section>
   </div>
   <div class='section'>
-    <a id="section-48" class="section-anchor"></a>
+    <a id="section-46" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-48'>#</a>
+            <a class='octothorpe' href='#section-46'>#</a>
           </div>
           <h2><span class="header" href="languages-in-development"> Languages in development </span><a id="languages-in-development" class="header-anchor"></a></h2>
 <div class="codehilite"><pre><span class="k">class</span> <span class="nc">CoffeScript</span><span class="p">(</span><span class="n">InlineCommentLanguage</span><span class="p">,</span> <span class="n">MultilineCommentLanguage</span><span class="p">):</span>
@@ -1096,11 +1075,11 @@ but into the next.</p>
     </section>
   </div>
   <div class='section'>
-    <a id="section-49" class="section-anchor"></a>
+    <a id="section-47" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-49'>#</a>
+            <a class='octothorpe' href='#section-47'>#</a>
           </div>
           <p>Get the current language we're documenting, based on the extension.</p>
         </div>
