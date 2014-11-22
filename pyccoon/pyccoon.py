@@ -165,35 +165,39 @@ class Pyccoon:
         # Proceed to generating the documentation.
         for source, (dest, process) in sorted(sources.items(), key=lambda x: x[0]):
 
-            if process:
-                with open(os.path.join(self.sourcedir, source), "rb") as sourcefile:
-                    code = sourcefile.read().decode('utf8')
+            try:
+                if process:
+                    with open(os.path.join(self.sourcedir, source), "rb") as sourcefile:
+                        code = sourcefile.read().decode('utf8')
 
-                self.language = get_language(source, code, language=language)
-                if not self.language:
-                    process = False
-                    self.sources[source] = (dest, process)
+                    self.language = get_language(source, code, language=language)
+                    if not self.language:
+                        process = False
+                        self.sources[source] = (dest, process)
 
-                try:
-                    ensure_directory(os.path.split(dest)[0])
-                except OSError:
-                    pass
+                    try:
+                        ensure_directory(os.path.split(dest)[0])
+                    except OSError:
+                        pass
 
-            if process:
-                if os.path.exists(os.path.join(self.sourcedir, source)):
-                    with open(dest, "wb") as f:
-                        f.write(self.generate_documentation(source, code, language=self.language)
-                                .encode('utf8'))
+                if process:
+                    if os.path.exists(os.path.join(self.sourcedir, source)):
+                        with open(dest, "wb") as f:
+                            f.write(self.generate_documentation(source, code,
+                                                                language=self.language)
+                                    .encode('utf8'))
 
-                    self.log("\tProcessed:\t{0:s} -> {1:s}"
-                             .format(source, os.path.relpath(dest, self.outdir)))
+                        self.log("\tProcessed:\t{0:s} -> {1:s}"
+                                 .format(source, os.path.relpath(dest, self.outdir)))
+                    else:
+                        self.log("File does not exist: {0:s}".format(source))
+
                 else:
-                    self.log("File does not exist: {0:s}".format(source))
-
-            else:
-                ensure_directory(os.path.split(dest)[0])
-                shutil.copyfile(os.path.join(self.sourcedir, source), dest)
-                self.log("\tCopied:   \t{0:s}".format(source))
+                    ensure_directory(os.path.split(dest)[0])
+                    shutil.copyfile(os.path.join(self.sourcedir, source), dest)
+                    self.log("\tCopied:   \t{0:s}".format(source))
+            except Exception as e:
+                self.log("Error while processing file {0:s}: {1}".format(source, e))
 
         # Ensure there is always an index file in the output folder
         for _, (dest, _) in list(self.sources.items()):
