@@ -388,7 +388,7 @@ class Python(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguag
 
     TODO: support also `'''` comment delimiters.
     """
-    extensions = [".py"]
+    extensions = [".py", ".pyx"]
     inline_delimiter = "#"
     multistart = '"""'
     multiend = '"""'
