@@ -47,9 +47,7 @@ class Language(object):
     def highlight(self, code, formatter="html"):
         """ Use pygments to highlight the `code` """
         return pygments.highlight(
-            # looks like Pygments are working with ASCII only
-            code,
-            self.lexer,
+            code, self.lexer,
             formatters.get_formatter_by_name(formatter)
         )
 
@@ -343,7 +341,7 @@ class C(BraceBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
     @iterate_sections(start=0)
     def strip_commenting_design(self, sections, i):
         sections[i]["docs_text"] = re.compile(r"^[ \t]*(\/+|\*+)(.*)$", re.M)\
-            .sub(r"\2", sections[i]["docs_text"], flags=re.M)
+            .sub(r"\2", sections[i]["docs_text"])
 
     def strategy(self):
         base_strategy = super(C, self).strategy()
@@ -416,6 +414,7 @@ class Python(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguag
         """
 
         if '@' in sections[i-1]['scope']:
+            sections[i]['docs_text'] = sections[i-1]['docs_text'] + sections[i]['docs_text']
             sections[i]['code_text'] = sections[i-1]['code_text'] + sections[i]['code_text']
             sections[i-1:i+1] = [sections[i]]
             return i
