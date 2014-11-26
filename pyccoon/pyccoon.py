@@ -311,15 +311,14 @@ class Pyccoon:
 
         def replace_section_name(match):
             return (
-                '\n{lvl} <span class="header" href="{id}">{name}</span>'
-                '<a id="{id}" class="header-anchor"></a>'
+                '\n{lvl} <a id="{id}" class="header-anchor" href="#{id}">{name}</a>'
             ).format(**{
-                "lvl":  match.group(1).replace('=', '#'),
-                "id":   slugify(match.group(2)),
-                "name": match.group(2)
+                "lvl":  match.group(2).replace('=', '#'),
+                "id":   slugify(match.group(3)),
+                "name": match.group(3)
             })
 
-        comment = re.compile(r'^\s*#?\s*([=]+)([^=]+)([=]+)\s*$', re.M)\
+        comment = re.compile(r'^\s*(#\s)?\s*([=]+)([^=]+)([=]+)\s*$', re.M)\
             .sub(replace_section_name, comment)
         comment = re.sub(r'\[\[([^\|\n]+\|)?(.+?)\]\]', replace_crossref, comment)
 
@@ -447,11 +446,11 @@ class Pyccoon:
         for section in sections:
             section["code_html"] = section["code_html"].replace("{{", "__DOUBLE_OPEN_STACHE__")
 
-            match = re.search(r'<h(\d)>(.+)</h(\d)>', section["docs_html"], flags=re.M)
+            match = re.search(r'<h(\d)>(.+href=\"#(.+)\".+)</h(\d)>', section["docs_html"], re.M)
 
             if match:
                 contents.append({
-                    "url": "#section-{0}".format(section["num"]),
+                    "url": "#{0}".format(match.group(3)),
                     "basename": re.sub(r'<[^<]+?>', '', match.group(2)),
                     "level": match.group(1)
                 })
