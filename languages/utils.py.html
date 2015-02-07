@@ -16,7 +16,7 @@
     Contents
     <div id="jump_wrapper">
       <div id="jump_page">
-          <a class="source source-2" href="#section-5"> Parsing strategy </a>
+          <a class="source source-2" href="#parsing-strategy"> Parsing strategy </a>
       </div>
     </div>
     </div>
@@ -24,7 +24,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="../pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-11-22 17:40:34.443692</code>/
+        <code>2015-02-08 00:45:01.119190</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -49,7 +49,10 @@
           <div class="highlight"><pre><span class="k">class</span> <span class="nc">Section</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></pre></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;line&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="p">[</span><span class="s">&#39;line&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -128,7 +131,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-5'>#</a>
           </div>
-          <h2><span class="header" href="parsing-strategy"> Parsing strategy </span><a id="parsing-strategy" class="header-anchor"></a></h2>
+          <h2><a id="parsing-strategy" class="header-anchor" href="#parsing-strategy"> Parsing strategy </a></h2>
         </div>
         <div class='code'>
           

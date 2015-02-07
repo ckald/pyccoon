@@ -39,11 +39,16 @@ p {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  margin: 40px 0 15px 0;
+  margin: 0px 0 15px 0;
 }
-h2, h3, h4, h5, h6 {
-    margin-top: 0;
-  }
+
+h1 { font-size: 2em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.3em; }
+h4 { font-size: 1.2em; }
+h5 { font-size: 1.1em; }
+h6 { font-size: 1em; }
+
 #container {
   background: white;
   padding-top: 50px;
@@ -51,11 +56,16 @@ h2, h3, h4, h5, h6 {
 #container, div.section {
   position: relative;
 }
-.section-anchor, .header-anchor {
+.section-anchor {
   position: relative;
   top: -40px;
   visibility: hidden;
   display: block;
+}
+.header-anchor {
+  margin-top: -40px;
+  padding-top: 40px;
+  outline: 0;
 }
 .section:hover {
   background: rgba(0,0,100,0.05);
@@ -209,6 +219,15 @@ div.code {
   padding: 5px 15px 7px 13px;
   vertical-align: top;
 }
+  .code .linenos {
+    white-space: pre;
+    float: left;
+    font-size: 12px;
+    margin-left: -20px;
+    margin-right: 10px;
+    width:30px;
+    text-align: right;
+  }
   .code pre, .docs p code {
     font-size: 12px;
   }
@@ -223,7 +242,7 @@ div.code {
   .docs:hover .codehilite {
     opacity: 1;
   }
-    pre, tt, code {
+    pre, tt, code, .linenos {
       line-height: 18px;
       font-family: Monaco, Consolas, "Lucida Console", monospace;
       margin: 0; padding: 0;

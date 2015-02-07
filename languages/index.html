@@ -16,17 +16,17 @@
     Contents
     <div id="jump_wrapper">
       <div id="jump_page">
-          <a class="source source-2" href="#section-1"> Pyccoon Language definition </a>
-          <a class="source source-2" href="#section-19"> Inline commenting mixins </a>
-          <a class="source source-2" href="#section-25"> Multiline commenting mixins </a>
-          <a class="source source-2" href="#section-30"> Mixins for indent-based languages (Python, Ruby, etc.) </a>
-          <a class="source source-2" href="#section-32"> Mixins for brace-based languages (C/C++, JavaScript, PHP, etc.) </a>
-          <a class="source source-2" href="#section-35"> Specific languages definitions </a>
-          <a class="source source-3" href="#section-36"> C/C++ </a>
-          <a class="source source-3" href="#section-39"> JavaScript </a>
-          <a class="source source-3" href="#section-41"> Python </a>
-          <a class="source source-3" href="#section-45"> Ruby </a>
-          <a class="source source-2" href="#section-46"> Languages in development </a>
+          <a class="source source-2" href="#pyccoon-language-definition"> Pyccoon Language definition </a>
+          <a class="source source-2" href="#inline-commenting-mixins"> Inline commenting mixins </a>
+          <a class="source source-2" href="#multiline-commenting-mixins"> Multiline commenting mixins </a>
+          <a class="source source-2" href="#mixins-for-indent-based-languages-(python,-ruby,-etc.)"> Mixins for indent-based languages (Python, Ruby, etc.) </a>
+          <a class="source source-2" href="#mixins-for-brace-based-languages-(c/c++,-javascript,-php,-etc.)"> Mixins for brace-based languages (C/C++, JavaScript, PHP, etc.) </a>
+          <a class="source source-2" href="#specific-languages-definitions"> Specific languages definitions </a>
+          <a class="source source-3" href="#c/c++"> C/C++ </a>
+          <a class="source source-3" href="#javascript"> JavaScript </a>
+          <a class="source source-3" href="#python"> Python </a>
+          <a class="source source-3" href="#ruby"> Ruby </a>
+          <a class="source source-2" href="#languages-in-development"> Languages in development </a>
       </div>
     </div>
     </div>
@@ -34,7 +34,7 @@
         Generated at
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="../pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2014-11-22 17:40:34.399703</code>/
+        <code>2015-02-08 00:45:01.072902</code>/
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
     </div>
@@ -79,7 +79,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-1'>#</a>
           </div>
-          <h2><span class="header" href="pyccoon-language-definition"> Pyccoon Language definition </span><a id="pyccoon-language-definition" class="header-anchor"></a></h2>
+          <h2><a id="pyccoon-language-definition" class="header-anchor" href="#pyccoon-language-definition"> Pyccoon Language definition </a></h2>
 <p>This class governs all source file parsing routines. Due to differences in programming languages, an extensible parsing <code>strategy</code> is required (see <a href="/Users/b/Repositories/pyccoon/docs/languages/utils.py.html#parsing-strategy">utils.py#parsing-strategy</a>)</p>
         </div>
         <div class='code'>
@@ -428,7 +428,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-19'>#</a>
           </div>
-          <h2><span class="header" href="inline-commenting-mixins"> Inline commenting mixins </span><a id="inline-commenting-mixins" class="header-anchor"></a></h2>
+          <h2><a id="inline-commenting-mixins" class="header-anchor" href="#inline-commenting-mixins"> Inline commenting mixins </a></h2>
 <p>Language mixin for separate inline comments and whole stacks of them.</p>
         </div>
         <div class='code'>
@@ -544,7 +544,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-25'>#</a>
           </div>
-          <h2><span class="header" href="multiline-commenting-mixins"> Multiline commenting mixins </span><a id="multiline-commenting-mixins" class="header-anchor"></a></h2>
+          <h2><a id="multiline-commenting-mixins" class="header-anchor" href="#multiline-commenting-mixins"> Multiline commenting mixins </a></h2>
 <p>Language mixin for multiline comments. Some languages also have another syntax entity called "docblocks" - they probably should be treated separately, although they are usually captured along with multiline comments.</p>
         </div>
         <div class='code'>
@@ -636,7 +636,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-30'>#</a>
           </div>
-          <h2><span class="header" href="mixins-for-indent-based-languages-(python,-ruby,-etc.)"> Mixins for indent-based languages (Python, Ruby, etc.) </span><a id="mixins-for-indent-based-languages-(python,-ruby,-etc.)" class="header-anchor"></a></h2>
+          <h2><a id="mixins-for-indent-based-languages-(python,-ruby,-etc.)" class="header-anchor" href="#mixins-for-indent-based-languages-(python,-ruby,-etc.)"> Mixins for indent-based languages (Python, Ruby, etc.) </a></h2>
 <p>In indent-based languages it is quite easy to find a proper place to split the code section: basically, whenever an indent of the line becomes smaller, than the indent of the first line of the section - split up.</p>
 <p><span class=todo><strong>TODO</strong>: Consider using some preprocessor instead of literal matching of the indentation. For example, <a href="https://github.com/sirthias/parboiled/wiki/Indentation-Based-Grammars">https://github.com/sirthias/parboiled/wiki/Indentation-Based-Grammars</a>, <a href="https://github.com/Cirru/cirru-parser">https://github.com/Cirru/cirru-parser</a></span></p>
         </div>
@@ -695,7 +695,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-32'>#</a>
           </div>
-          <h2><span class="header" href="mixins-for-brace-based-languages-(c/c++,-javascript,-php,-etc.)"> Mixins for brace-based languages (C/C++, JavaScript, PHP, etc.) </span><a id="mixins-for-brace-based-languages-(c/c++,-javascript,-php,-etc.)" class="header-anchor"></a></h2>
+          <h2><a id="mixins-for-brace-based-languages-(c/c++,-javascript,-php,-etc.)" class="header-anchor" href="#mixins-for-brace-based-languages-(c/c++,-javascript,-php,-etc.)"> Mixins for brace-based languages (C/C++, JavaScript, PHP, etc.) </a></h2>
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="k">class</span> <span class="nc">BraceBasedLanguage</span><span class="p">(</span><span class="n">Language</span><span class="p">):</span></pre></div>
@@ -756,7 +756,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-35'>#</a>
           </div>
-          <h2><span class="header" href="specific-languages-definitions"> Specific languages definitions </span><a id="specific-languages-definitions" class="header-anchor"></a></h2>
+          <h2><a id="specific-languages-definitions" class="header-anchor" href="#specific-languages-definitions"> Specific languages definitions </a></h2>
         </div>
         <div class='code'>
           
@@ -771,7 +771,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-36'>#</a>
           </div>
-          <h3><span class="header" href="c/c++"> C/C++ </span><a id="c/c++" class="header-anchor"></a></h3>
+          <h3><a id="c/c++" class="header-anchor" href="#c/c++"> C/C++ </a></h3>
 <p>Styling of the C/C++ code is largely historical and oriented on reading hopelessly long codes on the old terminal screens.</p>
 <p><span class=todo><strong>TODO</strong>: detect whole style docs blocks, for example, boxes:</span></p>
 <div class="codehilite"><pre>    <span class="c1">////////////////////////////</span>
@@ -850,7 +850,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-39'>#</a>
           </div>
-          <h3><span class="header" href="javascript"> JavaScript </span><a id="javascript" class="header-anchor"></a></h3>
+          <h3><a id="javascript" class="header-anchor" href="#javascript"> JavaScript </a></h3>
 <p>JavaScript is largely identical to C/C++, although it has far less scope keywords and far more flexibility in defining functions and objects.</p>
 <p><span class=todo><strong>TODO</strong>: test function-defining scopes</span></p>
 <div class="codehilite"><pre>    <span class="kd">function</span> <span class="nx">name</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
@@ -895,7 +895,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-41'>#</a>
           </div>
-          <h3><span class="header" href="python"> Python </span><a id="python" class="header-anchor"></a></h3>
+          <h3><a id="python" class="header-anchor" href="#python"> Python </a></h3>
 <p>Obviously, Python language parsing is a best-developed part of Pyccoon.</p>
 <p><span class=todo><strong>TODO</strong>: support also <code>'''</code> comment delimiters.</span></p>
         </div>
@@ -978,7 +978,7 @@ but into the next.</p>
           <div class='octowrap'>
             <a class='octothorpe' href='#section-45'>#</a>
           </div>
-          <h3><span class="header" href="ruby"> Ruby </span><a id="ruby" class="header-anchor"></a></h3>
+          <h3><a id="ruby" class="header-anchor" href="#ruby"> Ruby </a></h3>
 <p>Mostly identical to Python.</p>
 <p><span class=todo><strong>TODO</strong>: Actually, Ruby is crazy and supports unbelievable variety of multiline comment syntaxes:</span></p>
 <div class="codehilite"><pre>    <span class="n">multistart</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;=begin&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;&lt;-DOC&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;__END__&quot;</span><span class="p">]</span>
@@ -1008,7 +1008,7 @@ but into the next.</p>
           <div class='octowrap'>
             <a class='octothorpe' href='#section-46'>#</a>
           </div>
-          <h2><span class="header" href="languages-in-development"> Languages in development </span><a id="languages-in-development" class="header-anchor"></a></h2>
+          <h2><a id="languages-in-development" class="header-anchor" href="#languages-in-development"> Languages in development </a></h2>
 <div class="codehilite"><pre><span class="k">class</span> <span class="nc">CoffeScript</span><span class="p">(</span><span class="n">InlineCommentLanguage</span><span class="p">,</span> <span class="n">MultilineCommentLanguage</span><span class="p">):</span>
     <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;.coffee&quot;</span><span class="p">]</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Coffee-Script&quot;</span>
