@@ -106,7 +106,7 @@ class Pyccoon:
 
     def init_config(self):
         """ Try to get `.pyccoon` config file or use the default values """
-        config_file = os.path.join(self.sourcedir, self.config_file)
+        config_file = os.path.join(os.getcwd(), self.config_file)
         if os.path.exists(config_file):
             self.log('Using config {0:s}'.format(config_file))
             with open(config_file, 'rb') as f:
