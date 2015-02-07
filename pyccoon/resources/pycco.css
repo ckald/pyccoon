@@ -219,6 +219,15 @@ div.code {
   padding: 5px 15px 7px 13px;
   vertical-align: top;
 }
+  .code .linenos {
+    white-space: pre;
+    float: left;
+    font-size: 12px;
+    margin-left: -20px;
+    margin-right: 10px;
+    width:30px;
+    text-align: right;
+  }
   .code pre, .docs p code {
     font-size: 12px;
   }
@@ -233,7 +242,7 @@ div.code {
   .docs:hover .codehilite {
     opacity: 1;
   }
-    pre, tt, code {
+    pre, tt, code, .linenos {
       line-height: 18px;
       font-family: Monaco, Consolas, "Lucida Console", monospace;
       margin: 0; padding: 0;
