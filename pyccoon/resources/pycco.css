@@ -222,6 +222,14 @@ div.docs {
     font-size: 12px;
     padding: 0 0.2em;
   }
+  .docs table {
+    margin: 10px auto;
+    border-collapse: collapse;
+  }
+    .docs table td {
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
   .octowrap {
     position: relative;
   }
