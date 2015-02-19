@@ -32,7 +32,7 @@ class Language(object):
         markdown_extensions.Todo(),
         markdown_extensions.Pydoc(),
         markdown_extensions.AutoLinkExtension(),
-        "def_list", "fenced_code", 'codehilite'
+        "def_list", "fenced_code", 'codehilite', 'tables'
     ]
 
     @property
