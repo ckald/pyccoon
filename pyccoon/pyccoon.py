@@ -360,7 +360,8 @@ class Pyccoon:
             "generation_time":  datetime.now(),
             "root_path":        os.path.relpath(".", os.path.split(source)[0]),
             "project_name":     self.project_name,
-            "mathjax?":          self.config['mathjax']
+            "mathjax?":          self.config['mathjax'],
+            "docs_only?": not any(section['code_text'] for section in sections)
         })
 
         return rendered.replace("__DOUBLE_OPEN_STACHE__", "{{")

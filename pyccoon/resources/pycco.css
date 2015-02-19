@@ -56,6 +56,26 @@ h6 { font-size: 1em; }
 #container, div.section {
   position: relative;
 }
+
+#container.documentation {
+    padding-bottom: 100px;
+}
+#container.documentation .section .code {
+    display: none;
+}
+#container.documentation .section .docs {
+    width: auto;
+    max-width: 768px;
+    margin: 0 auto;
+    float: none;
+}
+#container.documentation .section:hover {
+  background: inherit;
+}
+#container.documentation #background {
+    display: none;
+}
+
 .section-anchor {
   position: relative;
   top: -40px;

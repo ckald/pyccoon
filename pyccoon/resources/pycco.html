@@ -14,7 +14,7 @@
   {{/mathjax?}}
 </head>
 <body>
-<div id='container'>
+<div id='container' {{#docs_only?}}class="documentation"{{/docs_only?}}>
   <a id="top"></a>
   <div id="background"></div>
   <div id="footer">
@@ -48,8 +48,8 @@
     </div>
   </div>
   <div class='clearall'>
-  {{#sections}}
-  <div class='section'>
+    {{#sections}}
+    <div class='section'>
     <a id="section-{{ num }}" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -63,7 +63,7 @@
         </div>
         <div class='clearall'></div>
     </section>
+    </div>
+    {{/sections}}
   </div>
-  {{/sections}}
-</div>
 </body>

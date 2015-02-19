@@ -147,6 +147,28 @@ class Language(object):
             sections[i:i+1] = []
 
 
+class PlainText(Language):
+    extensions = ['.txt']
+    filename_substitutes = {
+        'index.txt': 'index.html'
+    }
+    divider_text = divider_html = ""
+    lexer = None
+
+    def highlight(self, code):
+        return code
+
+    def parse(self, code, add_lineno=True):
+        return [Section(docs_text=code)]
+
+
+class Markdown(PlainText):
+    extensions = ['.md']
+    filename_substitutes = {
+        'index.md': 'index.html'
+    }
+
+
 class InlineCommentLanguage(Language):
     """
     == Inline commenting mixins ==
@@ -499,7 +521,7 @@ languages = [CoffeScript, Perl, SQL, C, PHP,  JavaScript, Ruby, Python, Scheme,
 
 extensions_mapping = {}
 
-languages = [Python, PHP, C, JavaScript, Ruby]
+languages = [Markdown, Python, PHP, C, JavaScript, Ruby]
 
 for language in languages:
     instance = language()
