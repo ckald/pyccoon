@@ -357,7 +357,7 @@ class Pyccoon:
             "contents":         contents,
             "contents?":        bool(contents),
             "destination":      dest,
-            "generation_time":  datetime.now(),
+            "generation_time":  datetime.now().strftime('%Y-%m-%d %H:%M'),
             "root_path":        os.path.relpath(".", os.path.split(source)[0]),
             "project_name":     self.project_name,
             "mathjax?":          self.config['mathjax'],

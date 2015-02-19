@@ -18,7 +18,9 @@
   <a id="top"></a>
   <div id="background"></div>
   <div id="footer">
-    <a class="btn" id="project-name" href="{{ root_path }}/index.html">{{{ project_name }}}</a>
+    <span id="project-name">
+        <a class="btn" href="{{ root_path }}/index.html">{{{ project_name }}}</a>
+    </span>
     <a class="btn" class="source source-1" href="#top">Back to top</a>
     {{#contents?}}
     <div id="jump_to" class="btn">
@@ -34,11 +36,10 @@
     {{/contents?}}
     <div class="generation-time">
         Generated at
-        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
-            <img id="pyccoon-icon" src="{{ root_path }}/pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>{{ generation_time }}</code>/
+        <code>{{ generation_time }}</code>
         by a diligent
-        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
+        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
+            <img id="pyccoon-icon" src="{{ root_path }}/pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" />pyccoon</a>
     </div>
   </div>
   <div class='section'>
