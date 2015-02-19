@@ -19,6 +19,7 @@ p {
 
 #breadcrumbs {
   white-space: nowrap;
+  line-height: 2em;
 }
 
 #children {
@@ -40,6 +41,8 @@ p {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0px 0 15px 0;
+  overflow: hidden;
+  line-height: normal;
 }
 
 h1 { font-size: 2em; }

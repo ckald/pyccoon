@@ -447,9 +447,9 @@ class Pyccoon:
         for section in sections:
             section["code_html"] = section["code_html"].replace("{{", "__DOUBLE_OPEN_STACHE__")
 
-            match = re.search(r'<h(\d)>(.+href=\"#(.+)\".+)</h(\d)>', section["docs_html"], re.M)
+            for match in re.finditer(r'<h(\d)>(.+href=\"#(.+)\".+)</h(\d)>',
+                                     section["docs_html"], re.M):
 
-            if match:
                 contents.append({
                     "url": "#{0}".format(match.group(3)),
                     "basename": re.sub(r'<[^<]+?>', '', match.group(2)),
