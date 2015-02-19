@@ -20,7 +20,7 @@ test_requirements = [
 
 setup(
     name='pyccoon',
-    version='0.1.3',
+    version='0.1.4',
     description='Side-to-side documentation generator, a descendant of Pycco and Docco.',
     long_description=readme + '\n\n' + history,
     author='Andrii Magalich',
