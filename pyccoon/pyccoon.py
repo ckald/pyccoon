@@ -27,7 +27,7 @@ from .utils import shift, ensure_directory
 
 # == Main documentation generation class ==
 
-class Pyccoon:
+class Pyccoon(object):
 
     add_lineno = True
 
@@ -44,6 +44,8 @@ class Pyccoon:
     config_file = '.pyccoon'
     watch = False
     verbosity = -1
+
+    outdir = sourcedir = None
 
     def __init__(self, opts, process=True):
         """
@@ -98,7 +100,7 @@ class Pyccoon:
                 sys.exit('The `watch` option requires the watchdog package.')
 
             from .utils import monitor
-            monitor(path=self.sourcedir, func=lambda: self.process())
+            monitor(path=self.sourcedir, func=self.process)
 
     def log(self, message):
         if self.verbosity:
@@ -253,11 +255,11 @@ class Pyccoon:
                     self.highlight_start + section["code_html"] + self.highlight_end
             docs_text = section["docs_text"]
             section["docs_html"] = language.markdown(
-                self.preprocess(docs_text, i, source=os.path.join(self.sourcedir, source))
+                self.preprocess(docs_text, source=os.path.join(self.sourcedir, source))
             )
             section["num"] = i
 
-    def preprocess(self, comment, section_nr, source):
+    def preprocess(self, comment, source):
         """
         === Preprocessing the comments ===
 
@@ -483,7 +485,7 @@ class Pyccoon:
                 code = sourcefile.read().decode('utf8')
 
             language = get_language(source, code)
-        except:
+        except Exception:
             pass
 
         return language

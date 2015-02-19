@@ -23,14 +23,14 @@ class cached_property(object):
         return attr
 
 
-def shift(list, default):
+def shift(array, default):
     """
-    Shift items off the front of the `list` until it is empty, then return
+    Shift items off the front of the `array` until it is empty, then return
     `default`.
     """
 
     try:
-        return list.pop(0)
+        return array.pop(0)
     except IndexError:
         return default
 
