@@ -1,12 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+Use `python setup.py sdist upload` to release on PyPi
+"""
 
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
 
+from pyccoon import __version__
 
 readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
@@ -20,7 +24,7 @@ test_requirements = [
 
 setup(
     name='pyccoon',
-    version='0.1.4',
+    version=__version__,
     description='Side-to-side documentation generator, a descendant of Pycco and Docco.',
     long_description=readme + '\n\n' + history,
     author='Andrii Magalich',
