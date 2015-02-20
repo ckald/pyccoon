@@ -111,7 +111,7 @@ section .header-anchor {
   padding-top: 40px;
   outline: 0;
 }
-.section:hover {
+.everything .section:hover {
   background: rgba(0,0,100,0.05);
 }
 #everything {
