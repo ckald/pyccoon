@@ -2,15 +2,16 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <title>pyccoon v0.1.0 documentation: utils.py</title>
+  <title>pyccoon v0.1.4 documentation: utils.py</title>
   <link rel="stylesheet" href="./pyccoon.css">
 </head>
 <body>
-<div id='container'>
+<div id='container' >
   <a id="top"></a>
-  <div id="background"></div>
   <div id="footer">
-    <a class="btn" id="project-name" href="./index.html">pyccoon v0.1.0 documentation</a>
+    <span id="project-name">
+        <a class="btn" href="./index.html">pyccoon v0.1.4 documentation</a>
+    </span>
     <a class="btn" class="source source-1" href="#top">Back to top</a>
     <div id="jump_to" class="btn">
     Contents
@@ -22,21 +23,21 @@
     </div>
     <div class="generation-time">
         Generated at
-        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
-            <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2015-02-08 00:45:01.381402</code>/
+        <code>2015-02-20 22:25</code>
         by a diligent
-        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
+        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
+            <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" />pyccoon</a>
     </div>
   </div>
   <div class='section'>
-    <div class='docs'>
-      <h1 id="breadcrumbs">/ <a href="utils.py.html/../index.html">.</a> / <a href="utils.py.html">utils.py</a> </h1>
+    <div class='docs nav'>
+      <nav id="breadcrumbs">/ <a href="utils.py.html/../index.html">.</a> / <a href="utils.py.html">utils.py</a> </nav>
       <ul id="children"></ul>
     </div>
   </div>
-  <div class='clearall'>
-  <div class='section'>
+  <div id="everything" class='clearall'>
+    <div id="background"></div>
+    <div class='section'>
     <a id="section-0" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -51,8 +52,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-1" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -66,8 +67,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-2" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -84,8 +85,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-3" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -101,8 +102,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-4" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -118,29 +119,29 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-5" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
             <a class='octothorpe' href='#section-5'>#</a>
           </div>
-          <p>Shift items off the front of the <code>list</code> until it is empty, then return
+          <p>Shift items off the front of the <code>array</code> until it is empty, then return
 <code>default</code>.</p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre><span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
+          <div class="highlight"><pre><span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">array</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">default</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-6" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -158,8 +159,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-7" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -173,8 +174,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-8" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -189,8 +190,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-9" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -204,8 +205,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-10" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -219,8 +220,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-11" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -234,8 +235,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-12" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -251,8 +252,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-13" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -274,6 +275,6 @@
         </div>
         <div class='clearall'></div>
     </section>
+    </div>
   </div>
-</div>
 </body>

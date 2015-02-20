@@ -2,15 +2,16 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <title>pyccoon v0.1.0 documentation: pyccoon.py</title>
+  <title>pyccoon v0.1.4 documentation: pyccoon.py</title>
   <link rel="stylesheet" href="./pyccoon.css">
 </head>
 <body>
-<div id='container'>
+<div id='container' >
   <a id="top"></a>
-  <div id="background"></div>
   <div id="footer">
-    <a class="btn" id="project-name" href="./index.html">pyccoon v0.1.0 documentation</a>
+    <span id="project-name">
+        <a class="btn" href="./index.html">pyccoon v0.1.4 documentation</a>
+    </span>
     <a class="btn" class="source source-1" href="#top">Back to top</a>
     <div id="jump_to" class="btn">
     Contents
@@ -32,21 +33,21 @@
     </div>
     <div class="generation-time">
         Generated at
-        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
-            <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" /></a>
-        <code>2015-02-08 00:45:01.345983</code>/
+        <code>2015-02-20 22:25</code>
         by a diligent
-        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">pyccoon</a>
+        <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
+            <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" />pyccoon</a>
     </div>
   </div>
   <div class='section'>
-    <div class='docs'>
-      <h1 id="breadcrumbs">/ <a href="pyccoon.py.html/../index.html">.</a> / <a href="pyccoon.py.html">pyccoon.py</a> </h1>
+    <div class='docs nav'>
+      <nav id="breadcrumbs">/ <a href="pyccoon.py.html/../index.html">.</a> / <a href="pyccoon.py.html">pyccoon.py</a> </nav>
       <ul id="children"></ul>
     </div>
   </div>
-  <div class='clearall'>
-  <div class='section'>
+  <div id="everything" class='clearall'>
+    <div id="background"></div>
+    <div class='section'>
     <a id="section-0" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -61,8 +62,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-1" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -86,8 +87,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-2" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -104,8 +105,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-3" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -115,14 +116,14 @@
           <h2><a id="main-documentation-generation-class" class="header-anchor" href="#main-documentation-generation-class"> Main documentation generation class </a></h2>
         </div>
         <div class='code'>
-          <div class="highlight"><pre><span class="k">class</span> <span class="nc">Pyccoon</span><span class="p">:</span>
+          <div class="highlight"><pre><span class="k">class</span> <span class="nc">Pyccoon</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="n">add_lineno</span> <span class="o">=</span> <span class="bp">True</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-4" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -136,8 +137,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-5" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -155,12 +156,14 @@
 
     <span class="n">config_file</span> <span class="o">=</span> <span class="s">&#39;.pyccoon&#39;</span>
     <span class="n">watch</span> <span class="o">=</span> <span class="bp">False</span>
-    <span class="n">verbosity</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span></pre></div>
+    <span class="n">verbosity</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="n">outdir</span> <span class="o">=</span> <span class="n">sourcedir</span> <span class="o">=</span> <span class="bp">None</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-6" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -205,8 +208,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-7" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -223,8 +226,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-8" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -242,12 +245,12 @@
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s">&#39;The `watch` option requires the watchdog package.&#39;</span><span class="p">)</span>
 
             <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">monitor</span>
-            <span class="n">monitor</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">())</span></pre></div>
+            <span class="n">monitor</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-9" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -263,8 +266,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-10" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -290,8 +293,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-11" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -319,8 +322,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-12" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -356,8 +359,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-13" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -405,8 +408,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-14" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -432,8 +435,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-15" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -448,8 +451,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-16" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -468,8 +471,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-17" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -496,14 +499,14 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">highlight_start</span> <span class="o">+</span> <span class="n">section</span><span class="p">[</span><span class="s">&quot;code_html&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlight_end</span>
             <span class="n">docs_text</span> <span class="o">=</span> <span class="n">section</span><span class="p">[</span><span class="s">&quot;docs_text&quot;</span><span class="p">]</span>
             <span class="n">section</span><span class="p">[</span><span class="s">&quot;docs_html&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">docs_text</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">source</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">docs_text</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcedir</span><span class="p">,</span> <span class="n">source</span><span class="p">))</span>
             <span class="p">)</span>
             <span class="n">section</span><span class="p">[</span><span class="s">&quot;num&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-18" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -514,12 +517,12 @@
 <p>Add cross-references before having the text processed by markdown.  It's possible to reference another file, like this : <code>[utils.py](utils.py.html)</code> which renders <a href="utils.py.html">utils.py</a>. You can also reference a specific section of another file, like this: <code>[utils.py#ensure-directory](utils.py.html#ensure-directory)</code> which renders as <a href="utils.py.html#ensure-directory">utils.py#ensure-directory</a>. Sections have to be manually declared; they are written on a single line, and surrounded by equals signs: <code>=== like this ===</code></p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment</span><span class="p">,</span> <span class="n">section_nr</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span></pre></div>
+          <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-19" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -535,8 +538,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-20" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -557,8 +560,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-21" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -583,8 +586,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-22" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -601,8 +604,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-23" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -616,8 +619,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-24" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -633,8 +636,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-25" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -648,8 +651,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-26" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -676,8 +679,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-27" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -691,8 +694,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-28" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -729,18 +732,19 @@
             <span class="s">&quot;contents&quot;</span><span class="p">:</span>         <span class="n">contents</span><span class="p">,</span>
             <span class="s">&quot;contents?&quot;</span><span class="p">:</span>        <span class="nb">bool</span><span class="p">(</span><span class="n">contents</span><span class="p">),</span>
             <span class="s">&quot;destination&quot;</span><span class="p">:</span>      <span class="n">dest</span><span class="p">,</span>
-            <span class="s">&quot;generation_time&quot;</span><span class="p">:</span>  <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+            <span class="s">&quot;generation_time&quot;</span><span class="p">:</span>  <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s"> %H:%M&#39;</span><span class="p">),</span>
             <span class="s">&quot;root_path&quot;</span><span class="p">:</span>        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">source</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span>
             <span class="s">&quot;project_name&quot;</span><span class="p">:</span>     <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span>
-            <span class="s">&quot;mathjax?&quot;</span><span class="p">:</span>          <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;mathjax&#39;</span><span class="p">]</span>
+            <span class="s">&quot;mathjax?&quot;</span><span class="p">:</span>          <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;mathjax&#39;</span><span class="p">],</span>
+            <span class="s">&quot;docs_only?&quot;</span><span class="p">:</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">section</span><span class="p">[</span><span class="s">&#39;code_text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">sections</span><span class="p">)</span>
         <span class="p">})</span>
 
         <span class="k">return</span> <span class="n">rendered</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;{{&quot;</span><span class="p">,</span> <span class="s">&quot;{{&quot;</span><span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-29" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -779,8 +783,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-30" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -831,8 +835,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-31" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -850,9 +854,9 @@
         <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">sections</span><span class="p">:</span>
             <span class="n">section</span><span class="p">[</span><span class="s">&quot;code_html&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">section</span><span class="p">[</span><span class="s">&quot;code_html&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;{{&quot;</span><span class="p">,</span> <span class="s">&quot;{{&quot;</span><span class="p">)</span>
 
-            <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;&lt;h(\d)&gt;(.+href=\&quot;#(.+)\&quot;.+)&lt;/h(\d)&gt;&#39;</span><span class="p">,</span> <span class="n">section</span><span class="p">[</span><span class="s">&quot;docs_html&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="s">r&#39;&lt;h(\d)&gt;(.+href=\&quot;#(.+)\&quot;.+)&lt;/h(\d)&gt;&#39;</span><span class="p">,</span>
+                                     <span class="n">section</span><span class="p">[</span><span class="s">&quot;docs_html&quot;</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">):</span>
 
-            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
                 <span class="n">contents</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                     <span class="s">&quot;url&quot;</span><span class="p">:</span> <span class="s">&quot;#{0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)),</span>
                     <span class="s">&quot;basename&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r&#39;&lt;[^&lt;]+?&gt;&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span>
@@ -862,8 +866,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-32" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -877,8 +881,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-33" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -901,8 +905,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-34" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -921,15 +925,15 @@
                 <span class="n">code</span> <span class="o">=</span> <span class="n">sourcefile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf8&#39;</span><span class="p">)</span>
 
             <span class="n">language</span> <span class="o">=</span> <span class="n">get_language</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">code</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span>
 
         <span class="k">return</span> <span class="n">language</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-35" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -968,8 +972,8 @@
         </div>
         <div class='clearall'></div>
     </section>
-  </div>
-  <div class='section'>
+    </div>
+    <div class='section'>
     <a id="section-36" class="section-anchor"></a>
     <section>
         <div class='docs'>
@@ -986,6 +990,6 @@
         </div>
         <div class='clearall'></div>
     </section>
+    </div>
   </div>
-</div>
 </body>
