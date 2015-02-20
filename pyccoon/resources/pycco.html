@@ -16,7 +16,6 @@
 <body>
 <div id='container' {{#docs_only?}}class="documentation"{{/docs_only?}}>
   <a id="top"></a>
-  <div id="background"></div>
   <div id="footer">
     <span id="project-name">
         <a class="btn" href="{{ root_path }}/index.html">{{{ project_name }}}</a>
@@ -43,12 +42,13 @@
     </div>
   </div>
   <div class='section'>
-    <div class='docs'>
-      <h1 id="breadcrumbs">{{#breadcrumbs}}/ <a href="{{ path }}">{{ title }}</a> {{/breadcrumbs}}</h1>
+    <div class='docs nav'>
+      <nav id="breadcrumbs">{{#breadcrumbs}}/ <a href="{{ path }}">{{ title }}</a> {{/breadcrumbs}}</nav>
       <ul id="children">{{#children}}<li><a href="{{ path }}"{{#isdir}} class="directory"{{/isdir}}>{{ title }}</a></li>{{/children}}</ul>
     </div>
   </div>
-  <div class='clearall'>
+  <div id="everything" class='clearall'>
+    <div id="background"></div>
     {{#sections}}
     <div class='section'>
     <a id="section-{{ num }}" class="section-anchor"></a>

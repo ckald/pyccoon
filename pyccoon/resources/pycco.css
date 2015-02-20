@@ -17,18 +17,39 @@ p {
   margin: 0 0 15px 0;
 }
 
+.nav.docs {
+    width: auto;
+}
+
+
 #breadcrumbs {
   white-space: nowrap;
   line-height: 2em;
+  margin-bottom: 0;
+  font-size: 2em;
+  font-weight: bold;
 }
 
 #children {
   list-style-type: none;
+  margin-top: 0;
 }
 
 #children .directory {
   font-weight: bold;
   font-size: 16px;
+}
+#children a:before {
+  content: "";
+  float: left;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRFTU1NAAAA37y8ZQAAAAJ0Uk5T/wDltzBKAAAAL0lEQVR42mJgRAMMxAkwgACKAAgxoAtARZAE4GyIAMwYBiSrKBOAAhL8ggwAAgwAdiwA3SbIV7gAAAAASUVORK5CYII=) center 3px no-repeat;
+  width: 12px;
+  height: 20px;
+  margin-right: 3px;
+  display: block;
+}
+#children .directory:before {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRFTU1NAAAA37y8ZQAAAAJ0Uk5T/wDltzBKAAAAIElEQVR42mJgRAMMZAowgACSAAMDkiCcTXMBSv0CEGAAZHYAudvuU98AAAAASUVORK5CYII=) center 3px no-repeat;
 }
 
 .todo, .fixme {
@@ -54,7 +75,7 @@ h6 { font-size: 1em; }
 
 #container {
   background: white;
-  padding-top: 50px;
+  padding-top: 36px;
  }
 #container, div.section {
   position: relative;
@@ -66,7 +87,7 @@ h6 { font-size: 1em; }
 #container.documentation .section .code {
     display: none;
 }
-#container.documentation .section .docs {
+#container.documentation .section .docs, .docs.nav {
     width: auto;
     max-width: 768px;
     margin: 0 auto;
@@ -85,7 +106,7 @@ h6 { font-size: 1em; }
   visibility: hidden;
   display: block;
 }
-.header-anchor {
+section .header-anchor {
   margin-top: -40px;
   padding-top: 40px;
   outline: 0;
@@ -93,11 +114,15 @@ h6 { font-size: 1em; }
 .section:hover {
   background: rgba(0,0,100,0.05);
 }
+#everything {
+  position: relative;
+}
 #background {
   position: absolute;
-  top: 0; left: 40%; right: 0; bottom: 0;
+  left: 40%; right: 0; bottom: 0; top:0;
   background: #f5f5ff;
   border-left: 1px solid #e5e5ee;
+  border-top: 1px solid #e5e5ee;
   z-index: 0;
 }
 #footer {
@@ -308,6 +333,12 @@ div.clearall {
 .pydoc-raises span, .pydoc-throws span {
     border: 1px solid #c00;
     color: #c00;
+}
+
+.home {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRFTU1NAAAA37y8ZQAAAAJ0Uk5T/wDltzBKAAAAIElEQVR42mJgRAMMZAowgACSAAMDkiCcTXMBSv0CEGAAZHYAudvuU98AAAAASUVORK5CYII=);
+    width: 16px;
+    height: 16px;
 }
 
 /*---------------------- Syntax Highlighting -----------------------------*/
