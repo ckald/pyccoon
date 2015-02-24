@@ -15,7 +15,6 @@
 </head>
 <body>
 <div id='container' {{#docs_only?}}class="documentation"{{/docs_only?}}>
-  <a id="top"></a>
   <div id="footer">
     <span id="project-name">
         <a class="btn" href="{{ root_path }}/index.html">{{{ project_name }}}</a>
@@ -41,6 +40,7 @@
             <img id="pyccoon-icon" src="{{ root_path }}/pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" />pyccoon</a>
     </div>
   </div>
+  <a id="top"></a>
   <div class='section'>
     <div class='docs nav'>
       <nav id="breadcrumbs">{{#breadcrumbs}}/ <a href="{{ path }}">{{ title }}</a> {{/breadcrumbs}}</nav>
