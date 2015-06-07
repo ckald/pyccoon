@@ -22,7 +22,7 @@ from collections import defaultdict
 from . import resources, __version__, __author__
 from .languages import get_language, Language
 
-from .utils import shift, ensure_directory
+from .utils import shift, ensure_directory, SourceFile
 
 
 # == Main documentation generation class ==
@@ -81,10 +81,10 @@ class Pyccoon(object):
         self.outdir = os.path.abspath(self.outdir)
         self.log("Output folder: " + self.outdir)
 
-        self.collect_sources()
-
         # Create the template that we will use to generate the Pyccoon HTML page.
         self.page_template = self.template(resources.html)
+
+        self.collect_sources()
 
         if process:
             self.process()
@@ -122,21 +122,45 @@ class Pyccoon(object):
         self.project_name = self.config['project_name'] \
             or (os.path.split(self.sourcedir)[1] + " documentation")
 
+    _textchars = bytearray([7, 8, 9, 10, 12, 13, 27]) + bytearray(range(0x20, 0x100))
+
+    @classmethod
+    def is_binary_string(cls, bytes):
+        return bool(bytes.translate(None, cls._textchars))
+
     def collect_sources(self):
         """ Collect names of all files to be copied or processed """
         self.sources = {}
         for dirpath, dirnames, files in os.walk(self.sourcedir):
-            if any([regex.search(dirpath) for regex in self.config['skip_files']]):
+            if any([reg.search(dirpath) for reg in self.config['skip_files']]):
                 continue
             for name in files:
-                if not any([regex.search(name) for regex in self.config['skip_files']]) \
-                        and name not in dirnames:
-                    source = os.path.relpath(os.path.join(dirpath, name), self.sourcedir)
-                    process = True
-                    if any([regex.search(name) for regex in self.config['copy_files']]):
-                        process = False
+                if name in dirnames or any([reg.search(name) for reg in self.config['skip_files']]):
+                    continue
 
-                    self.sources[source] = (self.destination(source), process)
+                fullpath = os.path.join(dirpath, name)
+                source = os.path.relpath(fullpath, self.sourcedir)
+                process = True
+                if any([regex.search(name) for regex in self.config['copy_files']]):
+                    process = False
+
+                prefix = None
+                if process:
+                    with open(fullpath, 'rb') as f:
+                        prefix = f.read(1024)
+                        if self.is_binary_string(prefix):
+                            process = False
+
+                self.sources[source] = SourceFile(
+                    source=source,
+                    destination=self.destination(source, process=process),
+                    process=process,
+                    prefix=prefix
+                )
+
+    def collect_n_process(self):
+        self.collect_sources()
+        self.process()
 
     def process(self, sources=None, language=None):
         """
@@ -157,66 +181,76 @@ class Pyccoon(object):
 
         ensure_directory(self.outdir)
 
-        for file, dest in resources.static_files:
-            filepath = os.path.join(os.path.split(resources.__file__)[0], file)
+        for filename, dest in resources.static_files:
+            filepath = os.path.join(os.path.split(resources.__file__)[0], filename)
             destpath = os.path.join(self.outdir, dest)
-            self.sources[filepath] = (destpath, False)
+            self.sources[filepath] = SourceFile(source=filepath,
+                                                destination=destpath,
+                                                process=False,
+                                                prefix=None)
+
             shutil.copyfile(
                 filepath,
                 destpath
             )
 
         # Proceed to generating the documentation.
-        for source, (dest, process) in sorted(sources.items(), key=lambda x: x[0]):
+        for sf in sorted(sources.values(), key=lambda x: x.destination):
 
+            filepath = os.path.join(self.sourcedir, sf.source)
             try:
-                if process:
-                    with open(os.path.join(self.sourcedir, source), "rb") as sourcefile:
-                        code = sourcefile.read().decode('utf8')
+                if sf.process:
+                    with open(filepath, "rb") as f:
+                        code = f.read().decode('utf8')
 
-                    self.language = get_language(source, code, language=language)
+                    self.language = get_language(sf.source, code, language=language)
                     if not self.language:
-                        process = False
-                        self.sources[source] = (dest, process)
+                        self.sources[sf.source] = sf._replace(process=False)
+                        sf = self.sources[sf.source]
 
                     try:
-                        ensure_directory(os.path.split(dest)[0])
+                        ensure_directory(os.path.split(sf.destination)[0])
                     except OSError:
                         pass
 
-                if process:
-                    if os.path.exists(os.path.join(self.sourcedir, source)):
-                        with open(dest, "wb") as f:
-                            f.write(self.generate_documentation(source, code,
+                if sf.process:
+                    if os.path.exists(os.path.join(self.sourcedir, sf.source)):
+                        with open(sf.destination, "wb") as f:
+                            f.write(self.generate_documentation(sf.source, code,
                                                                 language=self.language)
                                     .encode('utf8'))
 
                         self.log("\tProcessed:\t{0:s} -> {1:s}"
-                                 .format(source, os.path.relpath(dest, self.outdir)))
+                                 .format(sf.source, os.path.relpath(sf.destination, self.outdir)))
                     else:
-                        self.log("File does not exist: {0:s}".format(source))
+                        self.log("File does not exist: {0:s}".format(sf.source))
 
                 else:
-                    ensure_directory(os.path.split(dest)[0])
-                    shutil.copyfile(os.path.join(self.sourcedir, source), dest)
-                    self.log("\tCopied:   \t{0:s}".format(source))
+                    ensure_directory(os.path.split(sf.destination)[0])
+                    shutil.copyfile(os.path.join(self.sourcedir, sf.source), sf.destination)
+                    self.log("\tCopied:   \t{0:s}".format(sf.source))
             except Exception as e:
-                self.log("Error while processing file {0:s}: {1}".format(source, e))
+                self.log("Error while processing file {0:s}: {1}".format(sf.source, e))
 
         # Ensure there is always an index file in the output folder
-        for _, (dest, _) in list(self.sources.items()):
-            folder = os.path.relpath(os.path.split(dest)[0], self.outdir).lstrip('./')
+        for sf in self.sources.values():
+            folder = os.path.relpath(os.path.split(sf.destination)[0], self.outdir).lstrip('./')
             index = os.path.join(folder, "index.html")
 
-            if not any([os.path.join(self.outdir, index) == dest
-                        for _, (dest, _) in self.sources.items()]):
+            if not any([os.path.join(self.outdir, index) == sf.destination
+                        for sf in self.sources.values()]):
                 source = os.path.join(folder, 'index.html')
-                self.sources[source] = (os.path.join(self.outdir, index), False)
+                self.sources[source] = SourceFile(source=source,
+                                                  destination=os.path.join(self.outdir, index),
+                                                  process=False,
+                                                  prefix=None)
 
                 with open(os.path.join(self.outdir, index), 'w', encoding='utf8') as f:
                     self.language = Language()
                     f.write(self.generate_html(source, []))
                     self.log("\tGenerated:\t{0:s}".format(source))
+
+        self.log("...Done.")
 
     def template(self, source):
         return lambda context: pystache.render(source, context)
@@ -303,12 +337,17 @@ class Pyccoon(object):
                 # Absolute reference
                 path = os.path.relpath(
                     self.destination(path),
-                    os.path.split(self.sources[os.path.relpath(source, self.sourcedir)][0])[0]
+                    os.path.split(self.sources[os.path.relpath(source,
+                                                               self.sourcedir)].destination)[0]
                 )
             else:
                 # Relative reference
-                path = self.destination(
-                    os.path.join(os.path.split(os.path.relpath(source, self.sourcedir))[0], path)
+                path = os.path.relpath(
+                    self.destination(os.path.join(
+                        os.path.split(os.path.relpath(source, self.sourcedir))[0], path)
+                    ),
+                    os.path.split(self.sources[os.path.relpath(source,
+                                                               self.sourcedir)].destination)[0]
                 )
 
             return "[{0:s}]({1:s}{2:s})".format(name, path, anchor)
@@ -406,13 +445,15 @@ class Pyccoon(object):
 
         TODO: remove language dependency
         """
-        index_names = ['__init__.py', 'index.html', 'index.php']
-        if os.path.basename(source) not in index_names:
+        index_names = [r'__init__\..+', r'index\..+']
+        basename = os.path.basename(source)
+        if not any([re.match(regex, basename) for regex in index_names]):
             return []
 
         children = []
         folder = os.path.split(os.path.join(self.sourcedir, source))[0]
         relfolder = os.path.relpath(folder, self.sourcedir)
+        outfolder = os.path.join(self.outdir, relfolder) if relfolder != "." else self.outdir
         for filename in os.listdir(folder):
             if not any([regex.search(filename) for regex in self.config['skip_files']]):
                 isdir = False
@@ -422,15 +463,17 @@ class Pyccoon(object):
                     isdir = True
                     filepath = os.path.join(filename, "index.html")
                 else:
+
                     if filename in index_names:
                         filepath = "index.html"
-                    elif os.path.join(relfolder, filename).lstrip("./") in self.sources:
-
-                        filepath = filename
-                        if self.sources[os.path.join(relfolder, filename).lstrip("./")][1]:
-                            filepath = filepath + ".html"
                     else:
-                        continue
+                        in_sources = self.sources.get(
+                            os.path.join(relfolder, filename)
+                            if relfolder != "." else filename
+                        )
+
+                        if in_sources:
+                            filepath = in_sources.destination[len(outfolder)+1:]
 
                 if filepath:
                     children.append({
@@ -463,19 +506,17 @@ class Pyccoon(object):
 
     # == Utilities ==
 
-    def destination(self, source, language=None):
+    def destination(self, source, language=None, process=True):
         """
         Compute the destination HTML path for an input source file path. If the \
         source is `lib/example.py`, the HTML will be at `docs/lib/example.html`
         """
 
         dirname, filename = os.path.split(source)
-        language = language or self.get_language(source)
+        if process:
+            language = language or self.get_language(source)
 
-        if language:
-            name = language.transform_filename(filename)
-        else:
-            name = filename
+        name = language.transform_filename(filename) if language else filename
         return os.path.normpath(os.path.join(self.outdir, os.path.join(dirname, name)))
 
     def get_language(self, source):

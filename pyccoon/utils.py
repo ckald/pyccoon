@@ -1,5 +1,9 @@
 import os
 import time
+from collections import namedtuple
+
+
+SourceFile = namedtuple('SourceFile', 'destination source process prefix')
 
 
 class cached_property(object):
