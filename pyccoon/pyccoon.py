@@ -243,8 +243,11 @@ class Pyccoon(object):
                 source = os.path.join(folder, 'index.html')
                 to_append.append((
                     source,
-                    SourceFile(source=source, destination=os.path.join(self.outdir, index),
-                               process=False, prefix=None))
+                    SourceFile(source=source,
+                               destination=os.path.join(self.outdir, index),
+                               process=False,
+                               prefix=None)
+                ))
 
                 with open(os.path.join(self.outdir, index), 'w', encoding='utf8') as f:
                     self.language = Language()
