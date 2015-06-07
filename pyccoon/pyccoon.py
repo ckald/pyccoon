@@ -368,9 +368,21 @@ class Pyccoon(object):
                 "name": match.group(3)
             })
 
-        comment = re.compile(r'^\s*(#\s)?\s*([=]+)([^=]+)([=]+)\s*$', re.M)\
+        # def replace_texblocks(match):
+        #     print match.groups()
+        #     return (
+        #         '```\n{begin}\n{code}\n{end}\n```'
+        #     ).format(**{
+        #         "begin": r"\begin{{{}}}".format(match.group(2)),
+        #         "end": r"\end{{{}}}".format(match.group(2)),
+        #         "code": match.group(3)
+        #     })
+
+        comment = re.compile(r'^\s*(#\s)?\s*(#+)([^#\n]+)\s*$', re.M)\
             .sub(replace_section_name, comment)
         comment = re.sub(r'\[\[([^\|\n]+\|)?(.+?)\]\]', replace_crossref, comment)
+        # comment = re.compile(r'\s*```tex(`([\w]+))?([\s\S]+)```\s*$', re.M)\
+        #     .sub(replace_texblocks, comment)
 
         return comment
 

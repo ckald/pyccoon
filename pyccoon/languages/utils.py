@@ -5,6 +5,9 @@ class Section(dict):
     def __init__(self, *args, **kwargs):
         self.update(*args, **kwargs)
 
+        if not self.get('line'):
+            self['line'] = 1
+
     def has_code(self):
         """ Check if there is some code """
         return bool(self["code_text"].strip())

@@ -32,7 +32,11 @@ class Language(object):
         markdown_extensions.Todo(),
         markdown_extensions.Pydoc(),
         markdown_extensions.AutoLinkExtension(),
-        "def_list", "fenced_code", 'codehilite', 'tables'
+        "markdown.extensions.def_list",
+        "markdown.extensions.fenced_code",
+        'markdown.extensions.codehilite',
+        'markdown.extensions.tables',
+        # "markdown.extensions.nl2br"
     ]
 
     @property
@@ -160,6 +164,9 @@ class PlainText(Language):
 
     def parse(self, code, add_lineno=True):
         return [Section(docs_text=code)]
+
+    def lexer(self):
+        return None
 
 
 class Markdown(PlainText):
