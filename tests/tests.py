@@ -2,7 +2,7 @@
 import os
 import unittest
 from pyccoon import Pyccoon
-from utils import SourceFile
+from pyccoon.utils import SourceFile
 
 
 class FileTest(unittest.TestCase):

@@ -30,7 +30,7 @@ setup(
     author='Andrii Magalich',
     author_email='andrew.magalich@gmail.com',
     url='https://github.com/ckald/pyccoon',
-    packages=['pyccoon', ],
+    packages=['pyccoon'],
     package_dir={'pyccoon': 'pyccoon'},
     include_package_data=True,
     install_requires=requirements,
