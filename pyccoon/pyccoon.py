@@ -233,6 +233,7 @@ class Pyccoon(object):
                 self.log("Error while processing file {0:s}: {1}".format(sf.source, e))
 
         # Ensure there is always an index file in the output folder
+        to_append = []
         for sf in self.sources.values():
             folder = os.path.relpath(os.path.split(sf.destination)[0], self.outdir).lstrip('./')
             index = os.path.join(folder, "index.html")
@@ -240,15 +241,18 @@ class Pyccoon(object):
             if not any([os.path.join(self.outdir, index) == sf.destination
                         for sf in self.sources.values()]):
                 source = os.path.join(folder, 'index.html')
-                self.sources[source] = SourceFile(source=source,
-                                                  destination=os.path.join(self.outdir, index),
-                                                  process=False,
-                                                  prefix=None)
+                to_append.append((
+                    source,
+                    SourceFile(source=source, destination=os.path.join(self.outdir, index),
+                               process=False, prefix=None))
 
                 with open(os.path.join(self.outdir, index), 'w', encoding='utf8') as f:
                     self.language = Language()
                     f.write(self.generate_html(source, []))
                     self.log("\tGenerated:\t{0:s}".format(source))
+
+        for source, sf in to_append:
+            self.sources[source] = sf
 
         self.log("...Done.")
 
