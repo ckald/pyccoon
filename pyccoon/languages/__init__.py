@@ -447,6 +447,18 @@ class Python(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguag
             return i
 
 
+class Fortran(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguage):
+    """
+    ### Fortran
+    """
+    extensions = [".f", ".f90"]
+    inline_delimiter = "!"
+    multistart = r'^[Cc]'
+    multiend = r'$'
+
+    scope_keywords = [r"^\s*(subroutine) ", r"^\s*(function)", r"^\s*(module)", r"^\s*(program)"]
+
+
 class Ruby(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
     """
     === Ruby ===
@@ -526,7 +538,7 @@ languages = [CoffeScript, Perl, SQL, C, PHP,  JavaScript, Ruby, Python, Scheme,
 
 extensions_mapping = {}
 
-languages = [Markdown, Python, PHP, C, JavaScript, Ruby]
+languages = [Markdown, Python, Fortran, PHP, C, JavaScript, Ruby]
 
 for language in languages:
     instance = language()
