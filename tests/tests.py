@@ -2,6 +2,7 @@
 import os
 import unittest
 from pyccoon import Pyccoon
+from utils import SourceFile
 
 
 class FileTest(unittest.TestCase):
@@ -27,12 +28,16 @@ class FileTest(unittest.TestCase):
             'outdir':       self.folder,
             'verbosity':    0,
         }, process=False)
-        self.pyccoon.sources = {os.path.split(self.input_name)[1]: (self.output_name, True)}
+
+        source = os.path.split(self.input_name)[1]
+        self.pyccoon.sources = {source: SourceFile(source=source,
+                                                   destination=self.output_name,
+                                                   process=True)}
 
     def tearDown(self):
         """ Remove created files and verify they do not exist """
-        for _, (dest, _) in self.pyccoon.sources.items():
-            os.unlink(dest)
+        for sf in self.pyccoon.sources.values():
+            os.unlink(sf.destination)
         assert not os.path.exists(self.output_name), "Dummy output file exists after test"
 
     def check(self, output):

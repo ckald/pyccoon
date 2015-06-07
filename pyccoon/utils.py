@@ -3,7 +3,13 @@ import time
 from collections import namedtuple
 
 
-SourceFile = namedtuple('SourceFile', 'destination source process prefix')
+class SourceFile(namedtuple('SourceFile', 'destination source process prefix')):
+    def __new__(cls, destination, source, process=True, prefix=None):
+        return super(SourceFile, cls).__new__(cls,
+                                              source=source,
+                                              destination=destination,
+                                              process=process,
+                                              prefix=prefix)
 
 
 class cached_property(object):
