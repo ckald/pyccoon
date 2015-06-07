@@ -25,7 +25,7 @@ from .languages import get_language, Language
 from .utils import shift, ensure_directory, SourceFile
 
 
-# == Main documentation generation class ==
+# ## Main documentation generation class
 
 class Pyccoon(object):
 
@@ -49,7 +49,7 @@ class Pyccoon(object):
 
     def __init__(self, opts, process=True):
         """
-        == Pyccoon initialization ==
+        ## Pyccoon initialization
         :param opts: `dict` of parameters.
         :param process: Whether to generate documentation immediately
 
@@ -164,7 +164,7 @@ class Pyccoon(object):
 
     def process(self, sources=None, language=None):
         """
-        == Source files processing ==
+        ## Source files processing
 
         :param sources: `list` of source files to process
         :param language: Force programming language
@@ -264,7 +264,7 @@ class Pyccoon(object):
 
     def generate_documentation(self, source, code, language=None):
         """
-        == Generating documentation ==
+        ## Generating documentation
         Generate the documentation for a source file by reading it in, splitting it\
         up into comment/code sections, highlighting them for the appropriate\
         language, and merging them into an HTML template.
@@ -276,7 +276,7 @@ class Pyccoon(object):
 
     def highlight(self, source, sections, language):
         """
-        === Highlighting the source code ===
+        ### Highlighting the source code
 
         Highlights a single chunk of code using the **Pygments** module, and runs\
         the text of its corresponding comment through **Markdown**.
@@ -304,15 +304,15 @@ class Pyccoon(object):
 
     def preprocess(self, comment, source):
         """
-        === Preprocessing the comments ===
+        ### Preprocessing the comments
 
         Add cross-references before having the text processed by markdown.  It's\
         possible to reference another file, like this : `[[utils.py]]` which renders\
         [[utils.py]]. You can also reference a specific section of another file, like\
         this: `[[utils.py#ensure-directory]]` which renders as\
         [[utils.py#ensure-directory]]. Sections have to be manually\
-        declared; they are written on a single line, and surrounded by equals signs:\
-        `=== like this ===`
+        declared; they are written on a single line, prefixed by `#`s:\
+        `### like this`
         """
 
         def slugify(name):
@@ -386,7 +386,7 @@ class Pyccoon(object):
 
         return comment
 
-    # == HTML Code generation ==
+    # ## HTML Code generation
 
     def generate_html(self, source, sections):
         """
@@ -436,7 +436,7 @@ class Pyccoon(object):
 
     def generate_breadcrumbs(self, dest, title):
         """
-        === Generating breadcrumbs ===
+        ### Generating breadcrumbs
         Based on the source file path, generate linked breadcrumbs of the documentation.
         """
         breadcrumbs = []
@@ -465,7 +465,7 @@ class Pyccoon(object):
 
     def generate_navigation(self, source):
         """
-        === Generating navigation ===
+        ### Generating navigation
         For `index.html` files, generate a menu of folder contents.
 
         TODO: remove language dependency
@@ -511,7 +511,7 @@ class Pyccoon(object):
 
     def generate_contents(self, sections):
         """
-        === Generating page contents ===
+        ### Generating page contents
         Gather the names of the documentation sections for "jump-to"-like navigation on the page.
         """
         contents = []
@@ -529,7 +529,7 @@ class Pyccoon(object):
                 })
         return contents
 
-    # == Utilities ==
+    # ## Utilities
 
     def destination(self, source, language=None, process=True):
         """

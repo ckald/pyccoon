@@ -24,7 +24,7 @@ class Section(dict):
         return Section(**dict((k, v) for (k, v) in self.items()))
 
 
-# == Parsing strategy ==
+# ## Parsing strategy
 
 
 class ParsingStrategy(list):

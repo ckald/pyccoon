@@ -46,7 +46,7 @@ def shift(array, default):
 
 
 def ensure_directory(directory):
-    """ === Ensure directory ===
+    """ ### Ensure directory
         Ensure that the destination directory exists."""
 
     if not os.path.isdir(directory):
