@@ -43,7 +43,7 @@ def ensure_directory(directory):
         os.makedirs(directory)
 
 
-def monitor(path, func):
+def monitor(path, file_modified, file_changed):
     """Monitor each source file and re-generate documentation on change."""
 
     # The watchdog modules are imported in `main()` but we need to re-import\
@@ -51,14 +51,35 @@ def monitor(path, func):
     import watchdog.events
     import watchdog.observers
 
+    path = os.path.normpath(path)
+
     class RegenerateHandler(watchdog.events.FileSystemEventHandler):
         """A handler for recompiling files which triggered watchdog events"""
-        def on_any_event(self, event):
-            """Regenerate documentation for a file which triggered an event"""
-            # Re-generate documentation from a source file if it was listed on\
-            # the command line. Watchdog monitors whole directories, so other\
-            # files may cause notifications as well.
-            func()
+
+        def dispatch(self, event):
+
+            # Skip files and directories starting with
+            if any([f.startswith('.')
+                    for f in os.path.relpath(event.src_path, path).split(os.sep)]):
+                return
+
+            task = None
+            if event.event_type == "modified":
+                if not event.is_directory:
+                    task = file_modified
+                else:
+                    return
+            else:
+                task = file_changed
+
+            if task:
+                print("\n")
+                print("{} \"{}\" was {}, generating documentation...".format(
+                    "Directory" if event.is_directory else "File",
+                    event.src_path,
+                    event.event_type
+                ))
+                task()
 
     # Set up an observer which monitors all directories for files given on\
     # the command line and notifies the handler defined above.

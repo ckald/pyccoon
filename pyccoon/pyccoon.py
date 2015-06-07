@@ -100,7 +100,9 @@ class Pyccoon(object):
                 sys.exit('The `watch` option requires the watchdog package.')
 
             from .utils import monitor
-            monitor(path=self.sourcedir, func=self.process)
+            monitor(path=self.sourcedir,
+                    file_modified=self.process,
+                    file_changed=self.collect_n_process)
 
     def log(self, message):
         if self.verbosity:
