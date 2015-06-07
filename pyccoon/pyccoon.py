@@ -386,13 +386,19 @@ class Pyccoon(object):
         page_title = self.project_name + ": " + os.path.relpath(source, self.sourcedir).lstrip('./')
         csspath = os.path.relpath(os.path.join(self.outdir, "pyccoon.css"), os.path.split(dest)[0])
 
-        breadcrumbs = self.generate_breadcrumbs(dest, title)
+        breadcrumbs, filename = self.generate_breadcrumbs(dest, title)
         children = self.generate_navigation(source)
         contents = self.generate_contents(sections)
+
+        for section in sections:
+            section['line_count'] = (section['code_text'].rstrip('\n') + '\n').count('\n')
+            section['linenos'] = '\n'.join(str(section['line'] + i)
+                                           for i in range(section['line_count']))
 
         rendered = self.page_template({
             "title":            page_title,
             "breadcrumbs":      breadcrumbs,
+            "filename":         filename,
             "children":         children,
             "stylesheet":       csspath,
             "sections":         sections,
@@ -436,7 +442,7 @@ class Pyccoon(object):
             "path": os.path.join(crumbpath, "../index.html")
         })
 
-        return breadcrumbs
+        return breadcrumbs[:-1], source_chunks[0]
 
     def generate_navigation(self, source):
         """
