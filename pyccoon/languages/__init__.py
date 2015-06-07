@@ -184,6 +184,10 @@ class InlineCommentLanguage(Language):
         return base_strategy
 
     @cached_property
+    def inline_prefix(self):
+        return re.compile(r"^[ \t]*{0}".format(self.inline_delimiter), re.M)
+
+    @cached_property
     def inline_re(self):
         """
             ^\s*{0}\s*(.+$)
@@ -205,11 +209,11 @@ class InlineCommentLanguage(Language):
 
     @iterate_sections(start=0)
     def parse_inline(self, sections, i):
-        new_sections = split_section_by_regex(sections[i], self.inline_re)
+        new_sections = split_section_by_regex(sections[i], self.inline_re, meta="inline comment")
         for j, section in enumerate(new_sections):
-            new_sections[j]["docs_text"] = re.compile(
-                r"^[ \t]*{0}".format(self.inline_delimiter), re.M
-            ).sub("", new_sections[j]["docs_text"])
+            if section.get("meta") != "multiline comment":
+                new_sections[j]["docs_text"] = self.inline_prefix.sub("",
+                                                                      new_sections[j]["docs_text"])
 
         sections[i:i+1] = new_sections
 
@@ -242,7 +246,8 @@ class MultilineCommentLanguage(Language):
 
     @iterate_sections(start=0)
     def parse_multiline(self, sections, i):
-        sections[i:i+1] = split_section_by_regex(sections[i], self.multiline_re)
+        sections[i:i+1] = split_section_by_regex(sections[i], self.multiline_re,
+                                                 meta="multiline comment")
         sections[i]["docs_text"] = re.sub(r"^\n*(\s*){0}".format(self.multistart),
                                           r"\1",
                                           sections[i]["docs_text"])
@@ -544,7 +549,10 @@ def get_language(source, code, language=None):
     if m and m.group(1) in extensions_mapping:
         return extensions_mapping[m.group(1)]
     else:
-        lang = lexers.guess_lexer(code).name.lower()
+        try:
+            lang = lexers.guess_lexer(code).name.lower()
+        except Exception:
+            return None
         for l in extensions_mapping.values():
             if l.name == lang:
                 return l

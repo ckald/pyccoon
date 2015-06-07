@@ -77,7 +77,7 @@ def iterate_sections(start=1, increment=1):
     return wrap
 
 
-def split_section_by_regex(section, regex):
+def split_section_by_regex(section, regex, meta=None):
     """ Helper method that splits a section into parts using the `regex` matching against\
         the section code """
     if not section.has_code():
@@ -89,7 +89,7 @@ def split_section_by_regex(section, regex):
         code = section["code_text"][start:match.start()]
         if code.strip():
             sections.append(Section(code_text=code))
-        sections.append(Section(docs_text=match.group(1)))
+        sections.append(Section(docs_text=match.group(1), meta=meta))
         start = match.end()
 
     remains = section["code_text"][start:].strip('\n')

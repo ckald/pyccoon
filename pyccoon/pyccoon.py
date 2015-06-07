@@ -356,7 +356,7 @@ class Pyccoon(object):
             return (
                 '\n{lvl} <a id="{id}" class="header-anchor" href="#{id}">{name}</a>'
             ).format(**{
-                "lvl":  match.group(2).replace('=', '#'),
+                "lvl":  match.group(2),
                 "id":   slugify(match.group(3)),
                 "name": match.group(3)
             })
