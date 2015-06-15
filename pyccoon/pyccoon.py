@@ -7,6 +7,7 @@
 "**Pyccoon**" is a side-to-side documentation generator.
 """
 
+
 import optparse
 import os
 import shutil
@@ -82,7 +83,15 @@ class Pyccoon(object):
         self.log("Output folder: " + self.outdir)
 
         # Create the template that we will use to generate the Pyccoon HTML page.
-        self.page_template = self.template(resources.html)
+        #
+        # If the user has supploed a path, we read it from there.
+        if self.custom_html_template_path:
+            with open(self.custom_html_template_path) as f:
+                html_template = f.read()
+            self.page_template = self.template(html_template)
+        # If not, we use the default.
+        else:
+            self.page_template = self.template(resources.html)
 
         self.collect_sources()
 
@@ -122,6 +131,30 @@ class Pyccoon(object):
         self.project_name = self.config['project_name'] \
             or (os.path.split(self.sourcedir)[1] + " documentation")
 
+        # If a line breaking behavior is not supplied, assume it is `'pre-wrap'` \
+        # for backward compatibility. \
+        # The user might want to supply a different value, such as `'normal'`.
+        self.linebreaking_behavior = self.config['linebreaking-behavior'] \
+            or 'pre-wrap'
+        
+        # `self.custom_css_path` is either `None` or a path relative to the \
+        # path of the config file.
+        custom_css_path = self.config['css-path'] or None
+        if custom_css_path:
+            self.custom_css_path = os.path.join(os.path.dirname(self.config_file),
+                                                custom_css_path)
+        else:
+            self.custom_css_path = None
+            
+        # `self.custom_html_template_path` is either `None` or a path relative to the \
+        # path of the config file.
+        custom_html_template_path = self.config['custom-html-template'] or None
+        if custom_html_template_path:
+            self.custom_html_template_path = os.path.join(os.path.dirname(self.config_file),
+                                                          custom_html_template_path)
+        else:
+            self.custom_html_template_path = None
+
     _textchars = bytearray([7, 8, 9, 10, 12, 13, 27]) + bytearray(range(0x20, 0x100))
 
     @classmethod
@@ -136,6 +169,13 @@ class Pyccoon(object):
                 continue
             for name in files:
                 if name in dirnames or any([reg.search(name) for reg in self.config['skip_files']]):
+                    continue
+
+                # Don't copy the custom CSS file, if there is one. \
+                # That file will be copied with the name specified by `resources.css_filename`.
+                #print name
+                if self.custom_css_path and \
+                   os.path.join(dirpath, name) == os.path.abspath(self.custom_css_path):
                     continue
 
                 fullpath = os.path.join(dirpath, name)
@@ -181,6 +221,34 @@ class Pyccoon(object):
 
         ensure_directory(self.outdir)
 
+        # Handle CSS file which is either:
+        # 
+        # - built from a default template
+        # - user specified (in which case it is not a template, but a normal file \
+        #     to be used verbatim.
+
+        # If the user has supplied a path, we use that file.
+        if self.custom_css_path:
+            with open(self.custom_css_path) as f:
+                css_contents = f.read()
+        # Else, we use the default template.
+        else:
+            # Currently, the only configurable item in the template is the linebreaking behavior \
+            # of the text in documentation sections.
+            css_contents = pystache.render(resources.css, 
+                                           {'linebreaking-behavior':
+                                            self.linebreaking_behavior})
+
+        # Now that we have specified the *contents* of the file, the code is equal in both \
+        # situations (*template* or *custom file*).
+        filepath = os.path.join(os.path.split(resources.__file__)[0], resources.css_filename)
+        destpath = os.path.join(self.outdir, resources.css_filename)
+        
+        with open(destpath, 'w') as f:
+            f.write(css_contents)
+        
+        
+        # Handle static files
         for filename, dest in resources.static_files:
             filepath = os.path.join(os.path.split(resources.__file__)[0], filename)
             destpath = os.path.join(self.outdir, dest)
@@ -403,7 +471,8 @@ class Pyccoon(object):
         dest = self.destination(source)
         title = os.path.relpath(source, self.sourcedir)
         page_title = self.project_name + ": " + os.path.relpath(source, self.sourcedir).lstrip('./')
-        csspath = os.path.relpath(os.path.join(self.outdir, "pyccoon.css"), os.path.split(dest)[0])
+        csspath = os.path.relpath(os.path.join(self.outdir, resources.css_filename), os.path.split(dest)[0])
+
 
         breadcrumbs, filename = self.generate_breadcrumbs(dest, title)
         children = self.generate_navigation(source)
