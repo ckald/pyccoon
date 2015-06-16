@@ -221,6 +221,7 @@ class InlineCommentLanguage(Language):
             if section.get("meta") != "multiline comment":
                 new_sections[j]["docs_text"] = self.inline_prefix.sub("",
                                                                       new_sections[j]["docs_text"])
+                new_sections[j]["meta"] = "multiline comment"
 
         sections[i:i+1] = new_sections
 

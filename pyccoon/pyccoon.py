@@ -136,7 +136,7 @@ class Pyccoon(object):
         # The user might want to supply a different value, such as `'normal'`.
         self.linebreaking_behavior = self.config['linebreaking-behavior'] \
             or 'pre-wrap'
-        
+
         # `self.custom_css_path` is either `None` or a path relative to the \
         # path of the config file.
         custom_css_path = self.config['css-path'] or None
@@ -145,7 +145,7 @@ class Pyccoon(object):
                                                 custom_css_path)
         else:
             self.custom_css_path = None
-            
+
         # `self.custom_html_template_path` is either `None` or a path relative to the \
         # path of the config file.
         custom_html_template_path = self.config['custom-html-template'] or None
@@ -222,7 +222,7 @@ class Pyccoon(object):
         ensure_directory(self.outdir)
 
         # Handle CSS file which is either:
-        # 
+        #
         # - built from a default template
         # - user specified (in which case it is not a template, but a normal file \
         #     to be used verbatim.
@@ -235,7 +235,7 @@ class Pyccoon(object):
         else:
             # Currently, the only configurable item in the template is the linebreaking behavior \
             # of the text in documentation sections.
-            css_contents = pystache.render(resources.css, 
+            css_contents = pystache.render(resources.css,
                                            {'linebreaking-behavior':
                                             self.linebreaking_behavior})
 
@@ -243,11 +243,11 @@ class Pyccoon(object):
         # situations (*template* or *custom file*).
         filepath = os.path.join(os.path.split(resources.__file__)[0], resources.css_filename)
         destpath = os.path.join(self.outdir, resources.css_filename)
-        
+
         with open(destpath, 'w') as f:
             f.write(css_contents)
-        
-        
+
+
         # Handle static files
         for filename, dest in resources.static_files:
             filepath = os.path.join(os.path.split(resources.__file__)[0], filename)
@@ -429,7 +429,7 @@ class Pyccoon(object):
 
         def replace_section_name(match):
             return (
-                '\n{lvl} <a id="{id}" class="header-anchor" href="#{id}">{name}</a>'
+                    '\n{lvl} <a id="{id}" class="header-anchor" href="#{id}">{name}</a>'
             ).format(**{
                 "lvl":  match.group(2),
                 "id":   slugify(match.group(3)),

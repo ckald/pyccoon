@@ -232,7 +232,7 @@ div.docs {
   text-align: left;
 }
   .docs p {
-    white-space: {{linebreaking-brehaviour}};
+    white-space: {{linebreaking-behaviour}};
   }
   
   .docs pre {
