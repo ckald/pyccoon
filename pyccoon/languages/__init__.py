@@ -193,9 +193,9 @@ class InlineCommentLanguage(Language):
     # Usually those comments have specific patterns to distinguish them from
     # ordinary comments, which are ignored by the compiler.
     #
-    # Property `special_inline_patterns` is a list of *regexp*s that
-    # match the special comments for that language.
-    special_inline_patterns = []
+    # Property `ignored_inline_patterns` is a list of *regexp*s that
+    # match the ignored comments for that language.
+    ignored_inline_patterns = []
 
     def strategy(self):
         base_strategy = super(InlineCommentLanguage, self).strategy()
@@ -212,20 +212,20 @@ class InlineCommentLanguage(Language):
             ^\s*{0}\s*(.+$)
             (^[ \t]*{0}(.*)$)+
         """
-        # Special comments, as defined above, are comments that are to be treated
+        # Ignored comments, as defined above, are comments that are to be treated
         # the same way as source code instead of documentation.
         #
         # To treat them as normal code, we simply add a regular expression that
         # matches whenever **none** of those patterns matches.
         # This way, lines that match the pattern will be treated as code instead
         # of documentation.
-        if self.special_inline_patterns:
+        if self.ignored_inline_patterns:
             # Build a *regexp* that matches whenever **none** of the patterns matches.
             # Only lines for which this *regexp* matches will be treated as documentation.
             # Lines for which it doesn't match will be treated as code.
             dont_match = r"(?!({0}))".\
-                format("|".join([pattern for pattern in self.special_inline_patterns]))
-        # If no special comment patterns have been defined for the current language,
+                format("|".join(pattern for pattern in self.ignored_inline_patterns))
+        # If no ignored comment patterns have been defined for the current language,
         # treat all comments as documentation.
         else:
             dont_match = ""
@@ -457,7 +457,7 @@ class Python(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguag
     """
     extensions = [".py", ".pyx"]
     inline_delimiter = "#"
-    special_inline_patterns = [
+    ignored_inline_patterns = [
         # Shebang patterns, e.g. `#!/usr/bin/python`
         r"(\!.+)",
         # File encoding, e.g. `# -*- coding: utf-8 -*-`
