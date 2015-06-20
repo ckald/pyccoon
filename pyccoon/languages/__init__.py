@@ -32,6 +32,7 @@ class Language(object):
         markdown_extensions.Todo(),
         markdown_extensions.Pydoc(),
         markdown_extensions.AutoLinkExtension(),
+        markdown_extensions.MathExtension(),
         "markdown.extensions.def_list",
         "markdown.extensions.fenced_code",
         'markdown.extensions.codehilite',
@@ -183,7 +184,18 @@ class InlineCommentLanguage(Language):
     Language mixin for separate inline comments and whole stacks of them.
     """
 
+    # The delimiter for inline comments; separates documentation from code.
     inline_delimiter = "#"
+    # Some languages might have comments that are parsed by the compiler/interpreter.
+    # They can be used to activate or deactivate special options,
+    # or for debugging purposes.
+    #
+    # Usually those comments have specific patterns to distinguish them from
+    # ordinary comments, which are ignored by the compiler.
+    #
+    # Property `ignored_inline_patterns` is a list of *regexp*s that
+    # match the ignored comments for that language.
+    ignored_inline_patterns = []
 
     def strategy(self):
         base_strategy = super(InlineCommentLanguage, self).strategy()
@@ -192,7 +204,7 @@ class InlineCommentLanguage(Language):
 
     @cached_property
     def inline_prefix(self):
-        return re.compile(r"^[ \t]*{0}".format(self.inline_delimiter))
+        return re.compile(r"^[ \t]*{0}".format(self.inline_delimiter), re.M)
 
     @cached_property
     def inline_re(self):
@@ -200,7 +212,28 @@ class InlineCommentLanguage(Language):
             ^\s*{0}\s*(.+$)
             (^[ \t]*{0}(.*)$)+
         """
-        return re.compile(r"((^[ \t]*{0}.*\n)+)".format(self.inline_delimiter), flags=re.M)
+        # Ignored comments, as defined above, are comments that are to be treated
+        # the same way as source code instead of documentation.
+        #
+        # To treat them as normal code, we simply add a regular expression that
+        # matches whenever **none** of those patterns matches.
+        # This way, lines that match the pattern will be treated as code instead
+        # of documentation.
+        if self.ignored_inline_patterns:
+            # Build a *regexp* that matches whenever **none** of the patterns matches.
+            # Only lines for which this *regexp* matches will be treated as documentation.
+            # Lines for which it doesn't match will be treated as code.
+            dont_match = r"(?!({0}))".\
+                format("|".join(pattern for pattern in self.ignored_inline_patterns))
+        # If no ignored comment patterns have been defined for the current language,
+        # treat all comments as documentation.
+        else:
+            dont_match = ""
+        # Whenever the text after the `self.inline_delimiter` matches the `dont_match` *regexp*,
+        # treat the comment as documentation.
+        return re.compile(r"((?:^[ \t]*{0}{1}.*\n)+)".format(self.inline_delimiter,
+                                                             dont_match),
+                          flags=re.M)
 
     @property
     def divider_text(self):
@@ -216,13 +249,12 @@ class InlineCommentLanguage(Language):
 
     @iterate_sections(start=0)
     def parse_inline(self, sections, i):
-        new_sections = split_section_by_regex(sections[i], self.inline_re, meta="inline comment")
+        new_sections = split_section_by_regex(sections[i], self.inline_re)
         for j, section in enumerate(new_sections):
-            if section.get("meta") != "multiline comment":
-                docs = []
-                for line in new_sections[j]["docs_text"].split("\n"):
-                    docs.append(self.inline_prefix.sub("", line, count=1))
-                new_sections[j]["docs_text"] = "\n".join(docs)
+            if section.get("meta") != "stripped":
+                new_sections[j]["docs_text"] = self.inline_prefix.sub("",
+                                                                      new_sections[j]["docs_text"])
+                new_sections[j]["meta"] = "stripped"
 
         sections[i:i+1] = new_sections
 
@@ -256,7 +288,7 @@ class MultilineCommentLanguage(Language):
     @iterate_sections(start=0)
     def parse_multiline(self, sections, i):
         sections[i:i+1] = split_section_by_regex(sections[i], self.multiline_re,
-                                                 meta="multiline comment")
+                                                 meta="stripped")
         sections[i]["docs_text"] = re.sub(r"^\n*(\s*){0}".format(self.multistart),
                                           r"\1",
                                           sections[i]["docs_text"])
@@ -365,6 +397,7 @@ class C(BraceBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
                        "void", "int", "double", "bool",  "float"]]
 
     # FIXME: this redefinition brakes the whole extension
+    #
     # ```python
     # def __init__(self, *args, **kwargs):
     #     super(C, self).__init__(*args, **kwargs)
@@ -424,6 +457,13 @@ class Python(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguag
     """
     extensions = [".py", ".pyx"]
     inline_delimiter = "#"
+    ignored_inline_patterns = [
+        # Shebang patterns, e.g. `#!/usr/bin/python`
+        r"(\!.+)",
+        # File encoding, e.g. `# -*- coding: utf-8 -*-`
+        r"((\s)*-\*-(\s)*coding:.+(\s*)-\*-)",
+      ]
+
     multistart = '"""'
     multiend = '"""'
 

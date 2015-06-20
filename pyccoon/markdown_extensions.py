@@ -1,14 +1,13 @@
 import re
 
-from markdown.util import etree
+from markdown.util import etree, AtomicString
 from markdown.inlinepatterns import Pattern
 from markdown.preprocessors import Preprocessor
 from markdown.extensions import Extension
 
-
 class Todo(Extension):
 
-    """ == TODO, FIXME, WARNING, CAUTION marks == """
+    """ ## TODO, FIXME, WARNING, CAUTION marks """
 
     class Prep(Preprocessor):
 
@@ -35,7 +34,7 @@ class Todo(Extension):
 
 class LinesConnector(Extension):
 
-    """ == Lines connector extension == """
+    """ ## Lines connector extension """
 
     def __init__(self, regex=r"(\S)\s*\\\s*\n\s*(\S)", sub=r"\1 \2", *args, **kwargs):
 
@@ -57,7 +56,7 @@ class LinesConnector(Extension):
 
 class SaneDefList(Extension):
 
-    """ == Better definition lists == """
+    """ ## Better definition lists """
 
     class Prep(Preprocessor):
 
@@ -102,7 +101,7 @@ class SaneDefList(Extension):
 
 class Pydoc(Extension):
 
-    """ == Docblocks meta marks processor == """
+    """ ## Docblocks meta marks processor """
 
     class Prep(Preprocessor):
 
@@ -149,7 +148,7 @@ class Pydoc(Extension):
 
 class AutoLinkExtension(Extension):
 
-    """ == Autolink extension ==
+    """ ## Autolink extension
         There's already an inline pattern called autolink which handles\
         <http://www.google.com> type links. """
 
@@ -173,3 +172,52 @@ class AutoLinkExtension(Extension):
             AutoLinkExtension.pattern(self.EXTRA_AUTOLINK_RE, self),
             '>autolink'
         )
+
+class MathExtension(Extension):
+    """
+    ## Math extension for Python-Markdown
+
+    Adds support for displaying math formulas using [MathJax](http://www.mathjax.org/).
+
+    Author: 2015, Dmitry Shachnev <mitya57@gmail.com>.
+    Slightly customized by cryptonomicon314
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(MathExtension, self).__init__(*args, **kwargs)
+
+    def extendMarkdown(self, md, md_globals):
+        def handle_match_inline(m):
+            node = etree.Element('script')
+            node.set('type', 'math/tex')
+            node.text = AtomicString(m.group(3))
+            return node
+
+        def handle_match(m):
+            node = etree.Element('script')
+            node.set('type', 'math/tex; mode=display')
+            if '\\begin' in m.group(2):
+                node.text = AtomicString(m.group(2) + m.group(4) + m.group(5))
+            else:
+                node.text = AtomicString(m.group(3))
+            return node
+
+        inlinemathpatterns = (
+            # Inline math with `$...$`
+            Pattern(r'(?<!\\|\$)(\$)([^\$]+)(\$)'),
+            # Inline math with `\(...\)`
+            Pattern(r'(?<!\\)(\\\()(.+?)(\\\))')
+        )
+        mathpatterns = (
+            # Display style math with `$$...$$`
+            Pattern(r'(?<!\\)(\$\$)([^\$]+)(\$\$)'),
+            # Display style math with `\[...\]`
+            Pattern(r'(?<!\\)(\\\[)(.+?)(\\\])'),
+            Pattern(r'(?<!\\)(\\begin{([a-z]+?\*?)})(.+?)(\\end{\3})')
+        )
+        for i, pattern in enumerate(inlinemathpatterns):
+            pattern.handleMatch = handle_match_inline
+            md.inlinePatterns.add('math-inline-%d' % i, pattern, '<escape')
+        for i, pattern in enumerate(mathpatterns):
+            pattern.handleMatch = handle_match
+            md.inlinePatterns.add('math-%d' % i, pattern, '<escape')
