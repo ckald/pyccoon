@@ -192,7 +192,7 @@ class InlineCommentLanguage(Language):
 
     @cached_property
     def inline_prefix(self):
-        return re.compile(r"^[ \t]*{0}".format(self.inline_delimiter))
+        return re.compile(r"^[ \t]*{0}".format(self.inline_delimiter), re.M)
 
     @cached_property
     def inline_re(self):
@@ -200,7 +200,7 @@ class InlineCommentLanguage(Language):
             ^\s*{0}\s*(.+$)
             (^[ \t]*{0}(.*)$)+
         """
-        return re.compile(r"((^[ \t]*{0}.*\n)+)".format(self.inline_delimiter), flags=re.M)
+        return re.compile(r"((?:^[ \t]*{0}.*\n)+)".format(self.inline_delimiter), flags=re.M)
 
     @property
     def divider_text(self):
@@ -216,12 +216,12 @@ class InlineCommentLanguage(Language):
 
     @iterate_sections(start=0)
     def parse_inline(self, sections, i):
-        new_sections = split_section_by_regex(sections[i], self.inline_re, meta="inline comment")
+        new_sections = split_section_by_regex(sections[i], self.inline_re)
         for j, section in enumerate(new_sections):
-            if section.get("meta") != "multiline comment":
+            if section.get("meta") != "stripped":
                 new_sections[j]["docs_text"] = self.inline_prefix.sub("",
                                                                       new_sections[j]["docs_text"])
-                new_sections[j]["meta"] = "multiline comment"
+                new_sections[j]["meta"] = "stripped"
 
         sections[i:i+1] = new_sections
 
@@ -255,7 +255,7 @@ class MultilineCommentLanguage(Language):
     @iterate_sections(start=0)
     def parse_multiline(self, sections, i):
         sections[i:i+1] = split_section_by_regex(sections[i], self.multiline_re,
-                                                 meta="multiline comment")
+                                                 meta="stripped")
         sections[i]["docs_text"] = re.sub(r"^\n*(\s*){0}".format(self.multistart),
                                           r"\1",
                                           sections[i]["docs_text"])
@@ -364,6 +364,7 @@ class C(BraceBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
                        "void", "int", "double", "bool",  "float"]]
 
     # FIXME: this redefinition brakes the whole extension
+    #
     # ```python
     # def __init__(self, *args, **kwargs):
     #     super(C, self).__init__(*args, **kwargs)

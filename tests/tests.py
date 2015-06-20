@@ -112,7 +112,7 @@ class TodoSubstitutions(DummyFileTest):
         assert "FIXME: something" in repr(output), "FIXME in `pre` converted"
         # TODO: this one is failing. Will fix after migrating to Mistune markdown parser
         # assert "FIXME: not converted" in repr(output),\
-            # "FIXME in multiline `pre` converted"
+        # "FIXME in multiline `pre` converted"
 
 
 class Crossref(DummyFileTest):
