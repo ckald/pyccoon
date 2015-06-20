@@ -32,6 +32,7 @@ class Language(object):
         markdown_extensions.Todo(),
         markdown_extensions.Pydoc(),
         markdown_extensions.AutoLinkExtension(),
+        markdown_extensions.MathExtension(),
         "markdown.extensions.def_list",
         "markdown.extensions.fenced_code",
         'markdown.extensions.codehilite',

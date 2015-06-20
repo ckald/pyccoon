@@ -5,6 +5,10 @@ from markdown.inlinepatterns import Pattern
 from markdown.preprocessors import Preprocessor
 from markdown.extensions import Extension
 
+# Credit goes to [Dmitry Shachnev](https://github.com/mitya57/python-markdown-math)
+# The code was slightly changed.
+from libs.mdx_math.mdx_math import MathExtension
+
 
 class Todo(Extension):
 
