@@ -8,10 +8,11 @@
 It descended from [Pycco](https://github.com/fitzgen/pycco) — a Python port of
 [Docco](http://jashkenas.github.com/docco/):
 the original quick-and-dirty, hundred-line-long, literate-programming-style
-documentation generator. It produces a static HTML website that displays your comments
-alongside your code.
+documentation generator.
 
-Comments are formatted by [Markdown](http://daringfireball.net/projects/markdown/syntax),
+Pyccoon produces a static HTML website that displays your comments
+alongside your code. Comments are formatted by
+[Markdown](http://daringfireball.net/projects/markdown/syntax),
 while the code is syntax highlighted by [Pygments](http://pygments.org/).
 [MathJax](https://www.mathjax.org/) helps with the $\TeX$ notes.
 
@@ -35,6 +36,6 @@ documentation `docs` for the project in `src` folder, run the following:
 
 __author__ = 'Andrii Magalich'
 __email__ = 'andrew.magalich@gmail.com'
-__version__ = '0.1.4'
+__version__ = '0.1.5'
 
 from .pyccoon import Pyccoon
