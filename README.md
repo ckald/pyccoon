@@ -4,9 +4,11 @@
 </a>
 </p>
 
-[![PyPi package](https://badge.fury.io/py/pyccoon.png)](http://badge.fury.io/py/pyccoon)
+[![PyPi package](https://img.shields.io/pypi/v/pyccoon.svg)](https://pypi.python.org/pypi/pyccoon)
+![Downloads](https://img.shields.io/pypi/dm/pyccoon.svg)
+![Python versions](https://img.shields.io/pypi/pyversions/pyccoon.svg)
 [![Build Status](https://travis-ci.org/ckald/pyccoon.svg?branch=master)](https://travis-ci.org/ckald/pyccoon)
-[![Downloads](https://pypip.in/d/pyccoon/badge.png)](https://pypi.python.org/pypi/pyccoon)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 Side-to-side documentation generator. Fork of the [Pycco](http://fitzgen.github.io/pycco/), grandfork of the [Docco](http://jashkenas.github.com/docco/). And an object-oriented one.
 
@@ -51,58 +53,42 @@ At the moment Pyccoon supports Python, Ruby, Javascript, PHP and C/C++ source fi
     // Copy files without processing (useful if you have some binary files)
     "copy_files": ["pyccoon.svg", "pyccoon_icon.svg", ".+\\.html", ".+\\.css", "\\.pyccoon"],
     // MathJax (http://mathjax.org) support - sometimes we want nice formulas
-    "mathjax": false
+    "mathjax": false,
+    // Line-breaking behavior:  
+    //   * 'normal' for Markdown-like behavior 
+    //   * 'pre-wrap' for forced line breaks (override with '\' at the end of the line)
+    "linebreaking-behavior": "pre-wrap"
 }
 ```
 
+# Supported languages
+
+It is easy to add a language to Pyccoon (pull requests are welcome!), but it requires some testing on the real-life project. By now we have worked with:
+
+  - Markdown
+  - Python
+  - Ruby (basic)
+  - C/C++
+  - Javascript
+  - PHP
+  - Fortran
+
 # Development roadmap
 
-  - [x] Initial version
-      - [x] Python
-      - [x] Ruby
-      - [x] JavaScript (incomplete, but will do)
-      - [x] C/C++ (incomplete)
-      - [x] PHP (incomplete)
-  - [x] Better page layout
-  - [x] Documentation website
-  - [ ] Write test suites and extend supported languages list:
-      - [x] Python
-      - [ ] Ruby
-      - [ ] PHP
-      - [ ] JavaScript
-      - [ ] C/C++
-      - [ ] CoffeScript
-      - [ ] Perl
-      - [ ] SQL
-      - [ ] Scheme
-      - [ ] Lua
-      - [ ] Erlang
-      - [ ] Tcl
-      - [ ] Haskell
-      - [ ] CSS, LESS, SASS
-  - [ ] Fix bugs:
-      - [x] Fix `--watch` option
-      - [x] Broken cross-referencing (wikilinks)
-      - [x] Fix multiple Python versions compatibility
-      - [ ] Replace Python Markdown with [Mistune](http://mistune.readthedocs.org/en/latest/) (because we want nice extensions)
-          - [ ] Restrict extensions to specific block types
-          - [ ] Create LaTeX codeblocks (to avoid unnecessary `\begin{equation}...\end{equation}` in the docs and restrict MathJax parsing only to specific elements on the page)
+  - Enhancements:
       - [ ] Use `glob`: replace config file regular expressions with more natural wildcards (also support matching against the whole path, not only filename)
-      - [ ] Add (actually, fix) line numbers feature (tricky)
-      - [ ] Test against multilanguage projects (i.e., what happens if there are `index.html` and `__init__.py` in one folder?)
-      - [ ] Link index files instead of renaming (`__init__.py` -> `index.html`)
-  - [ ] Release on PyPi
-  - [ ] Additional features:
+      - [ ] Add line numbers feature
+      - [ ] Incremental regeneration
       - [ ] Object retrieval and cross-linking ("jump to definition" for classes, functions)
       - [ ] Search
       - [ ] Extended docblocks parsing (capturing shortcuts and aliases for cross-linking)
       - [ ] Mixed documents parsing: HTML/JS/CSS, HTML/PHP, etc.
-      - [ ] `TODO:` statements, linting and coverage reports
 
 -------
 
 # Acknowledgements
 
+  * [Cryptonomicon314](https://github.com/cryptonomicon314) as a surprisingly enthusiastic contributor
   * [Nick Fitzgerald](http://github.com/fitzgen) as an author of [Pycco](https://github.com/fitzgen/pycco) that was a starting point of the development
   * [Jeremy Ashkenas](https://github.com/jashkenas) as an author of original idea - [Docco](https://github.com/jashkenas/docco)
   * Raccoon designed by [Christy Presler](http://www.thenounproject.com/cnpresler) from the [Noun Project](http://www.thenounproject.com/)
