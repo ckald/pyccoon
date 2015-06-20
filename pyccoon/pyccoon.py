@@ -83,8 +83,7 @@ class Pyccoon(object):
         self.log("Output folder: " + self.outdir)
 
         # Create the template that we will use to generate the Pyccoon HTML page.
-        #
-        # If the user has supploed a path, we read it from there.
+        # If the user has supplied a path, we read it from there.
         if self.custom_html_template_path:
             with open(self.custom_html_template_path) as f:
                 html_template = f.read()
@@ -98,8 +97,8 @@ class Pyccoon(object):
         if process:
             self.process()
 
-        # If the -w / --watch option was present, monitor the source directories \
-        # for changes and re-generate documentation for source files whenever they \
+        # If the -w / --watch option was present, monitor the source directories
+        # for changes and re-generate documentation for source files whenever they
         # are modified.
         if self.watch:
             try:
@@ -131,13 +130,13 @@ class Pyccoon(object):
         self.project_name = self.config['project_name'] \
             or (os.path.split(self.sourcedir)[1] + " documentation")
 
-        # If a line breaking behavior is not supplied, assume it is `'pre-wrap'` \
-        # for backward compatibility. \
+        # If a line breaking behavior is not supplied, assume it is `'pre-wrap'`
+        # for backward compatibility.
         # The user might want to supply a different value, such as `'normal'`.
         self.linebreaking_behavior = self.config['linebreaking-behavior'] \
             or 'pre-wrap'
 
-        # `self.custom_css_path` is either `None` or a path relative to the \
+        # `self.custom_css_path` is either `None` or a path relative to the
         # path of the config file.
         custom_css_path = self.config['css-path'] or None
         if custom_css_path:
@@ -146,7 +145,7 @@ class Pyccoon(object):
         else:
             self.custom_css_path = None
 
-        # `self.custom_html_template_path` is either `None` or a path relative to the \
+        # `self.custom_html_template_path` is either `None` or a path relative to the
         # path of the config file.
         custom_html_template_path = self.config['custom-html-template'] or None
         if custom_html_template_path:
@@ -171,9 +170,8 @@ class Pyccoon(object):
                 if name in dirnames or any([reg.search(name) for reg in self.config['skip_files']]):
                     continue
 
-                # Don't copy the custom CSS file, if there is one. \
+                # Don't copy the custom CSS file, if there is one.
                 # That file will be copied with the name specified by `resources.css_filename`.
-                #print name
                 if self.custom_css_path and \
                    os.path.join(dirpath, name) == os.path.abspath(self.custom_css_path):
                     continue
@@ -224,7 +222,7 @@ class Pyccoon(object):
         # Handle CSS file which is either:
         #
         # - built from a default template
-        # - user specified (in which case it is not a template, but a normal file \
+        # - user specified (in which case it is not a template, but a normal file
         #     to be used verbatim.
 
         # If the user has supplied a path, we use that file.
@@ -233,20 +231,19 @@ class Pyccoon(object):
                 css_contents = f.read()
         # Else, we use the default template.
         else:
-            # Currently, the only configurable item in the template is the linebreaking behavior \
+            # Currently, the only configurable item in the template is the linebreaking behavior
             # of the text in documentation sections.
             css_contents = pystache.render(resources.css,
                                            {'linebreaking-behavior':
                                             self.linebreaking_behavior})
 
-        # Now that we have specified the *contents* of the file, the code is equal in both \
+        # Now that we have specified the *contents* of the file, the code is equal in both
         # situations (*template* or *custom file*).
         filepath = os.path.join(os.path.split(resources.__file__)[0], resources.css_filename)
         destpath = os.path.join(self.outdir, resources.css_filename)
 
         with open(destpath, 'w') as f:
             f.write(css_contents)
-
 
         # Handle static files
         for filename, dest in resources.static_files:
@@ -333,8 +330,8 @@ class Pyccoon(object):
     def generate_documentation(self, source, code, language=None):
         """
         ## Generating documentation
-        Generate the documentation for a source file by reading it in, splitting it\
-        up into comment/code sections, highlighting them for the appropriate\
+        Generate the documentation for a source file by reading it in, splitting it
+        up into comment/code sections, highlighting them for the appropriate
         language, and merging them into an HTML template.
         """
 
@@ -346,11 +343,11 @@ class Pyccoon(object):
         """
         ### Highlighting the source code
 
-        Highlights a single chunk of code using the **Pygments** module, and runs\
+        Highlights a single chunk of code using the **Pygments** module, and runs
         the text of its corresponding comment through **Markdown**.
 
-        We process the entire file in a single call to Pygments by inserting little\
-        marker comments between each section and then splitting the result string\
+        We process the entire file in a single call to Pygments by inserting little
+        marker comments between each section and then splitting the result string
         wherever our markers occur.
         """
         output = language.highlight(
@@ -374,12 +371,12 @@ class Pyccoon(object):
         """
         ### Preprocessing the comments
 
-        Add cross-references before having the text processed by markdown.  It's\
-        possible to reference another file, like this : `[[utils.py]]` which renders\
-        [[utils.py]]. You can also reference a specific section of another file, like\
-        this: `[[utils.py#ensure-directory]]` which renders as\
-        [[utils.py#ensure-directory]]. Sections have to be manually\
-        declared; they are written on a single line, prefixed by `#`s:\
+        Add cross-references before having the text processed by markdown.  It's
+        possible to reference another file, like this : `[[utils.py]]` which renders
+        [[utils.py]]. You can also reference a specific section of another file, like
+        this: `[[utils.py#ensure-directory]]` which renders as
+        [[utils.py#ensure-directory]]. Sections have to be manually
+        declared; they are written on a single line, prefixed by `#`s:
         `### like this`
         """
 
@@ -471,8 +468,8 @@ class Pyccoon(object):
         dest = self.destination(source)
         title = os.path.relpath(source, self.sourcedir)
         page_title = self.project_name + ": " + os.path.relpath(source, self.sourcedir).lstrip('./')
-        csspath = os.path.relpath(os.path.join(self.outdir, resources.css_filename), os.path.split(dest)[0])
-
+        csspath = os.path.relpath(os.path.join(self.outdir, resources.css_filename),
+                                  os.path.split(dest)[0])
 
         breadcrumbs, filename = self.generate_breadcrumbs(dest, title)
         children = self.generate_navigation(source)
@@ -602,7 +599,7 @@ class Pyccoon(object):
 
     def destination(self, source, language=None, process=True):
         """
-        Compute the destination HTML path for an input source file path. If the \
+        Compute the destination HTML path for an input source file path. If the
         source is `lib/example.py`, the HTML will be at `docs/lib/example.html`
         """
 

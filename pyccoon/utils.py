@@ -56,7 +56,7 @@ def ensure_directory(directory):
 def monitor(path, file_modified, file_changed):
     """Monitor each source file and re-generate documentation on change."""
 
-    # The watchdog modules are imported in `main()` but we need to re-import\
+    # The watchdog modules are imported in `main()` but we need to re-import
     # here to bring them into the local namespace.
     import watchdog.events
     import watchdog.observers
@@ -91,7 +91,7 @@ def monitor(path, file_modified, file_changed):
                 ))
                 task()
 
-    # Set up an observer which monitors all directories for files given on\
+    # Set up an observer which monitors all directories for files given on
     # the command line and notifies the handler defined above.
     event_handler = RegenerateHandler()
     observer = watchdog.observers.Observer()
