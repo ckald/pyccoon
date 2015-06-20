@@ -1,5 +1,5 @@
 {
-    "project_name": "pyccoon v0.1.5 documentation",
+    "project_name": "pyccoon v0.1.6 documentation",
     "skip_files": [".+\\.pyc", "__pycache__", "\\.travis.yml", "\\.git", "\\.DS_Store"],
     "copy_files": ["pyccoon.svg", "pyccoon_icon.svg", ".+\\.html", ".+\\.css", "\\.pyccoon"],
     "mathjax": true,

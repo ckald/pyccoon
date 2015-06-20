@@ -23,7 +23,7 @@ Most probably you might want to use Pyccoon if you have a small-to-medium projec
 or if you are a scientist that tries to sync the code with the context of research:
 
 $$
-    \frac{d y(t)}{d t} = \underset{h \rightarrow 0}{lim} \frac{y(t + h) - y(t)}{h}
+    \frac{d y(t)}{d t} = \\underset{h \rightarrow 0}{lim} \frac{y(t + h) - y(t)}{h}
 $$
 
 Pyccoon generates the documentation folder structured correspondingly to the code. To create
@@ -36,6 +36,6 @@ documentation `docs` for the project in `src` folder, run the following:
 
 __author__ = 'Andrii Magalich'
 __email__ = 'andrew.magalich@gmail.com'
-__version__ = '0.1.5'
+__version__ = '0.1.6'
 
 from .pyccoon import Pyccoon
