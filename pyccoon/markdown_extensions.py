@@ -5,6 +5,7 @@ from markdown.inlinepatterns import Pattern
 from markdown.preprocessors import Preprocessor
 from markdown.extensions import Extension
 
+
 class Todo(Extension):
 
     """ ## TODO, FIXME, WARNING, CAUTION marks """
@@ -172,6 +173,7 @@ class AutoLinkExtension(Extension):
             AutoLinkExtension.pattern(self.EXTRA_AUTOLINK_RE, self),
             '>autolink'
         )
+
 
 class MathExtension(Extension):
     """

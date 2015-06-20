@@ -2,6 +2,6 @@
     "project_name": "pyccoon v0.1.4 documentation",
     "skip_files": [".+\\.pyc", "__pycache__", "\\.travis.yml", "\\.git", "\\.DS_Store"],
     "copy_files": ["pyccoon.svg", "pyccoon_icon.svg", ".+\\.html", ".+\\.css", "\\.pyccoon"],
-    "mathjax": false,
+    "mathjax": true,
     "linebreaking-behavior": "normal"
 }
