@@ -231,7 +231,11 @@ div.docs {
   vertical-align: top;
   text-align: left;
 }
-  .docs p, .docs pre {
+  .docs p {
+    white-space: normal;
+  }
+  
+  .docs pre {
     white-space: pre-wrap;
   }
   .docs pre {

@@ -4,10 +4,15 @@
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <title>pyccoon v0.1.4 documentation: markdown_extensions.py</title>
   <link rel="stylesheet" href="./pyccoon.css">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}
+  });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <div id='container' >
-  <a id="top"></a>
   <div id="footer">
     <span id="project-name">
         <a class="btn" href="./index.html">pyccoon v0.1.4 documentation</a>
@@ -21,21 +26,23 @@
           <a class="source source-2" href="#lines-connector-extension"> Lines connector extension </a>
           <a class="source source-2" href="#better-definition-lists"> Better definition lists </a>
           <a class="source source-2" href="#docblocks-meta-marks-processor"> Docblocks meta marks processor </a>
-          <a class="source source-2" href="#autolink-extension"> Autolink extension </a>
+          <a class="source source-2" href="#autolink-extension"> Autolink extension</a>
+          <a class="source source-2" href="#math-extension-for-python-markdown"> Math extension for Python-Markdown</a>
       </div>
     </div>
     </div>
     <div class="generation-time">
         Generated at
-        <code>2015-02-20 22:30</code>
+        <code>2015-06-21 01:23</code>
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" />pyccoon</a>
     </div>
   </div>
+  <a id="top"></a>
   <div class='section'>
     <div class='docs nav'>
-      <nav id="breadcrumbs">/ <a href="markdown_extensions.py.html/../index.html">.</a> / <a href="markdown_extensions.py.html">markdown_extensions.py</a> </nav>
+      <nav id="breadcrumbs">/ <a href="markdown_extensions.py.html/../index.html">.</a> / markdown_extensions.py</nav>
       <ul id="children"></ul>
     </div>
   </div>
@@ -53,7 +60,7 @@
         <div class='code'>
           <div class="highlight"><pre><span class="kn">import</span> <span class="nn">re</span>
 
-<span class="kn">from</span> <span class="nn">markdown.util</span> <span class="kn">import</span> <span class="n">etree</span>
+<span class="kn">from</span> <span class="nn">markdown.util</span> <span class="kn">import</span> <span class="n">etree</span><span class="p">,</span> <span class="n">AtomicString</span>
 <span class="kn">from</span> <span class="nn">markdown.inlinepatterns</span> <span class="kn">import</span> <span class="n">Pattern</span>
 <span class="kn">from</span> <span class="nn">markdown.preprocessors</span> <span class="kn">import</span> <span class="n">Preprocessor</span>
 <span class="kn">from</span> <span class="nn">markdown.extensions</span> <span class="kn">import</span> <span class="n">Extension</span></pre></div>
@@ -267,11 +274,11 @@
             <a class='octothorpe' href='#section-13'>#</a>
           </div>
           <p>Searches for a line starting with a literal followed by a colon and multiple spaces:</p>
-<div class="codehilite"><pre><span class="n">some</span> <span class="n">arbitrary</span> <span class="n">parameter</span> <span class="n">name</span>
-<span class="o">:</span>   <span class="n">and</span> <span class="n">its</span> <span class="n">definition</span> <span class="n">separated</span> <span class="n">by</span> <span class="err">`</span><span class="o">:</span><span class="err">\</span><span class="n">s</span><span class="err">\</span><span class="n">s</span><span class="o">+</span><span class="err">`</span>
+<div class="codehilite"><pre>some arbitrary parameter name
+:   and its definition separated by `:\s\s+`
 
-<span class="err">`</span><span class="n">parameter</span> <span class="n">name</span><span class="err">`</span> <span class="n">might</span> <span class="n">contain</span> <span class="n">everything</span> <span class="n">except</span> <span class="n">a</span> <span class="p">[</span><span class="n">colon</span><span class="p">](</span><span class="c1">//en.wikipedia.org/wiki/Colon_(punctuation)) and be multiline</span>
-<span class="o">:</span>   <span class="n">it</span> <span class="n">still</span> <span class="n">works</span>
+`parameter name` might contain everything except a [colon](//en.wikipedia.org/wiki/Colon_(punctuation)) and be multiline
+:   it still works
 </pre></div>
 
 
@@ -482,7 +489,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-24'>#</a>
           </div>
-          <h2><a id="autolink-extension" class="header-anchor" href="#autolink-extension"> Autolink extension </a></h2>
+          <h2><a id="autolink-extension" class="header-anchor" href="#autolink-extension"> Autolink extension</a></h2>
 <p>There's already an inline pattern called autolink which handles <a href="http://www.google.com">http://www.google.com</a> type links. </p>
         </div>
         <div class='code'>
@@ -533,7 +540,171 @@
             <span class="s">&#39;extra_autolink&#39;</span><span class="p">,</span>
             <span class="n">AutoLinkExtension</span><span class="o">.</span><span class="n">pattern</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">EXTRA_AUTOLINK_RE</span><span class="p">,</span> <span class="bp">self</span><span class="p">),</span>
             <span class="s">&#39;&gt;autolink&#39;</span>
-        <span class="p">)</span>
+        <span class="p">)</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+    </div>
+    <div class='section'>
+    <a id="section-27" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-27'>#</a>
+          </div>
+          <h2><a id="math-extension-for-python-markdown" class="header-anchor" href="#math-extension-for-python-markdown"> Math extension for Python-Markdown</a></h2>
+<p>Adds support for displaying math formulas using <a href="http://www.mathjax.org/">MathJax</a>.</p>
+<p>Author: 2015, Dmitry Shachnev <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#105;&#116;&#121;&#97;&#53;&#55;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#109;&#105;&#116;&#121;&#97;&#53;&#55;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>.
+Slightly customized by cryptonomicon314</p>
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre><span class="k">class</span> <span class="nc">MathExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MathExtension</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+    </div>
+    <div class='section'>
+    <a id="section-28" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-28'>#</a>
+          </div>
+          
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">extendMarkdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">md_globals</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="nf">handle_match_inline</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&#39;script&#39;</span><span class="p">)</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;math/tex&#39;</span><span class="p">)</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">AtomicString</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">node</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+    </div>
+    <div class='section'>
+    <a id="section-29" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-29'>#</a>
+          </div>
+          
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">handle_match</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&#39;script&#39;</span><span class="p">)</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;math/tex; mode=display&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">begin&#39;</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">AtomicString</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">AtomicString</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">node</span>
+
+        <span class="n">inlinemathpatterns</span> <span class="o">=</span> <span class="p">(</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+    </div>
+    <div class='section'>
+    <a id="section-30" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-30'>#</a>
+          </div>
+          <p>Inline math with <code>$...$</code></p>
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>            <span class="n">Pattern</span><span class="p">(</span><span class="s">r&#39;(?&lt;!</span><span class="se">\\</span><span class="s">|\$)(\$)([^\$]+)(\$)&#39;</span><span class="p">),</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+    </div>
+    <div class='section'>
+    <a id="section-31" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-31'>#</a>
+          </div>
+          <p>Inline math with <code>\(...\)</code></p>
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>            <span class="n">Pattern</span><span class="p">(</span><span class="s">r&#39;(?&lt;!</span><span class="se">\\</span><span class="s">)(</span><span class="se">\\</span><span class="s">\()(.+?)(</span><span class="se">\\</span><span class="s">\))&#39;</span><span class="p">)</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+    </div>
+    <div class='section'>
+    <a id="section-32" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-32'>#</a>
+          </div>
+          
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>        <span class="p">)</span>
+        <span class="n">mathpatterns</span> <span class="o">=</span> <span class="p">(</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+    </div>
+    <div class='section'>
+    <a id="section-33" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-33'>#</a>
+          </div>
+          <p>Display style math with <code>$$...$$</code></p>
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>            <span class="n">Pattern</span><span class="p">(</span><span class="s">r&#39;(?&lt;!</span><span class="se">\\</span><span class="s">)(\$\$)([^\$]+)(\$\$)&#39;</span><span class="p">),</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+    </div>
+    <div class='section'>
+    <a id="section-34" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-34'>#</a>
+          </div>
+          <p>Display style math with <code>\[...\]</code></p>
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>            <span class="n">Pattern</span><span class="p">(</span><span class="s">r&#39;(?&lt;!</span><span class="se">\\</span><span class="s">)(</span><span class="se">\\</span><span class="s">\[)(.+?)(</span><span class="se">\\</span><span class="s">\])&#39;</span><span class="p">),</span>
+            <span class="n">Pattern</span><span class="p">(</span><span class="s">r&#39;(?&lt;!</span><span class="se">\\</span><span class="s">)(</span><span class="se">\\</span><span class="s">begin{([a-z]+?\*?)})(.+?)(</span><span class="se">\\</span><span class="s">end{\3})&#39;</span><span class="p">)</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+    </div>
+    <div class='section'>
+    <a id="section-35" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-35'>#</a>
+          </div>
+          
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre>        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inlinemathpatterns</span><span class="p">):</span>
+            <span class="n">pattern</span><span class="o">.</span><span class="n">handleMatch</span> <span class="o">=</span> <span class="n">handle_match_inline</span>
+            <span class="n">md</span><span class="o">.</span><span class="n">inlinePatterns</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;math-inline-</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="s">&#39;&lt;escape&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mathpatterns</span><span class="p">):</span>
+            <span class="n">pattern</span><span class="o">.</span><span class="n">handleMatch</span> <span class="o">=</span> <span class="n">handle_match</span>
+            <span class="n">md</span><span class="o">.</span><span class="n">inlinePatterns</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;math-</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="s">&#39;&lt;escape&#39;</span><span class="p">)</span>
 
 </pre></div>
         </div>

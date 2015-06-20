@@ -4,10 +4,15 @@
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <title>pyccoon v0.1.4 documentation: languages/utils.py</title>
   <link rel="stylesheet" href="../pyccoon.css">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}
+  });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <div id='container' >
-  <a id="top"></a>
   <div id="footer">
     <span id="project-name">
         <a class="btn" href="../index.html">pyccoon v0.1.4 documentation</a>
@@ -17,21 +22,22 @@
     Contents
     <div id="jump_wrapper">
       <div id="jump_page">
-          <a class="source source-2" href="#parsing-strategy"> Parsing strategy </a>
+          <a class="source source-2" href="#parsing-strategy"> Parsing strategy</a>
       </div>
     </div>
     </div>
     <div class="generation-time">
         Generated at
-        <code>2015-02-20 22:30</code>
+        <code>2015-06-21 01:23</code>
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="../pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" />pyccoon</a>
     </div>
   </div>
+  <a id="top"></a>
   <div class='section'>
     <div class='docs nav'>
-      <nav id="breadcrumbs">/ <a href="utils.py.html/../../index.html">.</a> / <a href="utils.py.html/../index.html">languages</a> / <a href="utils.py.html">utils.py</a> </nav>
+      <nav id="breadcrumbs">/ <a href="utils.py.html/../../index.html">.</a> / <a href="utils.py.html/../index.html">languages</a> / utils.py</nav>
       <ul id="children"></ul>
     </div>
   </div>
@@ -132,7 +138,7 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-5'>#</a>
           </div>
-          <h2><a id="parsing-strategy" class="header-anchor" href="#parsing-strategy"> Parsing strategy </a></h2>
+          <h2><a id="parsing-strategy" class="header-anchor" href="#parsing-strategy"> Parsing strategy</a></h2>
         </div>
         <div class='code'>
           
@@ -313,7 +319,7 @@
           <p>Helper method that splits a section into parts using the <code>regex</code> matching against the section code </p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre><span class="k">def</span> <span class="nf">split_section_by_regex</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+          <div class="highlight"><pre><span class="k">def</span> <span class="nf">split_section_by_regex</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">regex</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">section</span><span class="o">.</span><span class="n">has_code</span><span class="p">():</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">section</span><span class="p">]</span>
@@ -324,7 +330,7 @@
         <span class="n">code</span> <span class="o">=</span> <span class="n">section</span><span class="p">[</span><span class="s">&quot;code_text&quot;</span><span class="p">][</span><span class="n">start</span><span class="p">:</span><span class="n">match</span><span class="o">.</span><span class="n">start</span><span class="p">()]</span>
         <span class="k">if</span> <span class="n">code</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
             <span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Section</span><span class="p">(</span><span class="n">code_text</span><span class="o">=</span><span class="n">code</span><span class="p">))</span>
-        <span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Section</span><span class="p">(</span><span class="n">docs_text</span><span class="o">=</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span>
+        <span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Section</span><span class="p">(</span><span class="n">docs_text</span><span class="o">=</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">))</span>
         <span class="n">start</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
 
     <span class="n">remains</span> <span class="o">=</span> <span class="n">section</span><span class="p">[</span><span class="s">&quot;code_text&quot;</span><span class="p">][</span><span class="n">start</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>

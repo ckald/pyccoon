@@ -4,10 +4,15 @@
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <title>pyccoon v0.1.4 documentation: utils.py</title>
   <link rel="stylesheet" href="./pyccoon.css">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}
+  });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <div id='container' >
-  <a id="top"></a>
   <div id="footer">
     <span id="project-name">
         <a class="btn" href="./index.html">pyccoon v0.1.4 documentation</a>
@@ -17,21 +22,22 @@
     Contents
     <div id="jump_wrapper">
       <div id="jump_page">
-          <a class="source source-3" href="#ensure-directory"> Ensure directory </a>
+          <a class="source source-3" href="#ensure-directory"> Ensure directory</a>
       </div>
     </div>
     </div>
     <div class="generation-time">
         Generated at
-        <code>2015-02-20 22:30</code>
+        <code>2015-06-21 01:23</code>
         by a diligent
         <a target="_blank" href="http://ckald.github.io/pyccoon/" title="Pyccoon: side-to-side documentation generator">
             <img id="pyccoon-icon" src="./pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" />pyccoon</a>
     </div>
   </div>
+  <a id="top"></a>
   <div class='section'>
     <div class='docs nav'>
-      <nav id="breadcrumbs">/ <a href="utils.py.html/../index.html">.</a> / <a href="utils.py.html">utils.py</a> </nav>
+      <nav id="breadcrumbs">/ <a href="utils.py.html/../index.html">.</a> / utils.py</nav>
       <ul id="children"></ul>
     </div>
   </div>
@@ -48,7 +54,8 @@
         </div>
         <div class='code'>
           <div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">time</span></pre></div>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -60,10 +67,17 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-1'>#</a>
           </div>
-          <p>Descriptor (non-data) for building an attribute on-demand on first use.</p>
+          
         </div>
         <div class='code'>
-          <div class="highlight"><pre><span class="k">class</span> <span class="nc">cached_property</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span></pre></div>
+          <div class="highlight"><pre><span class="k">class</span> <span class="nc">SourceFile</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;SourceFile&#39;</span><span class="p">,</span> <span class="s">&#39;destination source process prefix&#39;</span><span class="p">)):</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">process</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">SourceFile</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span>
+                                              <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+                                              <span class="n">destination</span><span class="o">=</span><span class="n">destination</span><span class="p">,</span>
+                                              <span class="n">process</span><span class="o">=</span><span class="n">process</span><span class="p">,</span>
+                                              <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -74,6 +88,21 @@
         <div class='docs'>
           <div class='octowrap'>
             <a class='octothorpe' href='#section-2'>#</a>
+          </div>
+          <p>Descriptor (non-data) for building an attribute on-demand on first use.</p>
+        </div>
+        <div class='code'>
+          <div class="highlight"><pre><span class="k">class</span> <span class="nc">cached_property</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span></pre></div>
+        </div>
+        <div class='clearall'></div>
+    </section>
+    </div>
+    <div class='section'>
+    <a id="section-3" class="section-anchor"></a>
+    <section>
+        <div class='docs'>
+          <div class='octowrap'>
+            <a class='octothorpe' href='#section-3'>#</a>
           </div>
           <p><factory> is called such: factory(instance) to build the attribute.</p>
         </div>
@@ -87,11 +116,11 @@
     </section>
     </div>
     <div class='section'>
-    <a id="section-3" class="section-anchor"></a>
+    <a id="section-4" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-3'>#</a>
+            <a class='octothorpe' href='#section-4'>#</a>
           </div>
           <p>Build the attribute.</p>
         </div>
@@ -104,11 +133,11 @@
     </section>
     </div>
     <div class='section'>
-    <a id="section-4" class="section-anchor"></a>
+    <a id="section-5" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-4'>#</a>
+            <a class='octothorpe' href='#section-5'>#</a>
           </div>
           <p>Cache the value; hide ourselves.</p>
         </div>
@@ -121,11 +150,11 @@
     </section>
     </div>
     <div class='section'>
-    <a id="section-5" class="section-anchor"></a>
+    <a id="section-6" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-5'>#</a>
+            <a class='octothorpe' href='#section-6'>#</a>
           </div>
           <p>Shift items off the front of the <code>array</code> until it is empty, then return
 <code>default</code>.</p>
@@ -142,13 +171,13 @@
     </section>
     </div>
     <div class='section'>
-    <a id="section-6" class="section-anchor"></a>
+    <a id="section-7" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
-            <a class='octothorpe' href='#section-6'>#</a>
+            <a class='octothorpe' href='#section-7'>#</a>
           </div>
-          <h3><a id="ensure-directory" class="header-anchor" href="#ensure-directory"> Ensure directory </a></h3>
+          <h3><a id="ensure-directory" class="header-anchor" href="#ensure-directory"> Ensure directory</a></h3>
 <p>Ensure that the destination directory exists.</p>
         </div>
         <div class='code'>
@@ -161,32 +190,16 @@
     </section>
     </div>
     <div class='section'>
-    <a id="section-7" class="section-anchor"></a>
-    <section>
-        <div class='docs'>
-          <div class='octowrap'>
-            <a class='octothorpe' href='#section-7'>#</a>
-          </div>
-          <p>Monitor each source file and re-generate documentation on change.</p>
-        </div>
-        <div class='code'>
-          <div class="highlight"><pre><span class="k">def</span> <span class="nf">monitor</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span></pre></div>
-        </div>
-        <div class='clearall'></div>
-    </section>
-    </div>
-    <div class='section'>
     <a id="section-8" class="section-anchor"></a>
     <section>
         <div class='docs'>
           <div class='octowrap'>
             <a class='octothorpe' href='#section-8'>#</a>
           </div>
-          <p>The watchdog modules are imported in <code>main()</code> but we need to re-import here to bring them into the local namespace.</p>
+          <p>Monitor each source file and re-generate documentation on change.</p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre>    <span class="kn">import</span> <span class="nn">watchdog.events</span>
-    <span class="kn">import</span> <span class="nn">watchdog.observers</span></pre></div>
+          <div class="highlight"><pre><span class="k">def</span> <span class="nf">monitor</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">file_modified</span><span class="p">,</span> <span class="n">file_changed</span><span class="p">):</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -198,10 +211,14 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-9'>#</a>
           </div>
-          <p>A handler for recompiling files which triggered watchdog events</p>
+          <p>The watchdog modules are imported in <code>main()</code> but we need to re-import
+here to bring them into the local namespace.</p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">RegenerateHandler</span><span class="p">(</span><span class="n">watchdog</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">FileSystemEventHandler</span><span class="p">):</span></pre></div>
+          <div class="highlight"><pre>    <span class="kn">import</span> <span class="nn">watchdog.events</span>
+    <span class="kn">import</span> <span class="nn">watchdog.observers</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -213,10 +230,10 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-10'>#</a>
           </div>
-          <p>Regenerate documentation for a file which triggered an event</p>
+          <p>A handler for recompiling files which triggered watchdog events</p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">on_any_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span></pre></div>
+          <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">RegenerateHandler</span><span class="p">(</span><span class="n">watchdog</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">FileSystemEventHandler</span><span class="p">):</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -228,10 +245,32 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-11'>#</a>
           </div>
-          <p>Re-generate documentation from a source file if it was listed on the command line. Watchdog monitors whole directories, so other files may cause notifications as well.</p>
+          <p>Skip files and directories starting with</p>
         </div>
         <div class='code'>
-          <div class="highlight"><pre>            <span class="n">func</span><span class="p">()</span></pre></div>
+          <div class="highlight"><pre>        <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">src_path</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">)]):</span>
+                <span class="k">return</span>
+
+            <span class="n">task</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">event_type</span> <span class="o">==</span> <span class="s">&quot;modified&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">event</span><span class="o">.</span><span class="n">is_directory</span><span class="p">:</span>
+                    <span class="n">task</span> <span class="o">=</span> <span class="n">file_modified</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">task</span> <span class="o">=</span> <span class="n">file_changed</span>
+
+            <span class="k">if</span> <span class="n">task</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;{} </span><span class="se">\&quot;</span><span class="s">{}</span><span class="se">\&quot;</span><span class="s"> was {}, generating documentation...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s">&quot;Directory&quot;</span> <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">is_directory</span> <span class="k">else</span> <span class="s">&quot;File&quot;</span><span class="p">,</span>
+                    <span class="n">event</span><span class="o">.</span><span class="n">src_path</span><span class="p">,</span>
+                    <span class="n">event</span><span class="o">.</span><span class="n">event_type</span>
+                <span class="p">))</span>
+                <span class="n">task</span><span class="p">()</span></pre></div>
         </div>
         <div class='clearall'></div>
     </section>
@@ -243,7 +282,8 @@
           <div class='octowrap'>
             <a class='octothorpe' href='#section-12'>#</a>
           </div>
-          <p>Set up an observer which monitors all directories for files given on the command line and notifies the handler defined above.</p>
+          <p>Set up an observer which monitors all directories for files given on
+the command line and notifies the handler defined above.</p>
         </div>
         <div class='code'>
           <div class="highlight"><pre>    <span class="n">event_handler</span> <span class="o">=</span> <span class="n">RegenerateHandler</span><span class="p">()</span>

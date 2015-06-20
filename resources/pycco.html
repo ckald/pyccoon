@@ -7,7 +7,7 @@
   {{#mathjax?}}
   <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
-    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']], processEscapes: true}
   });
   </script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -15,7 +15,6 @@
 </head>
 <body>
 <div id='container' {{#docs_only?}}class="documentation"{{/docs_only?}}>
-  <a id="top"></a>
   <div id="footer">
     <span id="project-name">
         <a class="btn" href="{{ root_path }}/index.html">{{{ project_name }}}</a>
@@ -41,9 +40,10 @@
             <img id="pyccoon-icon" src="{{ root_path }}/pyccoon_icon.svg" alt="Pyccoon: side-to-side documentation generator" />pyccoon</a>
     </div>
   </div>
+  <a id="top"></a>
   <div class='section'>
     <div class='docs nav'>
-      <nav id="breadcrumbs">{{#breadcrumbs}}/ <a href="{{ path }}">{{ title }}</a> {{/breadcrumbs}}</nav>
+      <nav id="breadcrumbs">{{#breadcrumbs}}/ <a href="{{ path }}">{{ title }}</a> {{/breadcrumbs}}/ {{ filename }}</nav>
       <ul id="children">{{#children}}<li><a href="{{ path }}"{{#isdir}} class="directory"{{/isdir}}>{{ title }}</a></li>{{/children}}</ul>
     </div>
   </div>
