@@ -184,7 +184,18 @@ class InlineCommentLanguage(Language):
     Language mixin for separate inline comments and whole stacks of them.
     """
 
+    # The delimiter for inline comments; separates documentation from code.
     inline_delimiter = "#"
+    # Some languages might have comments that are parsed by the compiler/interpreter.
+    # They can be used to activate or deactivate special options,
+    # or for debugging purposes.
+    #
+    # Usually those comments have specific patterns to distinguish them from
+    # ordinary comments, which are ignored by the compiler.
+    #
+    # Property `special_inline_patterns` is a list of *regexp*s that
+    # match the special comments for that language.
+    special_inline_patterns = []
 
     def strategy(self):
         base_strategy = super(InlineCommentLanguage, self).strategy()
@@ -201,7 +212,28 @@ class InlineCommentLanguage(Language):
             ^\s*{0}\s*(.+$)
             (^[ \t]*{0}(.*)$)+
         """
-        return re.compile(r"((?:^[ \t]*{0}.*\n)+)".format(self.inline_delimiter), flags=re.M)
+        # Special comments, as defined above, are comments that are to be treated
+        # the same way as source code instead of documentation.
+        #
+        # To treat them as normal code, we simply add a regular expression that
+        # matches whenever **none** of those patterns matches.
+        # This way, lines that match the pattern will be treated as code instead
+        # of documentation.
+        if self.special_inline_patterns:
+            # Build a *regexp* that matches whenever **none** of the patterns matches.
+            # Only lines for which this *regexp* matches will be treated as documentation.
+            # Lines for which it doesn't match will be treated as code.
+            dont_match = r"(?!({0}))".\
+                format("|".join([pattern for pattern in self.special_inline_patterns]))
+        # If no special comment patterns have been defined for the current language,
+        # treat all comments as documentation.
+        else:
+            dont_match = ""
+        # Whenever the text after the `self.inline_delimiter` matches the `dont_match` *regexp*,
+        # treat the comment as documentation.
+        return re.compile(r"((?:^[ \t]*{0}{1}.*\n)+)".format(self.inline_delimiter,
+                                                             dont_match),
+                          flags=re.M)
 
     @property
     def divider_text(self):
@@ -425,6 +457,13 @@ class Python(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguag
     """
     extensions = [".py", ".pyx"]
     inline_delimiter = "#"
+    special_inline_patterns = [
+        # Shebang patterns, e.g. `#!/usr/bin/python`
+        r"(\!.+)",
+        # File encoding, e.g. `# -*- coding: utf-8 -*-`
+        r"((\s)*-\*-(\s)*coding:.+(\s*)-\*-)",
+      ]
+
     multistart = '"""'
     multiend = '"""'
 
