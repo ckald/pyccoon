@@ -7,7 +7,7 @@ from markdown.extensions import Extension
 
 class Todo(Extension):
 
-    """ == TODO, FIXME, WARNING, CAUTION marks == """
+    """ ## TODO, FIXME, WARNING, CAUTION marks """
 
     class Prep(Preprocessor):
 
@@ -34,7 +34,7 @@ class Todo(Extension):
 
 class LinesConnector(Extension):
 
-    """ == Lines connector extension == """
+    """ ## Lines connector extension """
 
     def __init__(self, regex=r"(\S)\s*\\\s*\n\s*(\S)", sub=r"\1 \2", *args, **kwargs):
 
@@ -56,7 +56,7 @@ class LinesConnector(Extension):
 
 class SaneDefList(Extension):
 
-    """ == Better definition lists == """
+    """ ## Better definition lists """
 
     class Prep(Preprocessor):
 
@@ -101,7 +101,7 @@ class SaneDefList(Extension):
 
 class Pydoc(Extension):
 
-    """ == Docblocks meta marks processor == """
+    """ ## Docblocks meta marks processor """
 
     class Prep(Preprocessor):
 
@@ -148,7 +148,7 @@ class Pydoc(Extension):
 
 class AutoLinkExtension(Extension):
 
-    """ == Autolink extension ==
+    """ ## Autolink extension
         There's already an inline pattern called autolink which handles\
         <http://www.google.com> type links. """
 
@@ -175,7 +175,7 @@ class AutoLinkExtension(Extension):
 
 class MathExtension(Extension):
     """
-    == Math extension for Python-Markdown ==
+    ## Math extension for Python-Markdown
 
     Adds support for displaying math formulas using [MathJax](http://www.mathjax.org/).
 
@@ -203,15 +203,15 @@ class MathExtension(Extension):
             return node
 
         inlinemathpatterns = (
-            #  $...$
+            # Inline math with `$...$`
             Pattern(r'(?<!\\|\$)(\$)([^\$]+)(\$)'),
-            # \(...\)  
-            Pattern(r'(?<!\\)(\\\()(.+?)(\\\))')     
+            # Inline math with `\(...\)`
+            Pattern(r'(?<!\\)(\\\()(.+?)(\\\))')
         )
         mathpatterns = (
-            # $$...$$
+            # Display style math with `$$...$$`
             Pattern(r'(?<!\\)(\$\$)([^\$]+)(\$\$)'),
-            # \[...\]
+            # Display style math with `\[...\]`
             Pattern(r'(?<!\\)(\\\[)(.+?)(\\\])'),
             Pattern(r'(?<!\\)(\\begin{([a-z]+?\*?)})(.+?)(\\end{\3})')
         )
