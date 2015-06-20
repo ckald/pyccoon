@@ -1,14 +1,9 @@
 import re
 
-from markdown.util import etree
+from markdown.util import etree, AtomicString
 from markdown.inlinepatterns import Pattern
 from markdown.preprocessors import Preprocessor
 from markdown.extensions import Extension
-
-# Credit goes to [Dmitry Shachnev](https://github.com/mitya57/python-markdown-math)
-# The code was slightly changed.
-from libs.mdx_math.mdx_math import MathExtension
-
 
 class Todo(Extension):
 
@@ -177,3 +172,52 @@ class AutoLinkExtension(Extension):
             AutoLinkExtension.pattern(self.EXTRA_AUTOLINK_RE, self),
             '>autolink'
         )
+
+class MathExtension(Extension):
+    """
+    == Math extension for Python-Markdown ==
+
+    Adds support for displaying math formulas using [MathJax](http://www.mathjax.org/).
+
+    Author: 2015, Dmitry Shachnev <mitya57@gmail.com>.
+    Slightly customized by cryptonomicon314
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(MathExtension, self).__init__(*args, **kwargs)
+
+    def extendMarkdown(self, md, md_globals):
+        def handle_match_inline(m):
+            node = etree.Element('script')
+            node.set('type', 'math/tex')
+            node.text = AtomicString(m.group(3))
+            return node
+
+        def handle_match(m):
+            node = etree.Element('script')
+            node.set('type', 'math/tex; mode=display')
+            if '\\begin' in m.group(2):
+                node.text = AtomicString(m.group(2) + m.group(4) + m.group(5))
+            else:
+                node.text = AtomicString(m.group(3))
+            return node
+
+        inlinemathpatterns = (
+            #  $...$
+            Pattern(r'(?<!\\|\$)(\$)([^\$]+)(\$)'),
+            # \(...\)  
+            Pattern(r'(?<!\\)(\\\()(.+?)(\\\))')     
+        )
+        mathpatterns = (
+            # $$...$$
+            Pattern(r'(?<!\\)(\$\$)([^\$]+)(\$\$)'),
+            # \[...\]
+            Pattern(r'(?<!\\)(\\\[)(.+?)(\\\])'),
+            Pattern(r'(?<!\\)(\\begin{([a-z]+?\*?)})(.+?)(\\end{\3})')
+        )
+        for i, pattern in enumerate(inlinemathpatterns):
+            pattern.handleMatch = handle_match_inline
+            md.inlinePatterns.add('math-inline-%d' % i, pattern, '<escape')
+        for i, pattern in enumerate(mathpatterns):
+            pattern.handleMatch = handle_match
+            md.inlinePatterns.add('math-%d' % i, pattern, '<escape')
