@@ -13,7 +13,7 @@ alongside your code. Comments are passed through \
 [Markdown](http://daringfireball.net/projects/markdown/syntax), while code is\
 passed through [Pygments](http://pygments.org/) for syntax highlighting.
 
-== This website is the result of running Pyccoon against its source. ==
+## This website is the result of running Pyccoon against its source.
 
 Pyccoon generates the documentation folder structured correspondingly to the code. To create \
 documentation `docs` for the project in `src` folder, run the following:

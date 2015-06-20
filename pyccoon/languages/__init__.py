@@ -16,7 +16,7 @@ from .utils import Section, ParsingStrategy, iterate_sections,\
 
 class Language(object):
     """
-    == Pyccoon Language definition ==
+    ## Pyccoon Language definition
 
     This class governs all source file parsing routines. Due to differences in programming \
     languages, an extensible parsing `strategy` is required \
@@ -178,7 +178,7 @@ class Markdown(PlainText):
 
 class InlineCommentLanguage(Language):
     """
-    == Inline commenting mixins ==
+    ## Inline commenting mixins
 
     Language mixin for separate inline comments and whole stacks of them.
     """
@@ -192,7 +192,7 @@ class InlineCommentLanguage(Language):
 
     @cached_property
     def inline_prefix(self):
-        return re.compile(r"^[ \t]*{0}".format(self.inline_delimiter), re.M)
+        return re.compile(r"^[ \t]*{0}".format(self.inline_delimiter))
 
     @cached_property
     def inline_re(self):
@@ -228,7 +228,7 @@ class InlineCommentLanguage(Language):
 
 class MultilineCommentLanguage(Language):
     """
-    == Multiline commenting mixins ==
+    ## Multiline commenting mixins
 
     Language mixin for multiline comments. Some languages also have another syntax entity\
     called "docblocks" - they probably should be treated separately, although they are usually\
@@ -264,7 +264,7 @@ class MultilineCommentLanguage(Language):
 class IndentBasedLanguage(Language):
 
     """
-    == Mixins for indent-based languages (Python, Ruby, etc.) ==
+    ## Mixins for indent-based languages (Python, Ruby, etc.)
 
     In indent-based languages it is quite easy to find a proper place to split the code section: \
     basically, whenever an indent of the line becomes smaller, than the indent of the first line \
@@ -305,7 +305,7 @@ class IndentBasedLanguage(Language):
         return base_strategy
 
 
-# == Mixins for brace-based languages (C/C++, JavaScript, PHP, etc.) ==
+# ## Mixins for brace-based languages (C/C++, JavaScript, PHP, etc.)
 
 class BraceBasedLanguage(Language):
 
@@ -331,11 +331,11 @@ class BraceBasedLanguage(Language):
         return base_strategy
 
 
-# == Specific languages definitions ==
+# ## Specific languages definitions
 
 class C(BraceBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
     """
-    === C/C++ ===
+    ### C/C++
 
     Styling of the C/C++ code is largely historical and oriented on reading hopelessly long codes\
     on the old terminal screens.
@@ -387,7 +387,7 @@ class C(BraceBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
 
 class JavaScript(C):
     """
-    === JavaScript ===
+    ### JavaScript
     JavaScript is largely identical to C/C++, although it has far less scope keywords and far more\
     flexibility in defining functions and objects.
 
@@ -416,7 +416,7 @@ class PHP(C):
 
 class Python(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguage):
     """
-    === Python ===
+    ### Python
     Obviously, Python language parsing is a best-developed part of Pyccoon.
 
     TODO: support also `'''` comment delimiters.
@@ -469,7 +469,7 @@ class Fortran(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLangua
 
 class Ruby(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
     """
-    === Ruby ===
+    ### Ruby
     Mostly identical to Python.
 
     TODO: Actually, Ruby is crazy and supports unbelievable variety of multiline comment syntaxes:
@@ -488,7 +488,7 @@ class Ruby(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage)
     scope_keywords = [r"^\s*(module) ", r"^\s*(class) ", r"^\s*(def) "]
 
 """
-== Languages in development ==
+## Languages in development
 
 ```python
 class CoffeScript(InlineCommentLanguage, MultilineCommentLanguage):
