@@ -8,6 +8,7 @@
 ![Downloads](https://img.shields.io/pypi/dm/pyccoon.svg)
 ![Python versions](https://img.shields.io/pypi/pyversions/pyccoon.svg)
 [![Build Status](https://travis-ci.org/ckald/pyccoon.svg?branch=master)](https://travis-ci.org/ckald/pyccoon)
+[![Code Health](https://landscape.io/github/ckald/pyccoon/master/landscape.svg?style=flat)](https://landscape.io/github/ckald/pyccoon/master)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 Side-to-side documentation generator. Fork of the [Pycco](http://fitzgen.github.io/pycco/), grandfork of the [Docco](http://jashkenas.github.com/docco/). And an object-oriented one.
