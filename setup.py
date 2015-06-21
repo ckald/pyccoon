@@ -2,7 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-Use `python setup.py sdist upload` to release on PyPi
+To release on PyPi:
+
+    python setup.py build
+    python setup.py install
+    python setup.py sdist upload
 """
 
 try:
@@ -13,7 +17,6 @@ except ImportError:
 from pyccoon import __version__
 
 readme = open('README.rst').read()
-history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 
 requirements = open("requirements.txt").read().split("\n")
@@ -26,7 +29,7 @@ setup(
     name='pyccoon',
     version=__version__,
     description='Side-to-side documentation generator, a descendant of Pycco and Docco.',
-    long_description=readme + '\n\n' + history,
+    long_description=readme,
     author='Andrii Magalich',
     author_email='andrew.magalich@gmail.com',
     url='https://github.com/ckald/pyccoon',
