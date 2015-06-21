@@ -112,21 +112,21 @@ class Pydoc(Extension):
             re.compile(key, re.M): value
             for key, value in
             {
-                # Regex that matches `@param name`
-                r'^(\s?)@(\w+)\s+(["\'\`].+["\'\`]|\S+)\s*':
-                r'\1<span class="pydoc pydoc-\2"><span>\2</span> <code>\3</code></span> ',
+                # `@param name`
+                r'^(\s?)@(\w+)\s+(["\'\`].+["\'\`]|\S+)\s*(.*)$':
+                r'\1<span class="pydoc pydoc-\2"><span>\2</span> <code>\3</code></span> \4<br/>',
 
-                # Regex that matches `@var`
-                r'^(\s?)@(\w+)':
-                r'\1<span class="pydoc pydoc-\2"><span>\2</span></span>',
+                # `@var`
+                r'^(\s?)@(\w+)(.*)$':
+                r'\1<span class="pydoc pydoc-\2"><span>\2</span></span> \3<br/>',
 
-                # Regex that matches `:param name:`
-                r'^(\s?):([^: ]+) +([^:]+):':
-                r'\1<span class="pydoc pydoc-\2"><span>\2</span> <code>\3</code></span>',
+                # `:param name:`
+                r'^(\s?):([^: ]+)\s+([^:]+):(.*)$':
+                r'\1<span class="pydoc pydoc-\2"><span>\2</span> <code>\3</code></span> \4<br/>',
 
-                # Regex that matches single-word comments: `:return:`
-                r'^(\s?):([^: ]+):':
-                r'\1<span class="pydoc pydoc-\2"><span>\2</span></span>'
+                # `:return:`
+                r'^(\s?):([^: ]+):(.*)$':
+                r'\1<span class="pydoc pydoc-\2"><span>\2</span></span> \3<br/>'
             }.items()
         }
 
