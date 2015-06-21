@@ -270,11 +270,42 @@ class MultilineCommentLanguage(Language):
 
     multistart = '"""'
     multiend = '"""'
+    ignored_multiline_patterns = []
+
 
     @property
     def multiline_re(self):
-        return re.compile(r'^(\s*{start}((?!{end})[\s\S])*){end}'
-                          .format(start=self.multistart, end=self.multiend), flags=re.M)
+
+        def ignore_multiline_re(pair):
+            ignore_start, ignore_end = pair
+            return r"({start}{ignore_start}.*{ignore_end}{end})"\
+                     .format(start=self.multistart, ignore_start=ignore_start,
+                             ignore_end=ignore_end, end=self.multiend)
+
+        # Ignored comments, as defined above, are comments that are to be treated
+        # the same way as source code instead of documentation.
+        #
+        # To treat them as normal code, we simply add a regular expression that
+        # matches whenever **none** of those patterns matches.
+        # This way, lines that match the pattern will be treated as code instead
+        # of documentation.
+        if self.ignored_multiline_patterns:
+            # Build a *regexp* that matches whenever **none** of the patterns matches.
+            # Only lines for which this *regexp* matches will be treated as documentation.
+            # Lines for which it doesn't match will be treated as code.
+            dont_match = r"(?!\s*({0}))"\
+                .format("|".join(ignore_multiline_re(pair) for pair in self.ignored_multiline_patterns))
+        # If no ignored comment patterns have been defined for the current language,
+        # treat all comments as documentation.
+        else:
+            dont_match = ""
+        # Whenever the text after the `self.inline_delimiter` matches the `dont_match` *regexp*,
+        # treat the comment as documentation.
+        return re.compile(r'^{dont_match}(\s*{start}((?!{end})[\s\S])*){end}'\
+                            .format(dont_match=dont_match,
+                                    start=self.multistart,
+                                    end=self.multiend),
+                          flags=re.M)
 
     @property
     def multiline_delimiters(self):
@@ -573,21 +604,29 @@ class Tcl(InlineCommentLanguage):
     extensions = [".tcl"]
     inline_delimiter = "#"
 
+languages = [CoffeScript, Perl, SQL, C, PHP,  JavaScript, Ruby, Python, Scheme,
+             Lua, Erlang, Tcl]
+```
+"""
 
-class Haskell(InlineCommentLanguage, MultilineCommentLanguage):
+
+
+class Haskell(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
     extensions = [".hs"]
     inline_delimiter = "--"
     multistart = "{-"
     multiend = "-}"
 
-languages = [CoffeScript, Perl, SQL, C, PHP,  JavaScript, Ruby, Python, Scheme,
-             Lua, Erlang, Tcl, Haskell]
-```
-"""
+    ignored_multiline_patterns = [("#", "#")]
+
+    scope_keywords = [r"^\s*(module) ", r"^\s*(import) ",
+                      r"^\s*(let) ", r"^\s*(where) ",
+                      r"^\s*(data) ", r"^\s*(instance) ", r"^\s*(class) ",
+                      r"^\S.*:: "]
 
 extensions_mapping = {}
 
-languages = [Markdown, Python, Fortran, PHP, C, JavaScript, Ruby]
+languages = [Markdown, Python, Fortran, PHP, C, JavaScript, Ruby, Haskell]
 
 for language in languages:
     instance = language()
