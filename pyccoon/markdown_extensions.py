@@ -108,6 +108,28 @@ class Pydoc(Extension):
 
         """ Preprocessor used to parse PyDoc-style comments like `:param name:` and format them. """
 
+        regexps = {
+            re.compile(key, re.M): value
+            for key, value in
+            {
+                # Regex that matches `@param name`
+                r'^(\s?)@(\w+)\s+(["\'\`].+["\'\`]|\S+)\s*':
+                r'\1<span class="pydoc pydoc-\2"><span>\2</span> <code>\3</code></span> ',
+
+                # Regex that matches `@var`
+                r'^(\s?)@(\w+)':
+                r'\1<span class="pydoc pydoc-\2"><span>\2</span></span>',
+
+                # Regex that matches `:param name:`
+                r'^(\s?):([^: ]+) +([^:]+):':
+                r'\1<span class="pydoc pydoc-\2"><span>\2</span> <code>\3</code></span>',
+
+                # Regex that matches single-word comments: `:return:`
+                r'^(\s?):([^: ]+):':
+                r'\1<span class="pydoc pydoc-\2"><span>\2</span></span>'
+            }.items()
+        }
+
         def run(self, lines):
             """
             :param lines: Documentation lines
@@ -115,30 +137,8 @@ class Pydoc(Extension):
             """
             new_lines = []
             for text in lines:
-                # Regex that matches `@param name`
-                text = re.compile(
-                    r'^(\s?)@(\w+)\s+(["\'\`].+["\'\`]|\S+)\s*', re.M
-                ).sub(
-                    r'\1<span class="pydoc pydoc-\2"><span>\2</span> <code>\3</code></span> ',
-                    text)
-                # Regex that matches `@var`
-                text = re.compile(
-                    r'^(\s?)@(\w+)', re.M
-                ).sub(
-                    r'\1<span class="pydoc pydoc-\2"><span>\2</span></span>',
-                    text)
-                # Regex that matches `:param name:`
-                text = re.compile(
-                    r'^(\s?):([^: ]+) +([^:]+):', re.M
-                ).sub(
-                    r'\1<span class="pydoc pydoc-\2"><span>\2</span> <code>\3</code></span>',
-                    text)
-                # Regex that matches single-word comments: `:return:`
-                text = re.compile(
-                    r'^(\s?):([^: ]+):', re.M
-                ).sub(
-                    r'\1<span class="pydoc pydoc-\2"><span>\2</span></span>',
-                    text)
+                for regex, template in self.regexps.items():
+                    text = regex.sub(template, text)
 
                 new_lines.append(text)
             return new_lines
