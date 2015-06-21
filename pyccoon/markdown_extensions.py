@@ -110,7 +110,7 @@ class Pydoc(Extension):
 
         def run(self, lines):
             """
-            :param lines: Documentation lines
+            :param lines: Documentation lines  
             :return: Lines of text with parsed PyDoc comments
             """
             new_lines = []

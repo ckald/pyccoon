@@ -51,7 +51,7 @@ class Pyccoon(object):
     def __init__(self, opts, process=True):
         """
         ## Pyccoon initialization
-        :param opts: `dict` of parameters.
+        :param opts: `dict` of parameters.  
         :param process: Whether to generate documentation immediately
 
         Available parameters:
@@ -204,7 +204,7 @@ class Pyccoon(object):
         """
         ## Source files processing
 
-        :param sources: `list` of source files to process
+        :param sources: `list` of source files to process  
         :param language: Force programming language
         """
 
