@@ -2,6 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
+Development installation:
+
+    python setup.py develop
+
 To release on PyPi:
 
     python setup.py build
