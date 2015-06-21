@@ -108,8 +108,8 @@ class Pydoc(Extension):
 
         """ Preprocessor used to parse PyDoc-style comments like `:param name:` and format them. """
 
-        regexps = {
-            re.compile(key, re.M): value
+        regexps = dict(
+            re.compile(key, re.M), value
             for key, value in
             {
                 # `@param name`
@@ -128,7 +128,7 @@ class Pydoc(Extension):
                 r'^(\s?):([^: ]+):(.*)$':
                 r'\1<span class="pydoc pydoc-\2"><span>\2</span></span> \3<br/>'
             }.items()
-        }
+        )
 
         def run(self, lines):
             """
