@@ -1,4 +1,7 @@
 import re
+import os
+
+import pypandoc
 
 from markdown.util import etree, AtomicString
 from markdown.inlinepatterns import Pattern
@@ -31,7 +34,6 @@ class Todo(Extension):
 
     def extendMarkdown(self, md, md_globals):
         md.preprocessors.add('todo', Todo.Prep(md), '_end')
-
 
 class LinesConnector(Extension):
 
@@ -223,3 +225,239 @@ class MathExtension(Extension):
         for i, pattern in enumerate(mathpatterns):
             pattern.handleMatch = handle_match
             md.inlinePatterns.add('math-%d' % i, pattern, '<escape')
+
+
+
+
+
+class Haddock(Extension):
+    """
+    ## Haddock
+
+    This is meant to be used with the Haskell language.
+
+    Haddock is haskell's way of documenting a module's API.
+    The idea is to insert annotated comments in the source,
+    which will document the API for external consumption.
+    These comments are different from the ones used for documenting the code.
+
+    Haddock is also the name of the program that extracts the API
+    documentaion from the annotated source files.
+
+    Haddock has its own markup language, described
+    [here](https://www.haskell.org/haddock/doc/html/markup.html).
+    There are very few programs that can parse the haddock markup language correctly.
+    One of them is [pandoc](http://pandoc.org/README.html),
+    written in haskell, but with python bindings
+    ([pypandoc](https://pypi.python.org/pypi/pypandoc/)).
+    Haddock's full markup language is very dependent on the location of the
+    text in the file, and nothing can really parse Haddock except Haddock itself.
+    Our goal here is to merely support the text formatting directives, which
+    map reasonably well into HTML.
+    
+    We will use pypandoc to parse the Haddock markup language into HTML.
+    This requires having pandoc installed and is much slower than
+    python's Markdown package, but it's the only way to parse Haddock
+    reliably from python.
+    """
+    class Prep(Preprocessor):
+
+        regex = re.compile(r"(((^|\n)\s*\|(?P<down>.*))|((^|\n)\s*\^(?P<up>.*)))", re.DOTALL)
+
+        def template(self, match):
+            text = match.group('down') or match.group('up')
+            lines = text.split('\n')
+
+            # The Module Characteristics
+            #
+            # According to Haddock's docs, these fields aren't
+            # really used by Haddock or any other program, for that matter,
+            # but the are usually included in the file, and we want to
+            # be able to typeset them correctly.
+            #
+            # The supported fields are only: `Module`, `Description`,
+            # `Copyright`, `License`, `Maintainer`, `Stability` and
+            # `Portability`. The syntax is YAML-like.
+            #
+            # Here is an example of the fields in use:
+            #
+            #```yaml
+            #Module      : W
+            #Description : Short description
+            #Copyright   : (c) Some Guy, 2013; Someone Else, 2014
+            #License     : GPL-3
+            #Maintainer  : sample@email.com
+            #Stability   : experimental
+            #Portability : POSIX
+            #```
+            # This is supposed to appear at the top of the module, but
+            # I can't find a formal specification, so we will highlight any
+            # valid characteristic (defined by the pair `name: value`,
+            # where `name` is a characteristic name) anywhere in the file.
+            module_characteristics = []
+            for i, line in enumerate(lines):
+                match = re.match(characteristic_re, line)
+                if match: 
+                    module_characteristics.append(match_to_html(match))
+                elif line.isspace() or not line:
+                    pass
+                else:
+                    break
+            characteristics_block = ''.join(module_characteristics)
+
+
+            # The rest of the text (after the last characteristic) is normal Haddock text.
+            rest = lines[i:]
+            # Use *pypandoc* to convert Haddocks markup into HTML
+            converted_rest = pypandoc.convert('\n'.join(rest), 'html', format='haddock')
+
+            if characteristics_block:
+                return haddock_template.format('\n'.join([characteristics_block, converted_rest]))
+            else:
+                return haddock_template.format(converted_rest)
+
+
+        def run(self, lines):
+            # We have no use for a list of lines, so we join them together.
+            # It is easier to find the Haddock comments inside a text block
+            # than inside a list of lines.
+            text = '\n'.join(lines)
+            # The result of `run()` is supposed to be a list of lines,
+            # so we must split the text into lines again.
+            return self.regex.sub(self.template, text).split('\n')
+
+    def extendMarkdown(self, md, md_globals):
+        md.preprocessors.add('haddock', Haddock.Prep(md), '_begin')
+
+## ### Haddock Utilities
+
+# #### Module Characteristic Utilities
+def match_to_html(match):
+    """
+    Render a Module Characteristic
+    """
+    return '<p class="module-characteristic"><strong>{0}</strong>: {1}</p>'.format(
+              match.group('key'),
+              match.group('value'))
+
+# This regexp matches the names of all module characteristics
+characteristic_key_re = \
+    "(Module)|(Description)|(Copyright)|" + \
+    "(License)|(Maintainer)|(Stability)|(Portability)"
+
+# The regexp to parse a pair `(name, value)` for a module characteristic.
+characteristic_re = r"^\s*(?P<key>{key_re})\s*:\s*(?P<value>.*)"\
+        .format(key_re=characteristic_key_re)
+
+# #### Template for a Haddock comment
+haddock_template = """
+<div class="haddock">
+  <div class="haddock-header">
+    Haddock:
+  </div>
+  <div class="haddock-text">
+    {0}
+  </div>
+</div>"""
+
+# Example:
+# ```haskell
+# -- | Function @foo@ frobnicates the /bar/
+# ```
+#
+# renders as:
+# <div class="haddock">
+#   <div class="haddock-header">
+#     Haddock:
+#   </div>
+#   <div class="haddock-text">
+#     Function <code>foo</code> frobnicates the <em>bar</em>.
+#   </div>
+# </div>
+#
+
+
+class NsLinks(Extension):
+    """
+    ### Namespace Links
+
+    It makes it easier to refer to a namespaced function or
+    macro definition in the code as a namespaced value.
+    
+    Using the Clojure language, for example:
+
+    It turns patterns like this:
+    ```
+    [|foo.bar/frobnicator @ bar.clj|]
+    ```
+    into HTML links such as this:
+    ```html
+    <a href="bar.cljs.html#code.frobnicator">
+      foo.bar/frobnicator
+    </a>
+    ```
+    which renders as:
+
+    <a href="javascript:void(0);">
+      foo.bar/frobnicator
+    </a>
+    
+    This is meant to be customized for the supported languages.
+    Customized versions are defined at
+    [languages/\_\_init\_\_.py](languages/__init__.py.html).
+    """
+
+    # Initialize with default values.
+    # There isn't really a good default value for `namespace_re`,
+    # so it is empty by dafault.
+    namespace_re = ""
+    # Probably `code.` will be defined as a prefix for all languages.
+    link_prefix = "code."
+
+    class Prep(Preprocessor):
+
+        def __init__(self, md, namespace_re, link_prefix):
+            super(Preprocessor, self).__init__(md)
+            # Initialize the specific constants for this language.
+            self.namespace_re = namespace_re
+            self.link_prefix = link_prefix
+            # TODO: Explain this regular expression.
+            self.regex = re.compile(
+                (r"(\[\|\s*(?P<namespace>{namespace_re})?(?P<name>\S+)" + \
+                 r"((\s+@\s+)(?P<path>\S.+))?\s*\|\])")\
+                    .format(namespace_re=self.namespace_re),
+                 re.M)
+
+
+        def template(self, match):
+            namespace = match.group('namespace')
+            name = match.group('name')
+            path = match.group('path')
+            if not namespace:
+                namespace = ""
+            
+            if path:
+                root, ext = os.path.splitext(path)
+                if ext.lower() != '.html':
+                    path += '.html'
+            else:
+                path = ""
+
+            link_target = path + '#' + self.link_prefix + name
+            link_text = namespace + name 
+            
+            link_html = "<a href={target}>{text}</a>\n"\
+                          .format(target=link_target,
+                                  text=link_text)
+
+            return link_html
+
+        def run(self, lines):
+            return [self.regex.sub(self.template, line) for line in lines]
+
+    def extendMarkdown(self, md, md_globals):
+        md.preprocessors.add('nslinks',
+                             NsLinks.Prep(md,
+                                          self.namespace_re,
+                                          self.link_prefix),
+                             '_begin')
