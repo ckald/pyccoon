@@ -392,7 +392,7 @@ class NsLinks(Extension):
     ```
     into HTML links such as this:
     ```html
-    <a href="bar.cljs.html#code.frobnicator">
+    <a href="bar.cljs.html#_frobnicator">
       foo.bar/frobnicator
     </a>
     ```
@@ -411,16 +411,17 @@ class NsLinks(Extension):
     # There isn't really a good default value for `namespace_re`,
     # so it is empty by dafault.
     namespace_re = ""
-    # Probably `code.` will be defined as a prefix for all languages.
-    link_prefix = "code."
+    # Probably `_` will be defined as a prefix for all languages.
+    # This prefix is used by crossclj.
+    anchor_prefix = "_"
 
     class Prep(Preprocessor):
 
-        def __init__(self, md, namespace_re, link_prefix):
+        def __init__(self, md, namespace_re, anchor_prefix):
             super(Preprocessor, self).__init__(md)
             # Initialize the specific constants for this language.
             self.namespace_re = namespace_re
-            self.link_prefix = link_prefix
+            self.anchor_prefix = anchor_prefix
             # TODO: Explain this regular expression.
             self.regex = re.compile(
                 (r"(\[\|\s*(?P<namespace>{namespace_re})?(?P<name>\S+)" + \
@@ -443,7 +444,7 @@ class NsLinks(Extension):
             else:
                 path = ""
 
-            link_target = path + '#' + self.link_prefix + name
+            link_target = path + '#' + self.anchor_prefix + name
             link_text = namespace + name 
             
             link_html = "<a href={target}>{text}</a>\n"\
@@ -459,5 +460,5 @@ class NsLinks(Extension):
         md.preprocessors.add('nslinks',
                              NsLinks.Prep(md,
                                           self.namespace_re,
-                                          self.link_prefix),
+                                          self.anchor_prefix),
                              '_begin')

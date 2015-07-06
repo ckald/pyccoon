@@ -21,6 +21,15 @@ p {
     width: auto;
 }
 
+a.hidden {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.endpage {
+  padding-top: 50px;
+  padding-bottom: 750px;
+}
 
 #breadcrumbs {
   white-space: nowrap;

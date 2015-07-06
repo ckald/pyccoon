@@ -13,6 +13,7 @@ from ..utils import cached_property
 from .utils import Section, ParsingStrategy, iterate_sections,\
     split_section_by_regex, split_code_by_pos
 
+import specific.clojure as clojure
 
 default_markdown_extensions = [
     markdown_extensions.LinesConnector(),
@@ -41,7 +42,10 @@ class Language(object):
     scope_keywords = []
     filename_substitutes = {}
     markdown_extensions = default_markdown_extensions
-
+    postprocessors = []
+    preprocessors = []
+  
+    
     @property
     def name(self):
         return self.__class__.__name__
@@ -152,6 +156,14 @@ class Language(object):
             sections[i-1]['code_text'] = sections[i-1]['code_text'].rstrip('\n') \
                 + '\n\n' + sections[i]['code_text'].lstrip('\n')
             sections[i:i+1] = []
+    
+    def postprocess(self, sections):
+        for processor in self.postprocessors:
+            processor(sections)
+    
+    def preprocess(self, sections):
+        for processor in self.preprocessors:
+            processor(sections)
 
 
 class PlainText(Language):
@@ -259,7 +271,7 @@ class InlineCommentLanguage(Language):
                 new_sections[j]["meta"] = "stripped"
 
         sections[i:i+1] = new_sections
-
+    
 
 class MultilineCommentLanguage(Language):
     """
@@ -386,38 +398,33 @@ class IndentBasedLanguage(Language):
 
 class KeywordLinksMixin(Language):
     
+    def __init__(self):
+        super(KeywordLinksMixin, self).__init__()
+        self.postprocessors.append(self.link_source_post)
+        self.postprocessors.append(self.add_section_anchors)
+        self.preprocessors.append(self.link_source_pre)
+    
+
     @iterate_sections(start=0)
     def add_links(self, sections, i):
         for link_pattern, formatter in self.keyword_link_patterns:
             match = re.match(link_pattern, sections[i]['code_text'])
             if match:
                 anchor = formatter(match)
-                docs_text = sections[i]['docs_text']
-                parts = docs_text.split('\n', 1)
-                try:
-                    first_line, rest = parts
-                except:
-                    first_line = parts[0]
-                    rest = ""
-                # If first line is a Markdown header:
-                if first_line.strip().startswith('#'):
-                    # Insert the anchor in a new line **after** the header,
-                    # or Markdown will create a new paragraph, just for the anchor,
-                    # which means that our suposedly invisible anchor
-                    # will occupy visible space.
-                    # This way, even if Markdown creates a new paragraph,
-                    # it's less noticeable
-                    sections[i]['docs_text'] = "\n".join([first_line, anchor, rest])
-
-                # If the first line is not a header, add the link before the text
-                else:
-                    sections[i]['docs_text'] = "\n".join([anchor, docs_text])
+                sections[i]['source_section_anchor'] = anchor
 
     def strategy(self):
         base_strategy = super(KeywordLinksMixin, self).strategy()
         base_strategy.insert_after('absorb', self.add_links)
         return base_strategy
 
+    def add_section_anchors(self, sections):
+        for i, section in enumerate(sections):
+            try:
+                sections[i]['code_html'] = sections[i]['source_section_anchor'] + \
+                                           sections[i]['code_html']
+            except:
+                print "no anchor"
 
 
 # ## Mixins for brace-based languages (C/C++, JavaScript, PHP, etc.)
@@ -679,10 +686,11 @@ class Scheme(InlineCommentLanguage, MultilineCommentLanguage):
     multiend = "|#"
 
 
-def code_dot_name(match):
-    link = '<a name="code.{name}" class="section-anchor"></a>'\
+def underscore_name(match):
+    link = '<a id="_{name}" class="section-anchor"></a>'\
                .format(name=match.group("name"))
     return link
+
 
 
 class Clojure(IndentBasedLanguage,
@@ -697,6 +705,7 @@ class Clojure(IndentBasedLanguage,
 
     nsLinksExt = markdown_extensions.NsLinks()
     nsLinksExt.namespace_re = "\S+/"
+    anchor_prefix = '_'
 
     markdown_extensions = default_markdown_extensions + [nsLinksExt]
 
@@ -704,8 +713,16 @@ class Clojure(IndentBasedLanguage,
                       r"^\s*\((ns)\s+([^\s\)]*)"]
 
     keyword_link_patterns = [
-        (r"^\s*\((?P<keyword>def\S*)(?P<middle>(\s+\^:\S*)*)\s+(?P<name>[^\s\)]*)", code_dot_name),
-        (r"^\s*\((?P<keyword>ns)\s+(?P<name>[^\s\)]*)", code_dot_name)]
+        (r"^\s*\((def\S*)((\s+\^:\S*)*)\s+(?P<name>[^\s\)]*)", underscore_name),
+        (r"^\s*\((ns)\s+(?P<name>[^\s\)]*)", underscore_name)]
+    
+    link_source = clojure.LinkSourceData()
+    
+    def link_source_post(self, sections):
+        clojure.link_source_post(self, sections)
+    
+    def link_source_pre(self, sections):
+        clojure.link_source_pre(self, sections)
 
 
 class Lua(InlineCommentLanguage, MultilineCommentLanguage):

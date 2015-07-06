@@ -15,6 +15,7 @@ import pystache
 import re
 import sys
 import json
+import yaml
 from io import open
 from datetime import datetime
 from collections import defaultdict
@@ -29,6 +30,21 @@ from .utils import shift, ensure_directory, SourceFile
 
 # ## Main documentation generation class
 
+default_config = yaml.safe_load(r"""
+project:
+    name: NAME HERE
+verbosity: none
+files:
+    skip: []
+    copy: []
+documentation:
+    mathjax: false
+    linebreaking-behavior: normal
+    css-path: null
+    custom-html-template: null
+    
+""")
+
 class Pyccoon(object):
 
     add_lineno = True
@@ -39,11 +55,10 @@ class Pyccoon(object):
     # The end of each Pygments highlight block.
     highlight_end = "</pre></div>"
 
-    config = defaultdict(lambda: [], {
-        "skip_files": [".+\\.pyc", "__pycache__", "\\.travis.yml", "\\.git", "\\.DS_Store"]
-    })
+    config = defaultdict(None)
+    config.update(default_config)
 
-    config_file = '.pyccoon'
+    config_file = '.pyccoon.yaml'
     watch = False
     verbosity = -1
 
@@ -118,28 +133,27 @@ class Pyccoon(object):
             print(message)
 
     def init_config(self):
-        """ Try to get `.pyccoon` config file or use the default values """
+        """ Try to get `.pyccoon.yaml` config file or use the default values """
         config_file = os.path.abspath(self.config_file)
         if os.path.exists(config_file):
             self.log('Using config {0:s}'.format(config_file))
             with open(config_file, 'rb') as f:
-                self.config.update(json.loads(f.read().decode('utf8')))
+                self.config.update(yaml.safe_load(f.read().decode('utf8')))
 
-        self.config['skip_files'] = [re.compile(p) for p in self.config['skip_files']]
-        self.config['copy_files'] = [re.compile(p) for p in self.config['copy_files']]
+        self.config['files']['skip'] = [re.compile(p) for p in self.config['files']['skip']]
+        self.config['files']['copy'] = [re.compile(p) for p in self.config['files']['copy']]
 
-        self.project_name = self.config['project_name'] \
+        self.project_name = self.config['project']['name'] \
             or (os.path.split(self.sourcedir)[1] + " documentation")
 
         # If a line breaking behavior is not supplied, assume it is `'pre-wrap'`
         # for backward compatibility.
         # The user might want to supply a different value, such as `'normal'`.
-        self.linebreaking_behavior = self.config['linebreaking-behavior'] \
-            or 'pre-wrap'
+        self.linebreaking_behavior = self.config['documentation']['linebreaking-behavior']
 
         # `self.custom_css_path` is either `None` or a path relative to the
         # path of the config file.
-        custom_css_path = self.config['css-path'] or None
+        custom_css_path = self.config['documentation']['css-path'] or None
         if custom_css_path:
             self.custom_css_path = os.path.join(os.path.dirname(self.config_file),
                                                 custom_css_path)
@@ -148,7 +162,7 @@ class Pyccoon(object):
 
         # `self.custom_html_template_path` is either `None` or a path relative to the
         # path of the config file.
-        custom_html_template_path = self.config['custom-html-template'] or None
+        custom_html_template_path = self.config['documentation']['custom-html-template'] or None
         if custom_html_template_path:
             self.custom_html_template_path = os.path.join(os.path.dirname(self.config_file),
                                                           custom_html_template_path)
@@ -165,11 +179,11 @@ class Pyccoon(object):
         """ Collect names of all files to be copied or processed """
         self.sources = {}
         for dirpath, dirnames, files in os.walk(self.sourcedir):
-            if any([reg.search(dirpath) for reg in self.config['skip_files']]):
+            if any([reg.search(dirpath) for reg in self.config['files']['skip']]):
                 continue
             
             for name in files:
-                if name in dirnames or any([reg.search(name) for reg in self.config['skip_files']]):
+                if name in dirnames or any([reg.search(name) for reg in self.config['files']['skip']]):
                     continue
 
                 
@@ -182,7 +196,7 @@ class Pyccoon(object):
                 fullpath = os.path.join(dirpath, name)
                 source = os.path.relpath(fullpath, self.sourcedir)
                 process = True
-                if any([regex.search(name) for regex in self.config['copy_files']]):
+                if any([regex.search(name) for regex in self.config['files']['copy']]):
                     process = False
 
                 prefix = None
@@ -272,6 +286,7 @@ class Pyccoon(object):
                         code = f.read().decode('utf8')
 
                     self.language = get_language(sf.source, code, language=language)
+                    self.parent = self
                     if not self.language:
                         self.sources[sf.source] = sf._replace(process=False)
                         sf = self.sources[sf.source]
@@ -343,7 +358,9 @@ class Pyccoon(object):
         """
 
         self.sections = language.parse(code, add_lineno=self.add_lineno)
+        language.preprocess(self.sections)
         self.highlight(source, self.sections, language)
+        language.postprocess(self.sections)
         return self.generate_html(source, self.sections)
 
     def highlight(self, source, sections, language):
@@ -501,7 +518,7 @@ class Pyccoon(object):
             "generation_time":  datetime.now().strftime('%Y-%m-%d %H:%M'),
             "root_path":        os.path.relpath(".", os.path.split(source)[0]),
             "project_name":     self.project_name,
-            "mathjax?":          self.config['mathjax'],
+            "mathjax?":          self.config['documentation']['mathjax'],
             "docs_only?": not any(section['code_text'] for section in sections)
         })
 
@@ -553,7 +570,7 @@ class Pyccoon(object):
         relfolder = os.path.relpath(folder, self.sourcedir)
         outfolder = os.path.join(self.outdir, relfolder) if relfolder != "." else self.outdir
         for filename in os.listdir(folder):
-            if not any([regex.search(filename) for regex in self.config['skip_files']]):
+            if not any([regex.search(filename) for regex in self.config['files']['skip']]):
                 isdir = False
                 filepath = None
 
@@ -634,130 +651,7 @@ class Pyccoon(object):
     def template(self, source):
         return lambda context: pystache.render(source, context)
 
-    def generate_documentation(self, source, code, language=None):
-        """
-        ## Generating documentation
-        Generate the documentation for a source file by reading it in, splitting it
-        up into comment/code sections, highlighting them for the appropriate
-        language, and merging them into an HTML template.
-        """
-
-        self.sections = language.parse(code, add_lineno=self.add_lineno)
-        self.highlight(source, self.sections, language)
-        return self.generate_html(source, self.sections)
-
-    def highlight(self, source, sections, language):
-        """
-        ### Highlighting the source code
-
-        Highlights a single chunk of code using the **Pygments** module, and runs
-        the text of its corresponding comment through **Markdown**.
-
-        We process the entire file in a single call to Pygments by inserting little
-        marker comments between each section and then splitting the result string
-        wherever our markers occur.
-        """
-        output = language.highlight(
-            language.divider_text.join(section["code_text"].rstrip() for section in sections)
-        )
-
-        output = output.replace(self.highlight_start, "").replace(self.highlight_end, "")
-        fragments = re.split(language.divider_html, output)
-        for i, section in enumerate(sections):
-            section["code_html"] = shift(fragments, "")
-            if section["code_html"]:
-                section["code_html"] = \
-                    self.highlight_start + section["code_html"] + self.highlight_end
-            docs_text = section["docs_text"]
-            section["docs_html"] = language.markdown(
-                self.preprocess(docs_text, source=os.path.join(self.sourcedir, source))
-            )
-            section["num"] = i
-
-    def preprocess(self, comment, source):
-        """
-        ### Preprocessing the comments
-
-        Add cross-references before having the text processed by markdown.  It's
-        possible to reference another file, like this : `[[utils.py]]` which renders
-        [[utils.py]]. You can also reference a specific section of another file, like
-        this: `[[utils.py#ensure-directory]]` which renders as
-        [[utils.py#ensure-directory]]. Sections have to be manually
-        declared; they are written on a single line, prefixed by `#`s:
-        `### like this`
-        """
-
-        def slugify(name):
-            """ Return URL-friendly section name representation """
-            return "-".join(name.lower().strip().split(" "))
-
-        def replace_crossref(match):
-            name = match.group(1)
-            if name:
-                name = name.rstrip("|")
-            path = match.group(2)
-
-            if not name and not path:
-                return
-
-            # Check if the match contains an anchor
-            anchor = None
-            if '#' in path:
-                path, anchor = path.split('#')
-
-            if not name:
-                name = os.path.basename(path)
-                if anchor:
-                    name = name + '#' + anchor
-
-            anchor = '#' + anchor if anchor else ''
-
-            if not path.startswith('.'):
-                # Absolute reference
-                path = os.path.relpath(
-                    self.destination(path),
-                    os.path.split(self.sources[os.path.relpath(source,
-                                                               self.sourcedir)].destination)[0]
-                )
-            else:
-                # Relative reference
-                path = os.path.relpath(
-                    self.destination(os.path.join(
-                        os.path.split(os.path.relpath(source, self.sourcedir))[0], path)
-                    ),
-                    os.path.split(self.sources[os.path.relpath(source,
-                                                               self.sourcedir)].destination)[0]
-                )
-
-            return "[{0:s}]({1:s}{2:s})".format(name, path, anchor)
-
-        def replace_section_name(match):
-            return (
-                    '\n{lvl} <a id="{id}" class="header-anchor" href="#{id}">{name}</a>'
-            ).format(**{
-                "lvl":  match.group(2),
-                "id":   slugify(match.group(3)),
-                "name": match.group(3)
-            })
-
-        # def replace_texblocks(match):
-        #     print match.groups()
-        #     return (
-        #         '```\n{begin}\n{code}\n{end}\n```'
-        #     ).format(**{
-        #         "begin": r"\begin{{{}}}".format(match.group(2)),
-        #         "end": r"\end{{{}}}".format(match.group(2)),
-        #         "code": match.group(3)
-        #     })
-
-        comment = re.compile(r'^\s*(#\s)?\s*(#+)([^#\n]+)\s*$', re.M)\
-            .sub(replace_section_name, comment)
-        comment = re.sub(r'\[\[([^\|\n]+\|)?(.+?)\]\]', replace_crossref, comment)
-        # comment = re.compile(r'\s*```tex(`([\w]+))?([\s\S]+)```\s*$', re.M)\
-        #     .sub(replace_texblocks, comment)
-
-        return comment
-
+    
     # ## HTML Code generation
 
     def generate_html(self, source, sections):
@@ -801,7 +695,7 @@ class Pyccoon(object):
             "generation_time":  datetime.now().strftime('%Y-%m-%d %H:%M'),
             "root_path":        os.path.relpath(".", os.path.split(source)[0]),
             "project_name":     self.project_name,
-            "mathjax?":          self.config['mathjax'],
+            "mathjax?":          self.config['documentation']['mathjax'],
             "docs_only?": not any(section['code_text'] for section in sections)
         })
 
@@ -853,7 +747,7 @@ class Pyccoon(object):
         relfolder = os.path.relpath(folder, self.sourcedir)
         outfolder = os.path.join(self.outdir, relfolder) if relfolder != "." else self.outdir
         for filename in os.listdir(folder):
-            if not any([regex.search(filename) for regex in self.config['skip_files']]):
+            if not any([regex.search(filename) for regex in self.config['files']['skip']]):
                 isdir = False
                 filepath = None
 
@@ -926,6 +820,9 @@ class Pyccoon(object):
                 code = sourcefile.read().decode('utf8')
 
             language = get_language(source, code)
+            language.parent = self
+            language.root = self.sourcedir
+            language.source = source
         except Exception:
             pass
 
@@ -948,7 +845,7 @@ def main():
                       help='Watch original files and regenerate documentation on changes')
 
     parser.add_option('-c', '--config', action='store', dest='config_file',
-                      default=os.path.join(os.getcwd(), '.pyccoon'), type='string',
+                      default=os.path.join(os.getcwd(), '.pyccoon.yaml'), type='string',
                       help='Config file to use (default: `%default`)')
 
     parser.add_option('-v', '--verbosity', action='store', dest='verbosity',
