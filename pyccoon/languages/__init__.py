@@ -654,7 +654,7 @@ class Haskell(InlineCommentLanguage, MultilineCommentLanguage):
 
 # ## Languages in development
 
-class CoffeScript(InlineCommentLanguage, MultilineCommentLanguage):
+class CoffeeScript(InlineCommentLanguage, MultilineCommentLanguage):
     """### Coffeescript"""
     extensions = [".coffee"]
     name = "Coffee-Script"
