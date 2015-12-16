@@ -749,7 +749,11 @@ class Tcl(InlineCommentLanguage):
 
 extensions_mapping = {}
 
-languages = [Markdown, Python, Fortran, PHP, C, JavaScript, Ruby, Haskell, Clojure]
+
+# Clojure is unsupported at the moment!
+languages = [Markdown, Python, Fortran, PHP, C,
+    JavaScript, Ruby, Haskell, Lua, Erlang, Tcl,
+    CoffeeScript, Perl, SQL, Scheme]
 
 for language in languages:
     instance = language()
