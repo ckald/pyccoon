@@ -45,21 +45,35 @@ For additional CLI options, see `pyccoon --help`
 
 At the moment Pyccoon supports Python, Ruby, Javascript, PHP and C/C++ source files. Other project files will be simply copied to the documentation folder. For additional configuration, create a config file of the kind:
 
-```js
-{
-    // Documentation title
-    "project_name": "pyccoon v0.1.0 documentation",
-    // Skip files matching any of the list of regular expressions
-    "skip_files": [".+\\.pyc", "__pycache__", "\\.travis.yml", "\\.git", "\\.DS_Store"],
-    // Copy files without processing (useful if you have some binary files)
-    "copy_files": ["pyccoon.svg", "pyccoon_icon.svg", ".+\\.html", ".+\\.css", "\\.pyccoon"],
-    // MathJax (http://mathjax.org) support - sometimes we want nice formulas
-    "mathjax": false,
-    // Line-breaking behavior:  
-    //   * 'normal' for Markdown-like behavior 
-    //   * 'pre-wrap' for forced line breaks (override with '\' at the end of the line)
-    "linebreaking-behavior": "pre-wrap"
-}
+```yaml
+# Items related to the project (currently only the name)
+project:
+   name: Your Project Name Goes Here
+# How verbose we want Pycoon to be
+verbosity: null 
+# Items related to file handling
+files:
+   # Files Pyccoon will skip when generating the documentation.
+   # Must be a list of regular expressions (not glob patterns!)
+   skip:
+       - "doc"
+       - "\\.git*"
+       - ".+\\.pyc"
+   # Files that Pyccoon will copy literally
+   copy:
+       - "pyccoon.svg"
+       - ".+\\css"
+       - "\\.pyccoon.yaml"
+# Items related to generation of HTML docs
+documentation:
+   mathjax: true
+   # Can be either "pre-wrap" or "normal". Default is "normal"
+   #  - "pre-wrap" respects line breaks
+   linebreaking-behavior: normal
+   # A path to a CSS file or 'null' (the default)
+   css-path: null
+   # A path to a HTML file or 'null' (the default)
+   custom-html-template: null
 ```
 
 # Supported languages
@@ -73,6 +87,19 @@ It is easy to add a language to Pyccoon (pull requests are welcome!), but it req
   - Javascript
   - PHP
   - Fortran
+
+Other languages are supported, but not well tested:
+
+  - PHP
+  - Haskell
+  - Lua
+  - Erlang
+  - Tcl
+  - CofeeScript
+  - Perl
+  - SQL
+  - Scheme
+  - Clojure
 
 # Development roadmap
 
