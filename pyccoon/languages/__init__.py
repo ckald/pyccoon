@@ -13,7 +13,6 @@ from ..utils import cached_property
 from .utils import Section, ParsingStrategy, iterate_sections,\
     split_section_by_regex, split_code_by_pos
 
-import specific.clojure as clojure
 
 default_markdown_extensions = [
     markdown_extensions.LinesConnector(),
@@ -686,17 +685,9 @@ class Scheme(InlineCommentLanguage, MultilineCommentLanguage):
     multiend = "|#"
 
 
-def underscore_name(match):
-    link = '<a id="_{name}" class="section-anchor"></a>'\
-               .format(name=match.group("name"))
-    return link
-
-
-
 class Clojure(IndentBasedLanguage,
               InlineCommentLanguage,
-              DoubleQuoteDocstringLanguage,
-              KeywordLinksMixin):
+              DoubleQuoteDocstringLanguage):
              
     """### Clojure and Clojurescript
     """
@@ -711,18 +702,6 @@ class Clojure(IndentBasedLanguage,
 
     scope_keywords = [r"^\s*\((def\S*)((\s+\^:\S*)*)\s+([^\s\)]*)",
                       r"^\s*\((ns)\s+([^\s\)]*)"]
-
-    keyword_link_patterns = [
-        (r"^\s*\((def\S*)((\s+\^:\S*)*)\s+(?P<name>[^\s\)]*)", underscore_name),
-        (r"^\s*\((ns)\s+(?P<name>[^\s\)]*)", underscore_name)]
-    
-    link_source = clojure.LinkSourceData()
-    
-    def link_source_post(self, sections):
-        clojure.link_source_post(self, sections)
-    
-    def link_source_pre(self, sections):
-        clojure.link_source_pre(self, sections)
 
 
 class Lua(InlineCommentLanguage, MultilineCommentLanguage):
@@ -750,10 +729,9 @@ class Tcl(InlineCommentLanguage):
 extensions_mapping = {}
 
 
-# Clojure is unsupported at the moment!
 languages = [Markdown, Python, Fortran, PHP, C,
     JavaScript, Ruby, Haskell, Lua, Erlang, Tcl,
-    CoffeeScript, Perl, SQL, Scheme]
+    CoffeeScript, Perl, SQL, Scheme, Clojure]
 
 for language in languages:
     instance = language()
