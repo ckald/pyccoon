@@ -62,7 +62,7 @@ def iterate_sections(start=1, increment=1):
     """
     Helper decorator to iterate through the `sections` while altering them.
 
-    :param start: Section index to start with.
+    :param start: Section index to start with.  
     :param increment: Index increment. Use `-1` to iterate backwards.
     """
     def wrap(f):

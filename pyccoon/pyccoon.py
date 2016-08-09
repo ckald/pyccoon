@@ -14,10 +14,11 @@ import shutil
 import pystache
 import re
 import sys
-import json
+import yaml
 from io import open
 from datetime import datetime
 from collections import defaultdict
+
 
 # This module contains all of our static resources.
 from . import resources, __version__, __author__
@@ -27,6 +28,10 @@ from .utils import shift, ensure_directory, SourceFile
 
 
 # ## Main documentation generation class
+
+print os.listdir('.')
+default_config = yaml.safe_load(resources.default_config.decode("utf8"))
+
 
 class Pyccoon(object):
 
@@ -38,11 +43,10 @@ class Pyccoon(object):
     # The end of each Pygments highlight block.
     highlight_end = "</pre></div>"
 
-    config = defaultdict(lambda: [], {
-        "skip_files": [".+\\.pyc", "__pycache__", "\\.travis.yml", "\\.git", "\\.DS_Store"]
-    })
+    config = defaultdict(None)
+    config.update(default_config)
 
-    config_file = '.pyccoon'
+    config_file = '.pyccoon.yaml'
     watch = False
     verbosity = -1
 
@@ -117,30 +121,29 @@ class Pyccoon(object):
             print(message)
 
     def init_config(self):
-        """ Try to get `.pyccoon` config file or use the default values """
+        """ Try to get `.pyccoon.yaml` config file or use the default values """
         config_file = os.path.abspath(self.config_file)
         if os.path.exists(config_file):
             self.log('Using config {0:s}'.format(config_file))
             with open(config_file, 'rb') as f:
-                self.config.update(json.loads(f.read().decode('utf8')))
+                self.config.update(yaml.safe_load(f.read().decode('utf8')))
         else:
             self.log('Using default config')
 
-        self.config['skip_files'] = [re.compile(p) for p in self.config['skip_files']]
-        self.config['copy_files'] = [re.compile(p) for p in self.config['copy_files']]
+        self.config['files']['skip'] = [re.compile(p) for p in self.config['files']['skip']]
+        self.config['files']['copy'] = [re.compile(p) for p in self.config['files']['copy']]
 
-        self.short_name = self.config['short_name'] or os.path.split(self.sourcedir)[1]
-        self.project_name = self.config['project_name'] or (self.short_name + " documentation")
+        self.project_name = self.config['project']['name'] \
+            or (os.path.split(self.sourcedir)[1] + " documentation")
 
         # If a line breaking behavior is not supplied, assume it is `'pre-wrap'`
         # for backward compatibility.
         # The user might want to supply a different value, such as `'normal'`.
-        self.linebreaking_behavior = self.config['linebreaking-behavior'] \
-            or 'pre-wrap'
+        self.linebreaking_behavior = self.config['documentation']['linebreaking-behavior']
 
         # `self.custom_css_path` is either `None` or a path relative to the
         # path of the config file.
-        custom_css_path = self.config['css-path'] or None
+        custom_css_path = self.config['documentation']['css-path'] or None
         if custom_css_path:
             self.custom_css_path = os.path.join(os.path.dirname(self.config_file),
                                                 custom_css_path)
@@ -149,7 +152,7 @@ class Pyccoon(object):
 
         # `self.custom_html_template_path` is either `None` or a path relative to the
         # path of the config file.
-        custom_html_template_path = self.config['custom-html-template'] or None
+        custom_html_template_path = self.config['documentation']['custom-html-template'] or None
         if custom_html_template_path:
             self.custom_html_template_path = os.path.join(os.path.dirname(self.config_file),
                                                           custom_html_template_path)
@@ -166,10 +169,12 @@ class Pyccoon(object):
         """ Collect names of all files to be copied or processed """
         self.sources = {}
         for dirpath, dirnames, files in os.walk(self.sourcedir):
-            if any([reg.search(dirpath) for reg in self.config['skip_files']]):
+            if any([reg.search(dirpath) for reg in self.config['files']['skip']]):
                 continue
+
             for name in files:
-                if name in dirnames or any([reg.search(name) for reg in self.config['skip_files']]):
+                if name in dirnames or any([reg.search(name)
+                                            for reg in self.config['files']['skip']]):
                     continue
 
                 # Don't copy the custom CSS file, if there is one.
@@ -181,7 +186,7 @@ class Pyccoon(object):
                 fullpath = os.path.join(dirpath, name)
                 source = os.path.relpath(fullpath, self.sourcedir)
                 process = True
-                if any([regex.search(name) for regex in self.config['copy_files']]):
+                if any([regex.search(name) for regex in self.config['files']['copy']]):
                     process = False
 
                 prefix = None
@@ -210,9 +215,9 @@ class Pyccoon(object):
         :param language: Force programming language
         """
 
-        self.log('\n' + '-'*80)
+        self.log('\n' + '-' * 80)
         self.log("[{0}] Generating documentation for {1}".format(datetime.now(), self.project_name))
-        self.log('-'*80 + '\n')
+        self.log('-' * 80 + '\n')
 
         if sources:
             sources = dict([(k, v) for (k, v) in self.sources.items() if k in sources])
@@ -271,6 +276,7 @@ class Pyccoon(object):
                         code = f.read().decode('utf8')
 
                     self.language = get_language(sf.source, code, language=language)
+                    self.parent = self
                     if not self.language:
                         self.sources[sf.source] = sf._replace(process=False)
                         sf = self.sources[sf.source]
@@ -300,29 +306,33 @@ class Pyccoon(object):
                 self.log("Error while processing file {0:s}: {1}".format(sf.source, e))
 
         # Ensure there is always an index file in the output folder
-        to_append = []
+        folders = set()
         for sf in self.sources.values():
             folder = os.path.relpath(os.path.split(sf.destination)[0], self.outdir).lstrip('./')
             index = os.path.join(folder, "index.html")
+            while True:
+                if not any([os.path.join(self.outdir, index) == sf.destination
+                            for sf in self.sources.values()]):
+                    folders.add(folder)
 
-            if not any([os.path.join(self.outdir, index) == sf.destination
-                        for sf in self.sources.values()]):
-                source = os.path.join(folder, 'index.html')
-                to_append.append((
-                    source,
-                    SourceFile(source=source,
-                               destination=os.path.join(self.outdir, index),
-                               process=False,
-                               prefix=None)
-                ))
+                if not folder:
+                    break
+                else:
+                    folder = os.path.split(folder)[0]
 
-                with open(os.path.join(self.outdir, index), 'w', encoding='utf8') as f:
+        for folder in folders:
+            source = os.path.join(folder, 'index.html')
+            destination = os.path.join(self.outdir, source)
+            self.sources[source] = \
+                SourceFile(source=source,
+                           destination=destination,
+                           process=False,
+                           prefix=None)
+
+            with open(destination, 'w', encoding='utf8') as f:
                     self.language = Language()
                     f.write(self.generate_html(source, []))
                     self.log("\tGenerated:\t{0:s}".format(source))
-
-        for source, sf in to_append:
-            self.sources[source] = sf
 
         self.log("...Done.")
 
@@ -338,7 +348,9 @@ class Pyccoon(object):
         """
 
         self.sections = language.parse(code, add_lineno=self.add_lineno)
+        language.preprocess(self.sections)
         self.highlight(source, self.sections, language)
+        language.postprocess(self.sections)
         return self.generate_html(source, self.sections)
 
     def highlight(self, source, sections, language):
@@ -428,28 +440,29 @@ class Pyccoon(object):
 
         def replace_section_name(match):
             return (
-                    '\n{lvl} <a id="{id}" class="header-anchor" href="#{id}">{name}</a>'
-            ).format(**{
-                "lvl":  match.group(2),
-                "id":   slugify(match.group(3)),
-                "name": match.group(3)
-            })
+                '\n{lvl} <a id="{id}" class="header-anchor" href="#{id}">{name}</a>'
+                .format(lvl=match.group(2), id=slugify(match.group(3)), name=match.group(3))
+            )
 
-        # def replace_texblocks(match):
-        #     print match.groups()
-        #     return (
-        #         '```\n{begin}\n{code}\n{end}\n```'
-        #     ).format(**{
-        #         "begin": r"\begin{{{}}}".format(match.group(2)),
-        #         "end": r"\end{{{}}}".format(match.group(2)),
-        #         "code": match.group(3)
-        #     })
+        """
+                def replace_texblocks(match):
+                    print match.groups()
+                    return (
+                        '```\n{begin}\n{code}\n{end}\n```'
+                    ).format(**{
+                        "begin": r"\begin{{{}}}".format(match.group(2)),
+                        "end": r"\end{{{}}}".format(match.group(2)),
+                        "code": match.group(3)
+                    })
+        """
 
         comment = re.compile(r'^\s*(#\s)?\s*(#+)([^#\n]+)\s*$', re.M)\
             .sub(replace_section_name, comment)
         comment = re.sub(r'\[\[([^\|\n]+\|)?(.+?)\]\]', replace_crossref, comment)
-        # comment = re.compile(r'\s*```tex(`([\w]+))?([\s\S]+)```\s*$', re.M)\
-        #     .sub(replace_texblocks, comment)
+        """
+            comment = re.compile(r'\s*```tex(`([\w]+))?([\s\S]+)```\s*$', re.M)\
+             .sub(replace_texblocks, comment)
+        """
 
         return comment
 
@@ -496,7 +509,7 @@ class Pyccoon(object):
             "generation_time":  datetime.now().strftime('%Y-%m-%d %H:%M'),
             "root_path":        os.path.relpath(".", os.path.split(source)[0]),
             "project_name":     self.project_name,
-            "mathjax?":          self.config['mathjax'],
+            "mathjax?":          self.config['documentation']['mathjax'],
             "docs_only?": not any(section['code_text'] for section in sections)
         })
 
@@ -544,7 +557,7 @@ class Pyccoon(object):
         relfolder = os.path.relpath(folder, self.sourcedir)
         outfolder = os.path.join(self.outdir, relfolder) if relfolder != "." else self.outdir
         for filename in os.listdir(folder):
-            if not any([regex.search(filename) for regex in self.config['skip_files']]):
+            if not any([regex.search(filename) for regex in self.config['files']['skip']]):
                 isdir = False
                 filepath = None
 
@@ -617,6 +630,9 @@ class Pyccoon(object):
                 code = sourcefile.read().decode('utf8')
 
             language = get_language(source, code)
+            language.parent = self
+            language.root = self.sourcedir
+            language.source = source
         except Exception:
             pass
 
@@ -639,7 +655,7 @@ def main():
                       help='Watch original files and regenerate documentation on changes')
 
     parser.add_option('-c', '--config', action='store', dest='config_file',
-                      default=os.path.join(os.getcwd(), '.pyccoon'), type='string',
+                      default=os.path.join(os.getcwd(), '.pyccoon.yaml'), type='string',
                       help='Config file to use (default: `%default`)')
 
     parser.add_option('-v', '--verbosity', action='store', dest='verbosity',

@@ -25,7 +25,8 @@ readme = open('README.rst').read()
 
 requirements = open("requirements.txt").read().split("\n")
 extra_requirements = {
-    'watchdog': 'watchdog'
+    'watchdog': ['watchdog'],
+    'pandoc': ['pypandoc==0.9.8']
 }
 
 test_requirements = [

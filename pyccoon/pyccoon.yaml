@@ -1,0 +1,11 @@
+project:
+    name: pyccoon v0.1.7 documentation
+verbosity: none
+files:
+    skip: [".+\\.pyc", "__pycache__", "\\.travis.yml", "\\.git", "\\.DS_Store"]
+    copy: ["pyccoon.svg", "pyccoon_icon.svg", ".+\\.html", ".+\\.css", "\\.yaml"]
+documentation:
+    mathjax: true
+    linebreaking-behavior: normal
+    css-path: null
+    custom-html-template: null

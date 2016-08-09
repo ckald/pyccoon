@@ -14,6 +14,20 @@ from .utils import Section, ParsingStrategy, iterate_sections,\
     split_section_by_regex, split_code_by_pos
 
 
+default_markdown_extensions = [
+    markdown_extensions.LinesConnector(),
+    markdown_extensions.SaneDefList(),
+    markdown_extensions.Todo(),
+    markdown_extensions.Pydoc(),
+    markdown_extensions.AutoLinkExtension(),
+    markdown_extensions.MathExtension(),
+    "markdown.extensions.def_list",
+    "markdown.extensions.fenced_code",
+    'markdown.extensions.codehilite',
+    'markdown.extensions.tables'
+  ]
+
+
 class Language(object):
     """
     ## Pyccoon Language definition
@@ -26,19 +40,10 @@ class Language(object):
     extensions = []
     scope_keywords = []
     filename_substitutes = {}
-    markdown_extensions = [
-        markdown_extensions.LinesConnector(),
-        markdown_extensions.SaneDefList(),
-        markdown_extensions.Todo(),
-        markdown_extensions.Pydoc(),
-        markdown_extensions.AutoLinkExtension(),
-        markdown_extensions.MathExtension(),
-        "markdown.extensions.def_list",
-        "markdown.extensions.fenced_code",
-        'markdown.extensions.codehilite',
-        'markdown.extensions.tables',
-        # "markdown.extensions.nl2br"
-    ]
+    markdown_extensions = default_markdown_extensions
+    postprocessors = []
+    preprocessors = []
+
 
     @property
     def name(self):
@@ -150,6 +155,14 @@ class Language(object):
             sections[i-1]['code_text'] = sections[i-1]['code_text'].rstrip('\n') \
                 + '\n\n' + sections[i]['code_text'].lstrip('\n')
             sections[i:i+1] = []
+
+    def postprocess(self, sections):
+        for processor in self.postprocessors:
+            processor(sections)
+
+    def preprocess(self, sections):
+        for processor in self.preprocessors:
+            processor(sections)
 
 
 class PlainText(Language):
@@ -272,11 +285,28 @@ class MultilineCommentLanguage(Language):
 
     multistart = '"""'
     multiend = '"""'
+    multiline_ignore_start = None
+    multiline_ignore_end = None
 
     @property
     def multiline_re(self):
-        return re.compile(r'^(\s*{start}((?!{end})[\s\S])*){end}'
-                          .format(start=self.multistart, end=self.multiend), flags=re.M)
+
+        if self.multiline_ignore_start:
+            dont_match_start = r"(?!{0})".format(self.multiline_ignore_start)
+        else:
+            dont_match_start = ""
+
+        if self.multiline_ignore_end:
+            dont_match_end = r"(?!{0})".format(self.multiline_ignore_end)
+        else:
+            dont_match_end = ""
+
+        return re.compile(r'^(\s*{start}{dont_match_start}((?!{end})[\s\S])*){dont_match_end}{end}'\
+                            .format(dont_match_start=dont_match_start,
+                                    dont_match_end=dont_match_end,
+                                    start=self.multistart,
+                                    end=self.multiend),
+                          flags=re.M)
 
     @property
     def multiline_delimiters(self):
@@ -294,6 +324,33 @@ class MultilineCommentLanguage(Language):
         sections[i]["docs_text"] = re.sub(r"^\n*(\s*){0}".format(self.multistart),
                                           r"\1",
                                           sections[i]["docs_text"])
+
+
+class DoubleQuoteDocstringLanguage(Language):
+    """
+    ## Docstring Base Language (Double Quotes)
+    """
+
+    @property
+    def multiline_re(self):
+        return re.compile(r'^(\s*"(?:[^"\\]|\\.)*)"(?=\n)', flags=re.M)
+
+    def strategy(self):
+        base_strategy = super(DoubleQuoteDocstringLanguage, self).strategy()
+        base_strategy.insert(0, self.parse_multiline)
+        return base_strategy
+
+
+    @iterate_sections(start=0)
+    def parse_multiline(self, sections, i):
+        sections[i:i+1] = split_section_by_regex(sections[i], self.multiline_re,
+                                                 meta="stripped")
+        sections[i]["docs_text"] = re.sub(r'^\n*(\s*)"',
+                                          r'\1',
+                                          sections[i]["docs_text"])
+
+        sections[i]["docs_text"] = re.sub(r'\\', '', sections[i]["docs_text"])
+
 
 
 class IndentBasedLanguage(Language):
@@ -338,6 +395,37 @@ class IndentBasedLanguage(Language):
         base_strategy = super(IndentBasedLanguage, self).strategy()
         base_strategy.insert_before('merge_up', self.split_by_scopes)
         return base_strategy
+
+
+class KeywordLinksMixin(Language):
+
+    def __init__(self):
+        super(KeywordLinksMixin, self).__init__()
+        self.postprocessors.append(self.link_source_post)
+        self.postprocessors.append(self.add_section_anchors)
+        self.preprocessors.append(self.link_source_pre)
+
+
+    @iterate_sections(start=0)
+    def add_links(self, sections, i):
+        for link_pattern, formatter in self.keyword_link_patterns:
+            match = re.match(link_pattern, sections[i]['code_text'])
+            if match:
+                anchor = formatter(match)
+                sections[i]['source_section_anchor'] = anchor
+
+    def strategy(self):
+        base_strategy = super(KeywordLinksMixin, self).strategy()
+        base_strategy.insert_after('absorb', self.add_links)
+        return base_strategy
+
+    def add_section_anchors(self, sections):
+        for i, section in enumerate(sections):
+            try:
+                sections[i]['code_html'] = sections[i]['source_section_anchor'] + \
+                                           sections[i]['code_html']
+            except:
+                print "no anchor"
 
 
 # ## Mixins for brace-based languages (C/C++, JavaScript, PHP, etc.)
@@ -536,7 +624,6 @@ class CoffeeScript(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentL
     """
     ### CoffeeScript
     """
-
     extensions = [".coffee"]
     name = "Coffee-Script"
     # the inline comments will work only if you add space after them
@@ -546,30 +633,91 @@ class CoffeeScript(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentL
 
     scope_keywords = [r"^\s*(class) \S+$", r"^.*\(.*\)\s*[-=]\>"]
 
+
+class Haskell(InlineCommentLanguage, MultilineCommentLanguage):
+    """## Haskell
+
+    Haskell is actually an indent-based language, but declaring it
+    as such brings havoc into the Haddock documentation.
+    We will have to rely on the user to break the source accordingly
+    with comments.
+
+    TODO: Does anyone still use literate haskell? It'd be intersing to support it.
+    """
+    extensions = [".hs"]
+    inline_delimiter = "--"
+    multistart = "{-"
+    multiend = "-}"
+
+    # [Chapters](https://www.haskell.org/haddock/doc/html/ch03s04.html)
+    # in Haddock documentation.
+    # It would be great if we could somehow format these as documentation,
+    # but they would conflict with Markdown's syntax for lists...
+    ignored_inline_patterns = [r"( (\*)* .*)"]
+
+    # Pragmas: `{-# ... #--}`
+    multiline_ignore_start = "#"
+    multiline_ignore_end = "#"
+
+    # Embed Haddock inside Markdown.
+    # Actually, Haddock is crazy and almost impossible to parse
+    # correctly by something other than itself.
+    # The markup format, however, is easy, and that's what we
+    # intend to support.
+    # See the extension definition for details.
+    markdown_extensions = \
+        default_markdown_extensions + [markdown_extensions.Haddock()]
+
+
 """
 ## Languages in development
 
 ```python
 
-
 class Perl(InlineCommentLanguage):
+    '''### Perl'''
     extensions = [".pl"]
     inline_delimiter = "#"
 
 
 class SQL(InlineCommentLanguage):
+    '''### SQL'''
     extensions = [".sql"]
     inline_delimiter = "--"
 
 
 class Scheme(InlineCommentLanguage, MultilineCommentLanguage):
+    '''### Scheme
+    Can probably serve as a base to other LISP dialects,
+    such as Common Lisp and Racket.
+    '''
     extensions = [".scm"]
     inline_delimiter = ";;"
     multistart = "#|"
     multiend = "|#"
 
 
+class Clojure(IndentBasedLanguage,
+              InlineCommentLanguage,
+              DoubleQuoteDocstringLanguage):
+
+    '''### Clojure and Clojurescript
+    '''
+    extensions = [".cljs", ".clj"]
+    inline_delimiter = ";;"
+
+    nsLinksExt = markdown_extensions.NsLinks()
+    nsLinksExt.namespace_re = "\S+/"
+    anchor_prefix = '_'
+
+    markdown_extensions = default_markdown_extensions + [nsLinksExt]
+
+    scope_keywords = [r"^\s*\((def\S*)((\s+\^:\S*)*)\s+([^\s\)]*)",
+                      r"^\s*\((ns)\s+([^\s\)]*)"]
+
+
 class Lua(InlineCommentLanguage, MultilineCommentLanguage):
+    '''### Lua'''
     extensions = [".lua"]
     inline_delimiter = "--"
     multistart = "--[["
@@ -577,26 +725,22 @@ class Lua(InlineCommentLanguage, MultilineCommentLanguage):
 
 
 class Erlang(InlineCommentLanguage):
+    '''### Erlang'''
     extensions = [".erl"]
     inline_delimiter = "%%"
 
 
 class Tcl(InlineCommentLanguage):
+    '''### Tcl'''
     extensions = [".tcl"]
     inline_delimiter = "#"
-
-
-class Haskell(InlineCommentLanguage, MultilineCommentLanguage):
-    extensions = [".hs"]
-    inline_delimiter = "--"
-    multistart = "{-"
-    multiend = "-}"
-
+```
 """
 
-extensions_mapping = {}
+# ## Gathering all languages
 
-languages = [Markdown, Python, Fortran, PHP, C, JavaScript, Ruby, CoffeeScript]
+extensions_mapping = {}
+languages = [Markdown, Python, Fortran, PHP, C, JavaScript, Ruby, CoffeeScript, Haskell]
 
 for language in languages:
     instance = language()

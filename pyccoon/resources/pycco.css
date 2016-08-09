@@ -21,6 +21,15 @@ p {
     width: auto;
 }
 
+a.hidden {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.endpage {
+  padding-top: 50px;
+  padding-bottom: 750px;
+}
 
 #breadcrumbs {
   white-space: nowrap;
@@ -59,6 +68,45 @@ p {
   border: 1px solid #c00;
   display: inline-block;
   clear: right;
+}
+
+.haddock {
+}
+
+.haddock-text {
+  background: #F5F5FF; 
+  padding: 10px;
+  border: 1px solid #A1A1AA;
+  display: inline-block;
+  width: 95%;
+  border-radius: 5px;
+  border-top-left-radius: 0px;
+  margin-bottom: 15px;
+}
+
+.haddock-header {
+  width: 70px;
+  padding: 3px;
+  border: 1px solid #A1A1AA;
+  border-bottom: 0px;
+  background: #F5F5FF; 
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+
+  padding-left: 10px;
+  font-weight: bold;
+}
+
+.haddock-text > p:last-child {
+  margin-bottom: 3px;
+}
+
+p.module-characteristic {
+  margin-left: 15px;
+}
+
+p.module-characteristic + p.module-characteristic {
+  margin-top: -12px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -276,6 +324,7 @@ div.docs {
       div.docs:hover .octothorpe {
         opacity: 1;
       }
+
 div.code {
   margin-left: 40%;
   padding: 5px 15px 7px 13px;
