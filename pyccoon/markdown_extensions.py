@@ -425,7 +425,7 @@ class NsLinks(Extension):
     class Prep(Preprocessor):
 
         def __init__(self, md, namespace_re, anchor_prefix):
-            super(Preprocessor, self).__init__(md)
+            super(Prep, self).__init__(md)
             # Initialize the specific constants for this language.
             self.namespace_re = namespace_re
             self.anchor_prefix = anchor_prefix
@@ -444,7 +444,7 @@ class NsLinks(Extension):
                 namespace = ""
 
             if path:
-                root, ext = os.path.splitext(path)
+                _, ext = os.path.splitext(path)
                 if ext.lower() != '.html':
                     path += '.html'
             else:

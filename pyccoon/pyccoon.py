@@ -327,9 +327,9 @@ class Pyccoon(object):
                            prefix=None)
 
             with open(destination, 'w', encoding='utf8') as f:
-                    self.language = Language()
-                    f.write(self.generate_html(source, []))
-                    self.log("\tGenerated:\t{0:s}".format(source))
+                self.language = Language()
+                f.write(self.generate_html(source, []))
+                self.log("\tGenerated:\t{0:s}".format(source))
 
         self.log("...Done.")
 

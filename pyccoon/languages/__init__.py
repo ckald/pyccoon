@@ -405,7 +405,6 @@ class KeywordLinksMixin(Language):
         self.postprocessors.append(self.add_section_anchors)
         self.preprocessors.append(self.link_source_pre)
 
-
     @iterate_sections(start=0)
     def add_links(self, sections, i):
         for link_pattern, formatter in self.keyword_link_patterns:
@@ -420,10 +419,10 @@ class KeywordLinksMixin(Language):
         return base_strategy
 
     def add_section_anchors(self, sections):
-        for i, section in enumerate(sections):
+        for i in range(len(sections)):
             try:
-                sections[i]['code_html'] = sections[i]['source_section_anchor'] + \
-                                           sections[i]['code_html']
+                sections[i]['code_html'] = (sections[i]['source_section_anchor'] +
+                                            sections[i]['code_html'])
             except:
                 # print("no anchor")
                 pass
