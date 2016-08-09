@@ -425,7 +425,8 @@ class KeywordLinksMixin(Language):
                 sections[i]['code_html'] = sections[i]['source_section_anchor'] + \
                                            sections[i]['code_html']
             except:
-                print "no anchor"
+                # print("no anchor")
+                pass
 
 
 # ## Mixins for brace-based languages (C/C++, JavaScript, PHP, etc.)

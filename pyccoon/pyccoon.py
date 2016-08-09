@@ -443,7 +443,7 @@ class Pyccoon(object):
 
         """
                 def replace_texblocks(match):
-                    print match.groups()
+                    print(match.groups())
                     return (
                         '```\n{begin}\n{code}\n{end}\n```'
                     ).format(**{
