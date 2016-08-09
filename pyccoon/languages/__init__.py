@@ -155,7 +155,8 @@ class Language(object):
 class PlainText(Language):
     extensions = ['.txt']
     filename_substitutes = {
-        'index.txt': 'index.html'
+        'index.txt': 'index.html',
+        'README': 'index.html'
     }
     divider_text = divider_html = ""
     lexer = None
@@ -173,7 +174,8 @@ class PlainText(Language):
 class Markdown(PlainText):
     extensions = ['.md']
     filename_substitutes = {
-        'index.md': 'index.html'
+        'index.md': 'index.html',
+        'README.md': 'index.html'
     }
 
 
@@ -469,7 +471,8 @@ class Python(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguag
 
     # `__init__.py` files can perfectly serve as modules index files.
     filename_substitutes = {
-        "__init__.py": "index.html"
+        "__init__.py": "index.html",
+        "__main__.py": "index.html"
     }
 
     scope_keywords = [r"^\s*(def) ", r"^\s*(class) ", r"^\s*(@)\w+"]
