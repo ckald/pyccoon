@@ -127,8 +127,8 @@ class Pyccoon(object):
         self.config['skip_files'] = [re.compile(p) for p in self.config['skip_files']]
         self.config['copy_files'] = [re.compile(p) for p in self.config['copy_files']]
 
-        self.project_name = self.config['project_name'] \
-            or (os.path.split(self.sourcedir)[1] + " documentation")
+        self.short_name = self.config['short_name'] or os.path.split(self.sourcedir)[1]
+        self.project_name = self.config['project_name'] or (self.short_name + " documentation")
 
         # If a line breaking behavior is not supplied, assume it is `'pre-wrap'`
         # for backward compatibility.
