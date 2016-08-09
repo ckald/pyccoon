@@ -528,16 +528,25 @@ class Ruby(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage)
 
     scope_keywords = [r"^\s*(module) ", r"^\s*(class) ", r"^\s*(def) "]
 
-"""
-## Languages in development
 
-```python
-class CoffeScript(InlineCommentLanguage, MultilineCommentLanguage):
+class CoffeeScript(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
+    """
+    === CoffeeScript ===
+    No params, or whatsoever.
+    """
     extensions = [".coffee"]
     name = "Coffee-Script"
-    inline_delimiter = "#"
+    # the inline comments will work only if you add space after them
+    inline_delimiter = "# "
     multistart = "###"
     multiend = "###"
+
+    scope_keywords = [r"^\s*(class) \S+$", r"^.*\(.*\)\s*[-=]\>"]
+
+"""
+== Languages in development ==
+
+```python
 
 
 class Perl(InlineCommentLanguage):
@@ -587,7 +596,7 @@ languages = [CoffeScript, Perl, SQL, C, PHP,  JavaScript, Ruby, Python, Scheme,
 
 extensions_mapping = {}
 
-languages = [Markdown, Python, Fortran, PHP, C, JavaScript, Ruby]
+languages = [Markdown, Python, Fortran, PHP, C, JavaScript, Ruby, CoffeeScript]
 
 for language in languages:
     instance = language()
