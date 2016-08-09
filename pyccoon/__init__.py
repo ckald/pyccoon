@@ -37,5 +37,3 @@ documentation `docs` for the project in `src` folder, run the following:
 __author__ = 'Andrii Magalich'
 __email__ = 'andrew.magalich@gmail.com'
 __version__ = '0.1.7'
-
-from .pyccoon import Pyccoon
