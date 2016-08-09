@@ -1,6 +1,6 @@
 <p align="center">
 <a href="http://ckald.github.io/pyccoon/">
-<img src="https://www.dropbox.com/s/n6s0ngrjl69ct09/pyccoon.svg?dl=1" alt="Pyccoon" />
+<img src="http://ckald.github.io/pyccoon/pyccoon.svg" alt="Pyccoon" />
 </a>
 </p>
 
