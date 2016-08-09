@@ -464,7 +464,7 @@ class Python(IndentBasedLanguage, MultilineCommentLanguage, InlineCommentLanguag
         r"(\!.+)",
         # File encoding, e.g. `# -*- coding: utf-8 -*-`
         r"((\s)*-\*-(\s)*coding:.+(\s*)-\*-)",
-      ]
+    ]
 
     multistart = '"""'
     multiend = '"""'
@@ -534,9 +534,9 @@ class Ruby(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage)
 
 class CoffeeScript(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentLanguage):
     """
-    === CoffeeScript ===
-    No params, or whatsoever.
+    ### CoffeeScript
     """
+
     extensions = [".coffee"]
     name = "Coffee-Script"
     # the inline comments will work only if you add space after them
@@ -547,7 +547,7 @@ class CoffeeScript(IndentBasedLanguage, InlineCommentLanguage, MultilineCommentL
     scope_keywords = [r"^\s*(class) \S+$", r"^.*\(.*\)\s*[-=]\>"]
 
 """
-== Languages in development ==
+## Languages in development
 
 ```python
 
@@ -592,9 +592,6 @@ class Haskell(InlineCommentLanguage, MultilineCommentLanguage):
     multistart = "{-"
     multiend = "-}"
 
-languages = [CoffeScript, Perl, SQL, C, PHP,  JavaScript, Ruby, Python, Scheme,
-             Lua, Erlang, Tcl, Haskell]
-```
 """
 
 extensions_mapping = {}
