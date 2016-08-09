@@ -24,6 +24,9 @@ readme = open('README.rst').read()
 
 
 requirements = open("requirements.txt").read().split("\n")
+extra_requirements = {
+    'watchdog': 'watchdog'
+}
 
 test_requirements = [
     # TODO: put package test requirements here
@@ -41,6 +44,7 @@ setup(
     package_dir={'pyccoon': 'pyccoon'},
     include_package_data=True,
     install_requires=requirements,
+    extras_require=extra_requirements,
     license="MIT",
     zip_safe=False,
     keywords='pyccoon',
