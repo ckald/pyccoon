@@ -123,6 +123,8 @@ class Pyccoon(object):
             self.log('Using config {0:s}'.format(config_file))
             with open(config_file, 'rb') as f:
                 self.config.update(json.loads(f.read().decode('utf8')))
+        else:
+            self.log('Using default config')
 
         self.config['skip_files'] = [re.compile(p) for p in self.config['skip_files']]
         self.config['copy_files'] = [re.compile(p) for p in self.config['copy_files']]
