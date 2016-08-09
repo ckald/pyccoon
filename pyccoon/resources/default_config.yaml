@@ -1,0 +1,11 @@
+project:
+    name: NAME HERE
+verbosity: none
+files:
+    skip: []
+    copy: []
+documentation:
+    mathjax: false
+    linebreaking-behavior: normal
+    css-path: null
+    custom-html-template: null

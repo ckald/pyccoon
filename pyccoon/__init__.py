@@ -23,7 +23,7 @@ Most probably you might want to use Pyccoon if you have a small-to-medium projec
 or if you are a scientist that tries to sync the code with the context of research:
 
 $$
-    \frac{d y(t)}{d t} = lim_{h \rightarrow 0} \frac{y(t + h) - y(t)}{h}
+    \frac{d y(t)}{d t} = \lim_{h \rightarrow 0} \frac{y(t + h) - y(t)}{h}
 $$
 
 Pyccoon generates the documentation folder structured correspondingly to the code. To create
