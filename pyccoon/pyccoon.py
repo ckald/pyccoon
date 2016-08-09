@@ -29,9 +29,6 @@ from .utils import shift, ensure_directory, SourceFile
 
 # ## Main documentation generation class
 
-print os.listdir('.')
-default_config = yaml.safe_load(resources.default_config.decode("utf8"))
-
 
 class Pyccoon(object):
 
@@ -44,7 +41,7 @@ class Pyccoon(object):
     highlight_end = "</pre></div>"
 
     config = defaultdict(None)
-    config.update(default_config)
+    config.update(yaml.safe_load(resources.default_config.decode("utf8")))
 
     config_file = '.pyccoon.yaml'
     watch = False
