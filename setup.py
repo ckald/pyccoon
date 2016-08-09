@@ -62,8 +62,8 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: Implementation :: PyPy'
     ],
-    test_suite='tests',
-    tests_require=test_requirements,
+    test_suite='nose.collector',
+    tests_require=['nose'],
 
     entry_points="""
     [console_scripts]
