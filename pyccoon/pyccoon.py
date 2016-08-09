@@ -524,10 +524,6 @@ class Pyccoon(object):
                 "path": crumbpath if crumbpath.endswith('.html')
                 else os.path.join(crumbpath, 'index.html')
             })
-        breadcrumbs.insert(0, {
-            "title": ".",
-            "path": os.path.join(crumbpath, "../index.html")
-        })
 
         return breadcrumbs[:-1], source_chunks[0]
 

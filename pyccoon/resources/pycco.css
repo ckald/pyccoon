@@ -33,6 +33,7 @@ p {
 #children {
   list-style-type: none;
   margin-top: 0;
+  padding-left: 0;
 }
 
 #children .directory {
@@ -234,7 +235,7 @@ div.docs {
   .docs p {
     white-space: {{linebreaking-behavior}};
   }
-  
+
   .docs pre {
     white-space: pre-wrap;
   }
