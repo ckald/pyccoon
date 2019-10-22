@@ -2,4 +2,4 @@ wheel
 pystache==0.5.4
 markdown==2.4.1
 Pygments==2.0.2
-PyYAML==3.11
+PyYAML==5.1
